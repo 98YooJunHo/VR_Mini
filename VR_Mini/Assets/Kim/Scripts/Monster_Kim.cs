@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class Monster : MonoBehaviour
+public class Monster_Kim : MonoBehaviour
 {
     private int paseTrigger;
     private float attackTrigger;
