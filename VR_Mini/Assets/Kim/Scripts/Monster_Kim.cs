@@ -1,20 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Monster_Kim : MonoBehaviour
 {
-    private int paseTrigger;
-    private float attackTrigger;
-    private float checkTime = 0;
-    public MonsterHP monsterHP;
-    private int maxHP;
+    private MonsterAttack monsterAttack;
+    private Ultimate_Kim ult;
 
-    private bool doSomething = false;
+    private int paseTrigger = 30;
+    private float attackTrigger = 5;
+    private float checkTime = 0;
+    private MonsterHP monsterHP;
+    private int maxHP;
 
     private Animator animator;
     private float speed = 3.2f;
+
+    public bool pattern = false;
+    private bool doOnce = false;
+
     public enum MonsterDoingType
     {
         idle,
@@ -28,6 +34,9 @@ public class Monster_Kim : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        monsterAttack = GetComponent<MonsterAttack>();
+        ult = GetComponent<Ultimate_Kim>();
+
         monsterHP = transform.GetComponent<MonsterHP>();
         maxHP = monsterHP.hp;
         type = MonsterDoingType.idle;
@@ -37,8 +46,11 @@ public class Monster_Kim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        checkTime += Time.deltaTime;
-        MonsterPase();        
+        if (!pattern)
+        {
+            checkTime += Time.deltaTime;
+        }
+        MonsterPase();
         MonsterMove();
     }
 
@@ -50,10 +62,12 @@ public class Monster_Kim : MonoBehaviour
         }
         else if (monsterHP.hp <= maxHP - paseTrigger && monsterHP.hp > maxHP - (paseTrigger * 2))
         {
+            Debug.Log("2");
             Pase2();
         }
         else if (monsterHP.hp < maxHP - (paseTrigger * 2))
         {
+            Debug.Log("3");
             Pase3();
         }
         else if (monsterHP.hp <= 0)
@@ -70,18 +84,20 @@ public class Monster_Kim : MonoBehaviour
         }
         else if (type == MonsterDoingType.attack)
         {
-            animator.Play("Attack");
+            pattern = true;
+            animator.Play("Scream");
             StartCoroutine(Attack());
-
         }
         else if (type == MonsterDoingType.skill_1)
         {
+            pattern = true;
             animator.Play("Idle");
             StartCoroutine(Skill_1());
 
         }
         else if (type == MonsterDoingType.skill_2)
         {
+            pattern = true;
             animator.Play("");
             StartCoroutine(Skill_2());
 
@@ -89,13 +105,17 @@ public class Monster_Kim : MonoBehaviour
         }
         else if (type == MonsterDoingType.ultimate)
         {
-            animator.Play("Fly Up");
-            StartCoroutine(Ultimate());
-
+            pattern = true;
+            if (!doOnce)
+            {
+                StartCoroutine(Ultimate());
+            }
+            Debug.Log("111");
 
         }
         else if (type == MonsterDoingType.die)
         {
+            pattern = true;
             animator.Play("Die");
 
         }
@@ -148,8 +168,17 @@ public class Monster_Kim : MonoBehaviour
     private IEnumerator Attack()
     {
         // 미사일 날라감
-        yield return new WaitForSeconds(1.1f);      // 모션 시간 보면서 시간 조정해야됨
+        if(!doOnce)
+        {
+            StartCoroutine(monsterAttack.Missile());
+            doOnce = true;
+        }
+        yield return new WaitForSeconds(8f);      // 모션 시간 보면서 시간 조정해야됨
+
         checkTime = 0;
+        type = MonsterDoingType.idle;
+        doOnce = false;
+        pattern = false;
     }
 
     private IEnumerator Skill_1()
@@ -157,18 +186,31 @@ public class Monster_Kim : MonoBehaviour
         // 메테오
         yield return new WaitForSeconds(1.1f);      // 모션 시간 보면서 시간 조정해야됨
         checkTime = 0;
+        pattern = false;
     }
 
     private IEnumerator Skill_2()
     {
         yield return new WaitForSeconds(1.1f);      // 모션 시간 보면서 시간 조정해야됨
         checkTime = 0;
+        pattern = false;
     }
     private IEnumerator Ultimate()
     {
         // 화염방사
-        yield return new WaitForSeconds(1.1f);      // 모션 시간 보면서 시간 조정해야됨
+        
+            doOnce = true;
+            StartCoroutine(ult.Ultimate_());
+        
+        yield return new WaitForSeconds(13f);      // 모션 시간 보면서 시간 조정해야됨
+        animator.Play("Land");  
+        yield return new WaitForSeconds(4f);
+        Debug.Log(type);
         checkTime = 0;
+        type = MonsterDoingType.idle;
+        doOnce = false;
+        pattern = false;
+        yield break;
     }
     //IEnumerator BackIdle(float timer)
     //{
