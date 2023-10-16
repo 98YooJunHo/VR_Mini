@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// ¼ø¼­
+// ìˆœì„œ
 public enum Order
 {
     PC, ITEM1, ITEM2, MONSTER, MONSTER_PROJECTILE, SPAWN_MONSTER1, SPAWN_MONSTER2, WEAPON1, WEAPON2
@@ -49,32 +49,32 @@ public enum Weapon
 
 
 
-#region !»ç¿ë¹ı!»ç¿ë¹ı!»ç¿ë¹ı!»ç¿ë¹ı!»ç¿ë¹ı!»ç¿ë¹ı!»ç¿ë¹ı!»ç¿ë¹ı!»ç¿ë¹ı!»ç¿ë¹ı!»ç¿ë¹ı!»ç¿ë¹ı!»ç¿ë¹ı!»ç¿ë¹ı!»ç¿ë¹ı!»ç¿ë¹ı
-/* !ÇÊµ¶ º¯¼ö°¡Á®¿À´Â¹ı
- *  !Order¿Í º¯¼ö°¡ ¹¹°¡ ÀÖ´ÂÁö F12¸¦ ´­·¯¼­ ¹¹°¡ ÀÖ´ÂÁö È®ÀÎÇÏ¼¼¿ä.
- * -------------------------- 2°³ ÀÌ»óÀÇ º¯¼ö¸¦ °¡Á®¿À°í ½ÍÀ» ¶§ ----------------------
- *  1. ¸ÕÀú List<object> name = GetDataFromID(Order.(³»°¡ ¿øÇÏ´Â ´ë»ó))
- *  2. name[(¿øÇÏ´Â ´ë»ó).(¿øÇÏ´Â º¯¼ö)]·Î °ªÀ» ¹Ş¾Æ ¿Ã ¼ö ÀÖ½À´Ï´Ù.
- *  !2°³ÀÌ»óÀ» ºÒ·¯¿À½Ç ¶§´Â CSV readerÀÚÃ¼¿¡¼­ Çüº¯È¯À» ÇØÁÖ±äÇÕ´Ï´Ù.floatÀº ´Ù½Ã Çüº¯È¯ÀÌ ÇÊ¿äÇÏÁúµµ?
+#region !ì‚¬ìš©ë²•!ì‚¬ìš©ë²•!ì‚¬ìš©ë²•!ì‚¬ìš©ë²•!ì‚¬ìš©ë²•!ì‚¬ìš©ë²•!ì‚¬ìš©ë²•!ì‚¬ìš©ë²•!ì‚¬ìš©ë²•!ì‚¬ìš©ë²•!ì‚¬ìš©ë²•!ì‚¬ìš©ë²•!ì‚¬ìš©ë²•!ì‚¬ìš©ë²•!ì‚¬ìš©ë²•!ì‚¬ìš©ë²•
+/* !í•„ë… ë³€ìˆ˜ê°€ì ¸ì˜¤ëŠ”ë²•
+ *  !Orderì™€ ë³€ìˆ˜ê°€ ë­ê°€ ìˆëŠ”ì§€ F12ë¥¼ ëˆŒëŸ¬ì„œ ë­ê°€ ìˆëŠ”ì§€ í™•ì¸í•˜ì„¸ìš”.
+ * -------------------------- 2ê°œ ì´ìƒì˜ ë³€ìˆ˜ë¥¼ ê°€ì ¸ì˜¤ê³  ì‹¶ì„ ë•Œ ----------------------
+ *  1. ë¨¼ì € List<object> name = GetDataFromID(Order.(ë‚´ê°€ ì›í•˜ëŠ” ëŒ€ìƒ))
+ *  2. name[(ì›í•˜ëŠ” ëŒ€ìƒ).(ì›í•˜ëŠ” ë³€ìˆ˜)]ë¡œ ê°’ì„ ë°›ì•„ ì˜¬ ìˆ˜ ìˆìŠµë‹ˆë‹¤.
+ *  !2ê°œì´ìƒì„ ë¶ˆëŸ¬ì˜¤ì‹¤ ë•ŒëŠ” CSV readerìì²´ì—ì„œ í˜•ë³€í™˜ì„ í•´ì£¼ê¸´í•©ë‹ˆë‹¤.floatì€ ë‹¤ì‹œ í˜•ë³€í™˜ì´ í•„ìš”í•˜ì§ˆë„?
  *  
  *  EX) 
- *  List<object> test = GetDataFromID(Order.PC) // pcÀÇ º¯¼ö¸¦ °¡Á®¿À°í ½ÍÀ¸¸é
- *  °¡Á®¿À°í ½ÍÀº º¯¼ö°¡ ½ÃÀÛ°ñµå¶ó¸é INIT_GOLD ÀÔ´Ï´Ù.
- *  int gold = test[(int)PC.INIT_GOLD] ÀÌ·± ½ÄÀ¸·Î Á¢±ÙÇÏ¸é µË´Ï´Ù.
+ *  List<object> test = GetDataFromID(Order.PC) // pcì˜ ë³€ìˆ˜ë¥¼ ê°€ì ¸ì˜¤ê³  ì‹¶ìœ¼ë©´
+ *  ê°€ì ¸ì˜¤ê³  ì‹¶ì€ ë³€ìˆ˜ê°€ ì‹œì‘ê³¨ë“œë¼ë©´ INIT_GOLD ì…ë‹ˆë‹¤.
+ *  int gold = test[(int)PC.INIT_GOLD] ì´ëŸ° ì‹ìœ¼ë¡œ ì ‘ê·¼í•˜ë©´ ë©ë‹ˆë‹¤.
  *  
- *  --------------------------- ´ÜÀÏ·Î º¯¼ö¸¦ ºÒ·¯¿À°í ½ÍÀ» ¶§ -----------------------
- *  1. ¿øÇÏ´Â dataÀÇ TypeÀ» ¸ÕÀú ¾Æ¼Å¾ßÇÕ´Ï´Ù.
- *  !±âº»ÀÌ object Å¸ÀÔÀÔ´Ï´Ù~
- *  (Type) name = (Type)GetSingleDataFromID(Order.(¿øÇÏ´Â ´ë»ó), (¿øÇÏ´ÂKey)) //! Çüº¯È¯ ÇÊ¼ö
+ *  --------------------------- ë‹¨ì¼ë¡œ ë³€ìˆ˜ë¥¼ ë¶ˆëŸ¬ì˜¤ê³  ì‹¶ì„ ë•Œ -----------------------
+ *  1. ì›í•˜ëŠ” dataì˜ Typeì„ ë¨¼ì € ì•„ì…”ì•¼í•©ë‹ˆë‹¤.
+ *  !ê¸°ë³¸ì´ object íƒ€ì…ì…ë‹ˆë‹¤~
+ *  (Type) name = (Type)GetSingleDataFromID(Order.(ì›í•˜ëŠ” ëŒ€ìƒ), (ì›í•˜ëŠ”Key)) //! í˜•ë³€í™˜ í•„ìˆ˜
  *  
- *  EX) ¿øÇÏ´Â DataTypeÀÌ intÀÏ ¶§
+ *  EX) ì›í•˜ëŠ” DataTypeì´ intì¼ ë•Œ
  *  int initGold = (int)GetSingleDataFromID(Order.PC, PC.INIT_GOLD);
- *  ¸ğ¸£´Â°Å ÀÖÀ¸¸é ¹°¾îº¸¼À Å·¾Æ~
+ *  ëª¨ë¥´ëŠ”ê±° ìˆìœ¼ë©´ ë¬¼ì–´ë³´ì…ˆ í‚¹ì•„~
  *  
- *  --------------------------- Çüº¯È¯±â ------------------------------------------
- *  ±×³É type ºÙÀÌ´Â°Ô ÆíÇÒµíÇÔ, intÀÎµ¥ stringÀ¸·Î ºÒ·¯¿À°í ½ÍÀº ¹æ½Äµî¿¡¼­´Â ¾µ¸¸ÇÔ
- *  1. ´ÜÀÏº¯¼ö¿Í ¼¯¾î¼­ »ç¿ëÇÏ½Ã¸é µË´Ï´Ù.
- *  (type) name = ChangeType<type>("type", Order.(¿øÇÏ´Â ´ë»ó), (¿øÇÏ´ÂKey))
+ *  --------------------------- í˜•ë³€í™˜ê¸° ------------------------------------------
+ *  ê·¸ëƒ¥ type ë¶™ì´ëŠ”ê²Œ í¸í• ë“¯í•¨, intì¸ë° stringìœ¼ë¡œ ë¶ˆëŸ¬ì˜¤ê³  ì‹¶ì€ ë°©ì‹ë“±ì—ì„œëŠ” ì“¸ë§Œí•¨
+ *  1. ë‹¨ì¼ë³€ìˆ˜ì™€ ì„ì–´ì„œ ì‚¬ìš©í•˜ì‹œë©´ ë©ë‹ˆë‹¤.
+ *  (type) name = ChangeType<type>("type", Order.(ì›í•˜ëŠ” ëŒ€ìƒ), (ì›í•˜ëŠ”Key))
  *  EX) string str2 = ChangeType<string>("string", GetSingleDataFromID(Order.PC, PC.DESCRIPTION));
  *  
  */
@@ -85,8 +85,8 @@ public class ResourceManager : MonoBehaviour
 {
     public static ResourceManager Instance;
 
-    #region º¯¼ö
-    // °æ·Î
+    #region ë³€ìˆ˜
+    // ê²½ë¡œ
     private string itemPath = "CSVFiles/ItemTable";
     private string monsterPath = "CSVFiles/MonsterTable";
     private string pcPath = "CSVFiles/PCTable";
@@ -106,22 +106,23 @@ public class ResourceManager : MonoBehaviour
 
     public void Awake()
     {
+        Instance = this;
         InitTable();
         
         //test
         List<object> test = GetDataFromID(Order.PC);
-        Debug.Log("*½Ã°£ °ñµå : " + test[(int)PC.TIME_GOLD].GetType());
-        Debug.Log("½ÃÀÛ °ñµå : " + test[(int)PC.INIT_GOLD]);
-        Debug.Log("ÇÃ·¹ÀÌ¾î Ã¼·Â : " + test[(int)PC.HP]);
-        Debug.Log("*¼³¸í : " + test[(int)PC.DESCRIPTION].GetType());
+        Debug.Log("*ì‹œê°„ ê³¨ë“œ : " + test[(int)PC.TIME_GOLD].GetType());
+        Debug.Log("ì‹œì‘ ê³¨ë“œ : " + test[(int)PC.INIT_GOLD]);
+        Debug.Log("í”Œë ˆì´ì–´ ì²´ë ¥ : " + test[(int)PC.HP]);
+        Debug.Log("*ì„¤ëª… : " + test[(int)PC.DESCRIPTION].GetType());
 
         List<object> test2 = GetDataFromID(Order.WEAPON1);
-        Debug.Log("Weapon1 µ¥¹ÌÁö : " + test2[(int)Weapon.DMG]);
-        Debug.Log("Weapon1 °£°İ : " + test2[(int)Weapon.INTERVAL]);
+        Debug.Log("Weapon1 ë°ë¯¸ì§€ : " + test2[(int)Weapon.DMG]);
+        Debug.Log("Weapon1 ê°„ê²© : " + test2[(int)Weapon.INTERVAL]);
 
         List<object> test3 = GetDataFromID(Order.MONSTER);
-        Debug.Log("¸ó½ºÅÍ ÀÌµ¿¼Óµµ: " + test3[(int)Monster.MOVESPEED]);
-        Debug.Log("¸ó½ºÅÍ Å©¸®°ñµå: " + test3[(int)Monster.CRI_GOLD]);
+        Debug.Log("ëª¬ìŠ¤í„° ì´ë™ì†ë„: " + test3[(int)Monster.MOVESPEED]);
+        Debug.Log("ëª¬ìŠ¤í„° í¬ë¦¬ê³¨ë“œ: " + test3[(int)Monster.CRI_GOLD]);
 
         int t = (int)GetSingleDataFromID(Order.PC, PC.INIT_GOLD);
         Debug.Log("t InitGold :"+t);

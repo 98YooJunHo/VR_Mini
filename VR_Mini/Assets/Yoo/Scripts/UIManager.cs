@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager instance
+    public static UIManager Instance
     {
         get
         {
@@ -19,24 +19,28 @@ public class UIManager : MonoBehaviour
     }
 
     public static UIManager m_instance;
-    private GameObject hudCanvasObj;
-    private GameObject shopUICanvasObj;
-    private Image playerHpImg;
-    private Image bossHpImg;
+    private GameObject gameStartUI;
+    private GameObject gameOverUI;
+    private GameObject hudObj;
+    private GameObject shopUIObj;
 
     private void Awake()
     {
-        hudCanvasObj = GameObject.Find("HUD").transform.GetChild(0).gameObject;
-        shopUICanvasObj = GameObject.Find("ShopUI").transform.GetChild(0).gameObject;
-        playerHpImg = hudCanvasObj.transform.GetChild(0).GetComponent<Image>();
-        bossHpImg = hudCanvasObj.transform.GetChild(1).GetComponent <Image>();
+        gameStartUI = GameObject.Find("GameStartUI");
+        gameOverUI = GameObject.Find("GameOverUI");
+        hudObj = GameObject.Find("HUD");
+        shopUIObj = GameObject.Find("ShopUI");
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        hudCanvasObj.SetActive(false);
-        shopUICanvasObj.SetActive(false);
+        hudObj.transform.localScale = Vector3.zero;
+        shopUIObj.transform.localScale = Vector3.zero;
+        gameOverUI.transform.localScale = Vector3.zero;
+
+        //Invoke("Open_Shop", 3f);
+        //Invoke("Close_Shop", 5f);
     }
 
     // Update is called once per frame
@@ -45,23 +49,45 @@ public class UIManager : MonoBehaviour
         
     }
 
+    public void Open_GameStartUI()
+    {
+        gameStartUI.transform.localScale = Vector3.one;
+    }
+
+    public void Close_GameStartUI()
+    {
+        gameStartUI.transform.localScale = Vector3.zero;
+    }
+
+    public void Open_GameOverUI()
+    {
+        gameOverUI.transform.parent = null;
+        gameOverUI.transform.localScale = Vector3.one;
+    }
+
+    public void Close_GameOverUI()
+    {
+        gameOverUI.transform.parent = GameObject.Find("CenterEyeAnchor").transform;
+        gameOverUI.transform.localScale = Vector3.zero;
+    }
+
     public void Open_Shop()
     {
-        shopUICanvasObj.SetActive(true);
+        shopUIObj.transform.localScale = Vector3.one;
     }
 
     public void Close_Shop()
     {
-        shopUICanvasObj.SetActive(false);
+        shopUIObj.transform.localScale = Vector3.zero;
     }
 
     public void Open_Hud()
     {
-        hudCanvasObj.SetActive(true);
+        hudObj.transform.localScale = Vector3.one;
     }
 
     public void Close_Hud()
     {
-        hudCanvasObj.SetActive(false);
+        hudObj.transform.localScale = Vector3.zero;
     }
 }
