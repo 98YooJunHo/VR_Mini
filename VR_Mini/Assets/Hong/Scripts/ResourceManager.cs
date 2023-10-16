@@ -20,7 +20,7 @@ public enum PC
 // ID 10~11
 public enum Item 
 {
-    ID, DESCRIPTION, TYPE, DURATION, VAL1
+    ID, DESCRIPTION, TYPE, DURATION, VAL1, GOLD
 }
 
 // ID 100
@@ -108,36 +108,42 @@ public class ResourceManager : MonoBehaviour
     {
         Instance = this;
         InitTable();
-        
+    }
+
+
+    public void Start()
+    {
+
         //test
-        List<object> test = GetDataFromID(Order.PC);
-        Debug.Log("*시간 골드 : " + test[(int)PC.TIME_GOLD].GetType());
-        Debug.Log("시작 골드 : " + test[(int)PC.INIT_GOLD]);
-        Debug.Log("플레이어 체력 : " + test[(int)PC.HP]);
-        Debug.Log("*설명 : " + test[(int)PC.DESCRIPTION].GetType());
+        //List<object> test = GetDataFromID(Order.PC);
+        //Debug.Log("*�ð� ��� : " + test[(int)PC.TIME_GOLD].GetType());
+        //Debug.Log("���� ��� : " + test[(int)PC.INIT_GOLD]);
+        //Debug.Log("�÷��̾� ü�� : " + test[(int)PC.HP]);
+        //Debug.Log("*���� : " + test[(int)PC.DESCRIPTION].GetType());
 
-        List<object> test2 = GetDataFromID(Order.WEAPON1);
-        Debug.Log("Weapon1 데미지 : " + test2[(int)Weapon.DMG]);
-        Debug.Log("Weapon1 간격 : " + test2[(int)Weapon.INTERVAL]);
+        //List<object> test2 = GetDataFromID(Order.WEAPON1);
+        //Debug.Log("Weapon1 ������ : " + test2[(int)Weapon.DMG]);
+        //Debug.Log("Weapon1 ���� : " + test2[(int)Weapon.INTERVAL]);
 
-        List<object> test3 = GetDataFromID(Order.MONSTER);
-        Debug.Log("몬스터 이동속도: " + test3[(int)Monster.MOVESPEED]);
-        Debug.Log("몬스터 크리골드: " + test3[(int)Monster.CRI_GOLD]);
+        //List<object> test3 = GetDataFromID(Order.MONSTER);
+        //Debug.Log("���� �̵��ӵ�: " + test3[(int)Monster.MOVESPEED]);
+        //Debug.Log("���� ũ�����: " + test3[(int)Monster.CRI_GOLD]);
 
-        int t = (int)GetSingleDataFromID(Order.PC, PC.INIT_GOLD);
-        Debug.Log("t InitGold :"+t);
+        //int t = (int)GetSingleDataFromID(Order.PC, PC.INIT_GOLD);
+        //Debug.Log("t InitGold :"+t);
 
 
-        string str = GetSingleDataFromID(Order.PC, PC.DESCRIPTION).ToString();
-        Debug.Log("str description :" + str);
+        //string str = GetSingleDataFromID(Order.PC, PC.DESCRIPTION).ToString();
+        //Debug.Log("str description :" + str);
 
-        string str2 = ChangeType<string>("string", GetSingleDataFromID(Order.PC, PC.ID));
-        Debug.Log("str2 : " +str2);
+        //string str2 = ChangeType<string>("string", GetSingleDataFromID(Order.PC, PC.ID));
+        //Debug.Log("str2 : " +str2);
     }
 
     #region INIT
     private void InitTable()
     {
+           
         InitItemTable();
         InitAllData();
     }
@@ -167,7 +173,7 @@ public class ResourceManager : MonoBehaviour
     #region FUNCTION
     public List<object> GetDataFromID(Order order)
     {
-        List<object> list = new();
+        List<object> list = new List<object>();
         Dictionary<string, object> dic = data[(int)order];
         foreach (var value in dic)
         {
