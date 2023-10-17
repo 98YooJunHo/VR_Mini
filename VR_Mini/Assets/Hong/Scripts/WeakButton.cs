@@ -5,8 +5,8 @@ public class WeakButton : ShopButtonOrigin_HHB
 
     public override void Init()
     {
-        buyGold = (int)ResourceManager.Instance.GetSingleDataFromID(Order.ITEM1, Item.GOLD);
-        coolTime = (float)(int)ResourceManager.Instance.GetSingleDataFromID(Order.ITEM1, Item.DURATION);
+        buyGold = ResourceManager.Instance.ChangeType<int>("int", ResourceManager.Instance.GetSingleDataFromID(Order.ITEM1, Item.GOLD));
+        coolTime = ResourceManager.Instance.ChangeType<float>("float", ResourceManager.Instance.GetSingleDataFromID(Order.ITEM1, Item.GOLD));
     }
 
     public override void Effect()

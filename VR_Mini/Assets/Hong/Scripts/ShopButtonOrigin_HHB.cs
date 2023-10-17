@@ -14,7 +14,6 @@ public class ShopButtonOrigin_HHB : MonoBehaviour
     protected float coolTime;
     protected int buyGold;
 
-
     public virtual void Awake()
     {
         isClicked = false;
@@ -34,10 +33,6 @@ public class ShopButtonOrigin_HHB : MonoBehaviour
         int userGold = GameManager.Instance.gold;
         if ((userGold - buyGold >= 0) && isClicked)
         {
-            //
-
-            // TODO : 돌려주기 
-
             return true;
         }
         else { return false; }
@@ -58,6 +53,7 @@ public class ShopButtonOrigin_HHB : MonoBehaviour
             startTime += Time.deltaTime;
             yield return null;
         }
+        buttonImg.fillAmount = 1f;
         isClicked = false;
         buttonImg.color = originalButtonlColor;
         iconImg.color = originalIconColor;
@@ -68,9 +64,9 @@ public class ShopButtonOrigin_HHB : MonoBehaviour
     // LTouch button 구매
     public virtual void OnRayClick()
     {
-        if (!isClicked /*&& CheckMoneyAndCoolTime()*/)
+        if (!isClicked && CheckMoneyAndCoolTime())
         {
-            Debug.Log("들어감");
+            GameManager.Instance.Use_Gold(buyGold);
             isClicked = true;
             buttonImg.color = disabledColor;
             iconImg.color = disabledColor;

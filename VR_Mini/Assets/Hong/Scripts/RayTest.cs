@@ -5,7 +5,7 @@ using UnityEngine;
 public class RayTest : MonoBehaviour
 {
     private LineRenderer lineRenderer = default;
-    private Transform shopUI;
+    private GameObject shopUI;
     private bool isClicked = false;
 
     private DamageButton attButton;
@@ -18,20 +18,20 @@ public class RayTest : MonoBehaviour
     void Start()
     {
         // shopUI
-        shopUI = gameObject.transform.GetChild(0).GetChild(0).GetChild(4).GetChild(0).GetChild(1).gameObject.transform;
+        shopUI = GameObject.Find("ShopUI");
         lineRenderer = GetComponent<LineRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (ARAVRInput.GetDown(ARAVRInput.Button.Two, ARAVRInput.Controller.RTouch))
+        if (ARAVRInput.GetDown(ARAVRInput.Button.One, ARAVRInput.Controller.LTouch))
         {
-            if (!shopUI.gameObject.activeSelf)
+            if (shopUI.transform.localScale == Vector3.zero)
             {
-                shopUI.gameObject.SetActive(true);
+                UIManager.Instance.Open_ShopUI();
             }
-            else { shopUI.gameObject.SetActive(false); lineRenderer.enabled = false; }
+            else { UIManager.Instance.Close_ShopUI(); lineRenderer.enabled = false; }
 
             isClicked = !isClicked;
 
@@ -41,15 +41,12 @@ public class RayTest : MonoBehaviour
             lineRenderer.enabled = true;
             Ray ray = new Ray(ARAVRInput.RHandPosition, ARAVRInput.RHandDirection);
             lineRenderer.SetPosition(0, ray.origin);
-            lineRenderer.SetPosition(1, ray.origin + ARAVRInput.RHandDirection * 200);
+            lineRenderer.SetPosition(1, ray.origin + ARAVRInput.RHandDirection * 300);
             RaycastHit hitInfo;
             int layer = 1 << LayerMask.NameToLayer("ShopLayer");
             int tLayer = 1 << LayerMask.NameToLayer("Terrain");
 
-
-
-
-            if (Physics.Raycast(ray, out hitInfo, 100f, layer | tLayer))
+            if (Physics.Raycast(ray, out hitInfo, 300f, layer | tLayer))
             {
                 lineRenderer.SetPosition(0, ray.origin);
                 lineRenderer.SetPosition(1, hitInfo.point);
@@ -61,7 +58,6 @@ public class RayTest : MonoBehaviour
                     attButton.OnRayIn();
                     if (ARAVRInput.GetDown(ARAVRInput.Button.One, ARAVRInput.Controller.RTouch))
                     {
-                        //Debug.Log("ATTButton");
                         attButton.OnRayClick();
                     }
                 }
@@ -70,14 +66,17 @@ public class RayTest : MonoBehaviour
                     weakButton.OnRayIn();
                     if (ARAVRInput.GetDown(ARAVRInput.Button.One, ARAVRInput.Controller.RTouch))
                     {
-                        //Debug.Log("WeakButton");
                         weakButton.OnRayClick();
                     }
                 }
                 else if (hitInfo.collider.gameObject.name == "ESCButton")
                 {
-                    //끄기
-                    isClicked = !isClicked;
+                    if (ARAVRInput.GetDown(ARAVRInput.Button.One, ARAVRInput.Controller.RTouch))
+                    { 
+                        isClicked = !isClicked;
+                        UIManager.Instance.Close_ShopUI(); 
+                        lineRenderer.enabled = false;                    
+                    }
                 }
                 else 
                 {
