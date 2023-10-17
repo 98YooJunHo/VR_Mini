@@ -18,6 +18,6 @@ public class InforceEffect : MonoBehaviour
 
     private void Makefalse()
     {
-        BulletPoolManager.instance.InsertQueue(gameObject, 2);
+        EffectPoolManager.instance.InsertQueue(this.gameObject, 2);
     }
 }

@@ -18,6 +18,6 @@ public class NormalEffect : MonoBehaviour
 
     private void Makefalse()
     {
-        BulletPoolManager.instance.InsertQueue(gameObject,1);
+        EffectPoolManager.instance.InsertQueue(this.gameObject,1);
     }
 }
