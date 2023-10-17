@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletPoolManager : MonoBehaviour
+public class EffectPoolManager : MonoBehaviour
 {
-    public static BulletPoolManager instance;
+    public static EffectPoolManager instance;
 
     public GameObject normalEffectPrefab;
 
@@ -68,7 +68,6 @@ public class BulletPoolManager : MonoBehaviour
             gameObject = inforceQueue.Dequeue();
             gameObject.SetActive(true);
         }
-        Debug.Log("겟큐는 잘작동하고있어");
         return gameObject;
     }
 }

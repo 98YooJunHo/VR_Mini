@@ -61,26 +61,32 @@ public class Player: MonoBehaviour
     void Update()
     {
         // Todo : 게임오버 상태일때는 Return 해버려서 못하게해야한다.
+        if (GameManager.Instance.gameOver == true)
+        {
+            return;
+        }
         Ray ray = new Ray(ARAVRInput.RHandPosition, ARAVRInput.RHandDirection);
         RaycastHit hitInfo = default;
         lineRenderer.enabled = true;
-        if (Physics.Raycast(ray, out hitInfo, 200f))
+        if (Physics.Raycast(ray, out hitInfo, 600f))
         {
-            if (hitInfo.collider.gameObject.layer.Equals("Boss")) //|| hitInfo.collider.gameObject.layer.Equals("Projectile"))
+            Debug.Log("레이가 맞기는해?");
+            if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Boss")) //|| hitInfo.collider.gameObject.layer.Equals("Projectile"))
             {
+                Debug.Log("보스레이로 인식하고있어?");
                 lineRenderer.SetPosition(0, ray.origin);
                 lineRenderer.SetPosition(1, hitInfo.point);
             }
             else
             {
                 lineRenderer.SetPosition(0, ray.origin);
-                lineRenderer.SetPosition(1, ray.origin + ARAVRInput.RHandDirection * 200);
+                lineRenderer.SetPosition(1, hitInfo.point);
             }
         }
         else
         {
             lineRenderer.SetPosition(0, ray.origin);
-            lineRenderer.SetPosition(1, ray.origin + ARAVRInput.RHandDirection * 200);
+            lineRenderer.SetPosition(1, hitInfo.point);
         }
         /*
         if (ARAVRInput.GetDown(ARAVRInput.Button.One, ARAVRInput.Controller.LTouch))
@@ -120,26 +126,28 @@ public class Player: MonoBehaviour
         {
             
             // TODO : 괴수의 피격당하는 함수실행시키기.
-            if (hitInfo.collider.gameObject.layer.Equals("Boss"))
+            if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Boss"))
             {
+                Debug.Log("boss는 인지했어");
                 // 이펙트를 만드는 코드
                 if (!isEffectSpawning)
                 {
+                    Debug.Log("이펙트는 인지했어");
                     // 코루틴이 실행 중이 아닌 경우에만 실행
                     effectCoroutine = StartCoroutine(SpawnEffectPeriodically(hitInfo, currentWeapon));
                     isEffectSpawning = true;
                 }
             }
-           /* else if (hitInfo.collider.gameObject.layer.Equals("Projectile"))
-            {
-                // 이펙트를 만드는 코드
-                if (!isEffectSpawning)
-                {
-                    // 코루틴이 실행 중이 아닌 경우에만 실행
-                    effectCoroutine = StartCoroutine(SpawnEffectPeriodically(hitInfo, currentWeapon));
-                    isEffectSpawning = true;
-                }
-            }*/
+            /* else if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Projectile"))
+             {
+                 // 이펙트를 만드는 코드
+                 if (!isEffectSpawning)
+                 {
+                     // 코루틴이 실행 중이 아닌 경우에만 실행
+                     effectCoroutine = StartCoroutine(SpawnEffectPeriodically(hitInfo, currentWeapon));
+                     isEffectSpawning = true;
+                 }
+             }*/
             else
             {
                 StopEffectCoroutine();
@@ -157,8 +165,9 @@ public class Player: MonoBehaviour
         {
             while (true)
             {
+                Debug.Log("웨폰넘버는 인지했어");
                 // effect를 생성하거나 위치를 업데이트하는 코드
-                GameObject effect = BulletPoolManager.instance.GetQueue(1);
+                GameObject effect = EffectPoolManager.instance.GetQueue(1);
                 effect.transform.position = hitInfo.point;
 
                 yield return new WaitForSeconds(0.5f); // 0.5초 동안 대기
@@ -169,7 +178,7 @@ public class Player: MonoBehaviour
             while (true)
             {
                 // effect를 생성하거나 위치를 업데이트하는 코드
-                GameObject effect = BulletPoolManager.instance.GetQueue(2);
+                GameObject effect = EffectPoolManager.instance.GetQueue(2);
                 effect.transform.position = hitInfo.point;
 
                 yield return new WaitForSeconds(0.5f); // 0.5초 동안 대기

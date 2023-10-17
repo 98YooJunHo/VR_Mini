@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Missile_Kim : MonoBehaviour
 {
-    private float speed = 0.3f; // ÀÌµ¿ ¼Óµµ
-    private float arcHeight = 20f; // ¾ÆÄ¡ÀÇ ³ôÀÌ Á¶Àı
-    public GameObject target; // ¸ñÇ¥ À§Ä¡
+    private float speed = 0.3f; // ì´ë™ ì†ë„
+    private float arcHeight = 20f; // ì•„ì¹˜ì˜ ë†’ì´ ì¡°ì ˆ
+    public GameObject target; // ëª©í‘œ ìœ„ì¹˜
 
     private Vector3 initialPosition;
     private Vector3 targetPosition;
