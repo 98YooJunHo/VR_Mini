@@ -6,17 +6,19 @@ using UnityEngine.UI;
 
 public class HUD_Canvas_Yoo : MonoBehaviour
 {
+    private enum Target
+    {
+        time, gold, playerHp, bossHp
+    }
+
+    #region Variable
     private TMP_Text timeTMP;
     private TMP_Text goldTMP;
     private TMP_Text playerHpTMP;
     private TMP_Text bossHpTMP;
     private Image playerHpImg;
     private Image bossHpImg;
-
-    private enum Target
-    {
-        time, gold, playerHp, bossHp
-    }
+    #endregion
 
     private void Awake()
     {
@@ -50,6 +52,7 @@ public class HUD_Canvas_Yoo : MonoBehaviour
         Set_BossHpGauge();
     }
 
+    #region Function
     public void Set_PlayerHpGauge()
     {
         playerHpImg.fillAmount = (float)GameManager.Instance.playerHp / (float)GameManager.Instance.playerMaxHp * 0.5f;
@@ -61,4 +64,5 @@ public class HUD_Canvas_Yoo : MonoBehaviour
         bossHpImg.fillAmount = (float)GameManager.Instance.bossHp / (float)GameManager.Instance.bossMaxHp * 0.5f;
         bossHpTMP.text = GameManager.Instance.bossHp + "/" + GameManager.Instance.bossMaxHp;
     }
+    #endregion
 }

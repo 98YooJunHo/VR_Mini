@@ -13,19 +13,45 @@ public class UIManager : MonoBehaviour
             if (m_instance == null)
             {
                 m_instance = FindObjectOfType<UIManager>();
+                if(m_instance == null)
+                {
+                    GameObject uiManager = new GameObject("UIManager");
+                    uiManager.AddComponent<UIManager>();
+                }
             }
             return m_instance;
         }
     }
 
     public static UIManager m_instance;
+
+    #region !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse
+    /* !게임의 HUD, ShopUI, GameStartUI, GameOverUI를 열고 닫는 것을 관리하는 UIManager입니다.
+     * 각 UI들은 Open_xxxUI, Close_xxxUI 함수를 이용해 열고 닫을 수 있습니다. (HUD의 경우 Open_HUD, Close_HUD)
+     */
+    #endregion
+
+    #region Variable
     private GameObject gameStartUI;
     private GameObject gameOverUI;
     private GameObject hudObj;
     private GameObject shopUIObj;
+    #endregion
 
     private void Awake()
     {
+        if(m_instance == null)
+        {
+            m_instance = this;
+        }
+        else
+        {
+            if(m_instance != this)
+            {
+                Destroy(this);
+            }
+        }
+
         gameStartUI = GameObject.Find("GameStartUI");
         gameOverUI = GameObject.Find("GameOverUI");
         hudObj = GameObject.Find("HUD");
@@ -38,9 +64,6 @@ public class UIManager : MonoBehaviour
         hudObj.transform.localScale = Vector3.zero;
         shopUIObj.transform.localScale = Vector3.zero;
         gameOverUI.transform.localScale = Vector3.zero;
-
-        //Invoke("Open_Shop", 3f);
-        //Invoke("Close_Shop", 5f);
     }
 
     // Update is called once per frame
@@ -49,6 +72,7 @@ public class UIManager : MonoBehaviour
         
     }
 
+    #region Function
     public void Open_GameStartUI()
     {
         gameStartUI.transform.localScale = Vector3.one;
@@ -71,12 +95,12 @@ public class UIManager : MonoBehaviour
         gameOverUI.transform.localScale = Vector3.zero;
     }
 
-    public void Open_Shop()
+    public void Open_ShopUI()
     {
         shopUIObj.transform.localScale = Vector3.one;
     }
 
-    public void Close_Shop()
+    public void Close_ShopUI()
     {
         shopUIObj.transform.localScale = Vector3.zero;
     }
@@ -90,4 +114,5 @@ public class UIManager : MonoBehaviour
     {
         hudObj.transform.localScale = Vector3.zero;
     }
+    #endregion
 }

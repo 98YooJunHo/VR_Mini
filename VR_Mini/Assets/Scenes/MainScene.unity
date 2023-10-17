@@ -1770,6 +1770,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goldPerTimeDelay: 1
   goldPerTime: 5
+  scorePerTimeDelay: 1
+  scorePerTime: 5
+  goldToScorePer: 0.4
 --- !u!114 &1811069396
 MonoBehaviour:
   m_ObjectHideFlags: 0
