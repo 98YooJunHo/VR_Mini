@@ -92,6 +92,8 @@ public class UIManager : MonoBehaviour
     public void Close_GameOverUI()
     {
         gameOverUI.transform.parent = GameObject.Find("CenterEyeAnchor").transform;
+        gameOverUI.transform.localPosition = Vector3.zero;
+        gameOverUI.transform.localRotation = Quaternion.Euler(Vector3.zero);
         gameOverUI.transform.localScale = Vector3.zero;
     }
 
