@@ -6,19 +6,32 @@ public class BulletPoolManager : MonoBehaviour
 {
     public static BulletPoolManager instance;
 
-    public GameObject bulletPrefab;
+    public GameObject normalEffectPrefab;
 
-    public Queue<GameObject> bulletQueue = new Queue<GameObject>();
+    public GameObject inforceEffectPrefab;
+
+    public Queue<GameObject> normalQueue = new Queue<GameObject>();
+
+    public Queue<GameObject> inforceQueue = new Queue<GameObject>();
+
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
 
-        for (int i=0; i< 100; i++)
+        for (int i=0; i< 50; i++)
         {
-            GameObject bullet = Instantiate(bulletPrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
-            bulletQueue.Enqueue(bullet);
-            bullet.SetActive(false);
+            GameObject normalEffect = Instantiate(normalEffectPrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
+            normalEffect.transform.SetParent(gameObject.transform);
+            normalQueue.Enqueue(normalEffect);
+            normalEffect.SetActive(false);
+        }
+        for (int i = 0; i < 50; i++)
+        {
+            GameObject inforceEffect = Instantiate(inforceEffectPrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
+            inforceEffect.transform.SetParent(gameObject.transform);
+            inforceQueue.Enqueue(inforceEffect);
+            inforceEffect.SetActive(false);
         }
     }
 
@@ -28,18 +41,34 @@ public class BulletPoolManager : MonoBehaviour
         
     }
 
-    public void InsertQueue(GameObject gameobject)
+    public void InsertQueue(GameObject gameobject, int weaponNum)
     {
-        Rigidbody rb = gameobject.GetComponent<Rigidbody>();
-        rb.velocity = Vector3.zero;
-        bulletQueue.Enqueue (gameObject);
-        gameobject.SetActive(false);
+        if (weaponNum == 1)
+        {
+            normalQueue.Enqueue(gameObject);
+            gameobject.SetActive(false);
+        }
+        else if (weaponNum ==2)
+        {
+            inforceQueue.Enqueue(gameObject);
+            gameobject.SetActive(false);
+        }
     }
 
-    public GameObject GetQueue()
+    public GameObject GetQueue(int weaponNum)
     {
-        GameObject gameObject = bulletQueue.Dequeue();
-        gameObject.SetActive(true);
+        GameObject gameObject =default;
+        if (weaponNum == 1)
+        {
+            gameObject= normalQueue.Dequeue();
+            gameObject.SetActive(true);
+        }
+        else if (weaponNum ==2)
+        {
+            gameObject = inforceQueue.Dequeue();
+            gameObject.SetActive(true);
+        }
+        Debug.Log("겟큐는 잘작동하고있어");
         return gameObject;
     }
 }
