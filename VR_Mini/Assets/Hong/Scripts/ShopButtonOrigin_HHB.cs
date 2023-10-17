@@ -1,54 +1,42 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
-[RequireComponent(typeof(Button))]
 public class ShopButtonOrigin_HHB : MonoBehaviour
 {
-    protected Button button;
     protected Image iconImg;
     protected Image buttonImg;
     protected Color originalIconColor;
     protected Color originalButtonlColor;
     protected Color selectedColor;
     protected Color disabledColor;
-    protected int shopLayer;
     protected bool isClicked;
     protected float coolTime;
     protected int buyGold;
 
 
-    public void Start()
+    public virtual void Awake()
     {
-        shopLayer = 1 << LayerMask.NameToLayer("ShopLayer");
-        button = GetComponent<Button>();
+        isClicked = false;
         iconImg = GetComponentInChildren<Image>();
         buttonImg = GetComponent<Image>();
         originalIconColor = iconImg.color;
         originalButtonlColor = buttonImg.color;
-        selectedColor = Color.white;
-        disabledColor = new Color(55f, 47f, 47f);
+        selectedColor = new Color(122f / 255f, 255f / 255f, 122f / 255f);
+        disabledColor = new Color(255f / 255f, 0f / 255f, 25f / 255f);
         Init();
     }
 
     public virtual void Init() { }
 
-    public virtual void PackShopRay(RaycastHit hitInfo)
-    {
-        OnRayIn(hitInfo);
-        OnRayOut(hitInfo);
-    }
-
-
-
     public virtual bool CheckMoneyAndCoolTime()
     {
-        int userGold = (int)ResourceManager.Instance.GetSingleDataFromID(Order.PC, PC.INIT_GOLD);
+        int userGold = GameManager.Instance.gold;
         if ((userGold - buyGold >= 0) && isClicked)
         {
-            userGold -= buyGold;
-            // µπ∑¡¡÷±‚ 
+            //
+
+            // TODO : ÎèåÎ†§Ï£ºÍ∏∞ 
 
             return true;
         }
@@ -62,56 +50,47 @@ public class ShopButtonOrigin_HHB : MonoBehaviour
 
     IEnumerator StartCoolTime()
     {
+        Effect();
         float startTime = 0f;
         while (startTime < coolTime)
         {
+            buttonImg.fillAmount = startTime / coolTime;
             startTime += Time.deltaTime;
             yield return null;
         }
-        button.enabled = true;
         isClicked = false;
         buttonImg.color = originalButtonlColor;
         iconImg.color = originalIconColor;
     }
 
-    // LTouch button ±∏∏≈
-    public virtual void OnRayClick(RaycastHit hitInfo)
+    public virtual void Effect() { }
+
+    // LTouch button Íµ¨Îß§
+    public virtual void OnRayClick()
     {
-        if (isClicked && CheckRayName(hitInfo) && CheckMoneyAndCoolTime())
+        if (!isClicked /*&& CheckMoneyAndCoolTime()*/)
         {
-            button.enabled = false;
+            Debug.Log("Îì§Ïñ¥Í∞ê");
             isClicked = true;
             buttonImg.color = disabledColor;
             iconImg.color = disabledColor;
             RunCoolTime();
         }
-        else { /*Do Nothing*/ }
     }
 
-    public virtual void OnRayIn(RaycastHit hitInfo)
+    public virtual void OnRayIn()
     {
-        if (isClicked && CheckRayName(hitInfo))
+        if (isClicked == false)
         {
-            iconImg.color = selectedColor;
+            buttonImg.color = selectedColor;
         }
-        else { /*Do Nothing*/ }
     }
 
-    public virtual void OnRayOut(RaycastHit hitInfo)
+    public virtual void OnRayOut()
     {
-        if (isClicked && !CheckRayName(hitInfo))
+        if (isClicked  == false)
         {
-            iconImg.color = originalIconColor;
+            buttonImg.color = originalButtonlColor;
         }
-        else { /*Do Nothing*/ }
-    }
-
-    public virtual bool CheckRayName(RaycastHit hitInfo)
-    {
-        if (hitInfo.transform.gameObject.layer == shopLayer)
-        {
-            return true;
-        }
-        else { return false; }
     }
 }
