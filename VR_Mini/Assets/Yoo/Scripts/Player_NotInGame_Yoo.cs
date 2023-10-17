@@ -16,7 +16,7 @@ public class Player_NotInGame_Yoo : MonoBehaviour
     {
         lineRenderer = GetComponent<LineRenderer>();
         targetLayer = LayerMask.NameToLayer("UIButtonLayer");
-        Debug.Log(targetLayer);
+        //Debug.Log(targetLayer);
     }
 
     // Update is called once per frame
@@ -24,10 +24,6 @@ public class Player_NotInGame_Yoo : MonoBehaviour
     {
         if (!GameManager.Instance.gameOver)
         {
-            if(lineRenderer.enabled)
-            {
-                lineRenderer.enabled = false;
-            }
             return;
         }
 
@@ -43,13 +39,13 @@ public class Player_NotInGame_Yoo : MonoBehaviour
 
         if (hitInfo.collider != null)
         {
-            Debug.Log(hitInfo.collider.gameObject.layer);
+            //Debug.Log(hitInfo.collider.gameObject.layer);
             if (hitInfo.collider.gameObject.layer == targetLayer)
             {
                 if (hitInfo.collider.gameObject.name == "GameExit" || hitInfo.collider.gameObject.name == "GameStart"
                     || hitInfo.collider.gameObject.name == "GameRestart")
                 {
-                    Debug.Log("버튼 찾음");
+                    //Debug.Log("버튼 찾음");
                     button = hitInfo.collider.transform.GetComponent<GameUIButton_Yoo>();
                     button.OnRayIn();
                 }

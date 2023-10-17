@@ -114,11 +114,13 @@ public class UIManager : MonoBehaviour
     public void Open_ShopUI()
     {
         shopUIObj.transform.localScale = Vector3.one * 0.8f;
+        GameManager.Instance.shopOpen = true;
     }
 
     public void Close_ShopUI()
     {
         shopUIObj.transform.localScale = Vector3.zero;
+        GameManager.Instance.shopOpen = false;
     }
 
     public void Open_Hud()

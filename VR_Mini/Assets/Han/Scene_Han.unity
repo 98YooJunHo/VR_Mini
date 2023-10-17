@@ -232,7 +232,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 89681c510a2d4144f82986df469f44a1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -258,13 +258,13 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 1
     widthCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.001
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -273,7 +273,7 @@ LineRenderer:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 1
+        value: 0.001
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -545,6 +545,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sphere_128_flip
       objectReference: {fileID: 0}
+    - target: {fileID: 807848469262294734, guid: 9e335ff42d6a1b74981af9408c23eef3, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 3732244609934136320, guid: 9e335ff42d6a1b74981af9408c23eef3, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -592,6 +596,14 @@ PrefabInstance:
     - target: {fileID: 4753856491969038718, guid: 9e335ff42d6a1b74981af9408c23eef3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4856287445163038225, guid: 9e335ff42d6a1b74981af9408c23eef3, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5267099453561466822, guid: 9e335ff42d6a1b74981af9408c23eef3, type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e335ff42d6a1b74981af9408c23eef3, type: 3}
@@ -775,11 +787,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6905028620023223418, guid: c098794b57c8222458a052b2ddac8e7c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 553.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6905028620023223418, guid: c098794b57c8222458a052b2ddac8e7c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 255
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6905028620023223418, guid: c098794b57c8222458a052b2ddac8e7c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -791,15 +803,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6905028620023223418, guid: c098794b57c8222458a052b2ddac8e7c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6905028620023223418, guid: c098794b57c8222458a052b2ddac8e7c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6905028620023223418, guid: c098794b57c8222458a052b2ddac8e7c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6905028620023223418, guid: c098794b57c8222458a052b2ddac8e7c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -811,6 +823,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6905028620023223418, guid: c098794b57c8222458a052b2ddac8e7c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6905028620023223418, guid: c098794b57c8222458a052b2ddac8e7c, type: 3}
+      propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6905028620023223419, guid: c098794b57c8222458a052b2ddac8e7c, type: 3}
@@ -990,7 +1006,7 @@ GameObject:
   - component: {fileID: 921856455}
   - component: {fileID: 921856454}
   - component: {fileID: 921856453}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1536,6 +1552,7 @@ MonoBehaviour:
   scorePerTimeDelay: 1
   scorePerTime: 5
   goldToScorePer: 0.4
+  shopOpen: 0
 --- !u!4 &1203275305
 Transform:
   m_ObjectHideFlags: 0

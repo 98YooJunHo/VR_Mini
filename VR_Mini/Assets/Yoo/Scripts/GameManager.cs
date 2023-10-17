@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public float scorePerTimeDelay = 1f;
     public int scorePerTime = 5;
     public float goldToScorePer = 0.4f;
+    public bool shopOpen = false;
 
     private WaitForSeconds goldDelay = default;
     private WaitForSeconds scoreDelay = default;
@@ -126,6 +127,7 @@ public class GameManager : MonoBehaviour
         time = 0;
         score = 0;
         gameOver = true;
+        shopOpen = false;
         playerMaxHp = (int)ResourceManager.Instance.GetSingleDataFromID(Order.PC, PC.HP);
         bossMaxHp = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, Monster.HP);
         gold = (int)ResourceManager.Instance.GetSingleDataFromID(Order.PC, PC.INIT_GOLD);
@@ -167,10 +169,12 @@ public class GameManager : MonoBehaviour
     public void End_Game()
     {
         gameOver = true;
+        shopOpen = false;
         score += (int)((float)gold * goldToScorePer);
         // ToDo: 몬스터 페이즈에 따른 점수 추가 필요
         UIManager.Instance.Close_Hud();
         UIManager.Instance.Open_GameOverUI();
+        UIManager.Instance.Close_ShopUI();
     }
 
     public void Exit_Game()

@@ -65,15 +65,25 @@ public class Player: MonoBehaviour
         {
             return;
         }
+
+        if(GameManager.Instance.shopOpen == true)
+        {
+            return;
+        }
         Ray ray = new Ray(ARAVRInput.RHandPosition, ARAVRInput.RHandDirection);
         RaycastHit hitInfo = default;
-        lineRenderer.enabled = true;
+        
+        if(!lineRenderer.enabled)
+        {
+            lineRenderer.enabled = true;
+        }
+
         if (Physics.Raycast(ray, out hitInfo, 600f))
         {
-            Debug.Log("레이가 맞기는해?");
+            //Debug.Log("레이가 맞기는해?");
             if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Boss")) //|| hitInfo.collider.gameObject.layer.Equals("Projectile"))
             {
-                Debug.Log("보스레이로 인식하고있어?");
+                //Debug.Log("보스레이로 인식하고있어?");
                 lineRenderer.SetPosition(0, ray.origin);
                 lineRenderer.SetPosition(1, hitInfo.point);
             }

@@ -64,7 +64,7 @@ public class ShopButtonOrigin_HHB : MonoBehaviour
     // LTouch button 구매
     public virtual void OnRayClick()
     {
-        if (!isClicked && CheckMoneyAndCoolTime())
+        if (!isClicked/* && CheckMoneyAndCoolTime()*/)
         {
             GameManager.Instance.Use_Gold(buyGold);
             isClicked = true;
