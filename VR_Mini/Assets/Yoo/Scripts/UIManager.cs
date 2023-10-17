@@ -36,6 +36,14 @@ public class UIManager : MonoBehaviour
     private GameObject gameOverUI;
     private GameObject hudObj;
     private GameObject shopUIObj;
+
+    //{ 10/17 홍한범
+    public TextMeshProUGUI weakGoldTxt;
+    public TextMeshProUGUI weakTimeTxt;
+    public TextMeshProUGUI attGoldTxt;
+    public TextMeshProUGUI attTimeTxt;
+    //} 10/17 홍한범
+    
     #endregion
 
     private void Awake()
@@ -56,6 +64,8 @@ public class UIManager : MonoBehaviour
         gameOverUI = GameObject.Find("GameOverUI");
         hudObj = GameObject.Find("HUD");
         shopUIObj = GameObject.Find("ShopUI");
+
+
     }
 
     // Start is called before the first frame update
@@ -64,6 +74,10 @@ public class UIManager : MonoBehaviour
         hudObj.transform.localScale = Vector3.zero;
         shopUIObj.transform.localScale = Vector3.zero;
         gameOverUI.transform.localScale = Vector3.zero;
+
+        //{ 10/17 홍한범
+        PrintItemText();
+        //} 10/17 홍한범
     }
 
     // Update is called once per frame
@@ -97,7 +111,7 @@ public class UIManager : MonoBehaviour
 
     public void Open_ShopUI()
     {
-        shopUIObj.transform.localScale = Vector3.one;
+        shopUIObj.transform.localScale = Vector3.one * 0.8f;
     }
 
     public void Close_ShopUI()
@@ -114,5 +128,16 @@ public class UIManager : MonoBehaviour
     {
         hudObj.transform.localScale = Vector3.zero;
     }
+
+    //{ 10/17 홍한범
+    public void PrintItemText()
+    {
+         weakGoldTxt.text = ResourceManager.Instance.GetSingleDataFromID(Order.ITEM1, Item.GOLD).ToString();
+         weakTimeTxt.text = ResourceManager.Instance.GetSingleDataFromID(Order.ITEM1, Item.DURATION).ToString();
+         attGoldTxt.text = ResourceManager.Instance.GetSingleDataFromID(Order.ITEM2, Item.GOLD).ToString();
+         attTimeTxt.text = ResourceManager.Instance.GetSingleDataFromID(Order.ITEM2, Item.DURATION).ToString();
+    }
+
+
     #endregion
 }
