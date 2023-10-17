@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerRightHand : MonoBehaviour
 {
-    //¼±À» ±×¸± ¶óÀÎ ·»´õ·¯
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private LineRenderer lineRenderer = default;
     
     private int currentHp = default;
@@ -25,7 +25,7 @@ public class PlayerRightHand : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Todo : °ÔÀÓ¿À¹ö »óÅÂÀÏ¶§´Â Return ÇØ¹ö·Á¼­ ¸øÇÏ°ÔÇØ¾ßÇÑ´Ù.
+        // Todo : ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ Return ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ï¿½Ø¾ï¿½ï¿½Ñ´ï¿½.
         
         if (ARAVRInput.GetDown(ARAVRInput.Button.One, ARAVRInput.Controller.LTouch))
         {
@@ -38,7 +38,7 @@ public class PlayerRightHand : MonoBehaviour
                 shopCanvas.SetActive(true);
             }
         }
-        // °ÔÀÓ »óÁ¡ÀÌ ¿­·ÈÀ»¶§
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (shopCanvas.activeSelf == true)
         {
             Ray ray = new Ray(ARAVRInput.RHandPosition, ARAVRInput.RHandDirection);
@@ -47,18 +47,18 @@ public class PlayerRightHand : MonoBehaviour
 
             if (ARAVRInput.GetDown(ARAVRInput.Button.One, ARAVRInput.Controller.RTouch) && (Physics.Raycast(ray, out hitInfo, 200f, layer)))
             {
-                // ¹öÆ° ½ÇÇà.
+                // ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½.
             }    
         }
 
 
-        // °ÔÀÓ »óÁ¡ÀÌ ¿­¸°»óÅÂÀÏ‹š´Â °ø°ÝÀÔ·ÂÀ» ¹ÞÁö ¸øÇÏ°ÔÇÏ´Â ÄÚµå
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï‹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ï¿½Ï´ï¿½ ï¿½Úµï¿½
         if ( shopCanvas.activeSelf == true)
         {
             return;
         }
 
-        // °ø°ÝÄÚµå
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½
         if (ARAVRInput.GetDown(ARAVRInput.Button.IndexTrigger,ARAVRInput.Controller.RTouch))
         {
             lineRenderer.enabled = true;
@@ -69,20 +69,20 @@ public class PlayerRightHand : MonoBehaviour
         }
         if (ARAVRInput.Get(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
         {
-            // 1. ¿ÞÂÊ ÄÁÆ®·Î·¯¸¦ ±âÁØÀ¸·Î Ray¸¦ ¸¸µç´Ù.
+            // 1. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Î·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Rayï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.
             Ray ray = new Ray(ARAVRInput.RHandPosition, ARAVRInput.RHandDirection);
             RaycastHit hitInfo = default;
             int layer = 1 << LayerMask.NameToLayer("Boss");
 
-            // 2. Boss¸¸ Ray Ãæµ¹ °ËÃâÇÑ´Ù.
+            // 2. Bossï¿½ï¿½ Ray ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
             if (Physics.Raycast(ray, out hitInfo, 200f, layer))
             {
-                // 3. Ray°¡ ºÎ‹HÈù ÁöÁ¡¿¡ ¶óÀÎ±×¸®±â
+                // 3. Rayï¿½ï¿½ ï¿½Î‹Hï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î±×¸ï¿½ï¿½ï¿½
                 lineRenderer.SetPosition(0, ray.origin);
                 lineRenderer.SetPosition(1, hitInfo.point);
-                // TODO : ±«¼öÀÇ ÇÇ°Ý´çÇÏ´Â ÇÔ¼ö½ÇÇà½ÃÅ°±â.
-                GameObject effect = BulletPoolManager.instance.GetQueue();
-                effect.transform.position = hitInfo.normal;
+                // TODO : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç°Ý´ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å°ï¿½ï¿½.
+                //GameObject effect = BulletPoolManager.instance.GetQueue();
+                //effect.transform.position = hitInfo.normal;
                 Invoke("Makefalse",5f);
             }
             else
