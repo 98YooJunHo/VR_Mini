@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Ultimate_Kim : MonoBehaviour
 {
+    public GameObject breath;
+
     private Animator animator;
     private MonsterWeakPoint monsterWeakPoint;
     public bool isBreak;
@@ -17,24 +19,25 @@ public class Ultimate_Kim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //isBreak = monsterWeakPoint.BreakUp();
+        isBreak = monsterWeakPoint.BreakUp();
     }
     public IEnumerator Ultimate_()
     {
         animator.Play("Fly Up");
         yield return new WaitForSeconds(4.0f);
-        //monsterWeakPoint.MakeWeakPoint();
-        animator.Play("DoFlying");
-            yield return new WaitForSeconds(6.0f);
+        monsterWeakPoint.MakeWeakPoint();
+        animator.Play("Fly Idle");
+        yield return new WaitForSeconds(6.0f);
 
-        // ¾àÁ¡ °ø°İÇÏ¸é ²÷±â´Â ÄÚµå
+        // ì•½ì  ê³µê²©í•˜ë©´ ëŠê¸°ëŠ” ì½”ë“œ
         if (!isBreak)
         {
-            Debug.Log("1");
             animator.Play("Ultimate");
             yield return new WaitForSeconds(3.0f);
-            Debug.Log("2");
-
+            breath.SetActive(true);
+            yield return new WaitForSeconds(1);
+            breath.SetActive(false);
+            monsterWeakPoint.isWork = false;
         }
         else
         {

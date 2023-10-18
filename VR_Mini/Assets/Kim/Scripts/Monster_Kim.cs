@@ -8,6 +8,7 @@ public class Monster_Kim : MonoBehaviour
 {
     private MonsterAttack monsterAttack;
     private Ultimate_Kim ult;
+    private MonsterSkill_1 skill_1;
 
     private int paseTrigger = 30;
     private float attackTrigger = 5;
@@ -36,6 +37,7 @@ public class Monster_Kim : MonoBehaviour
     {
         monsterAttack = GetComponent<MonsterAttack>();
         ult = GetComponent<Ultimate_Kim>();
+        skill_1 = GetComponent<MonsterSkill_1>();
 
         monsterHP = transform.GetComponent<MonsterHP>();
         maxHP = monsterHP.hp;
@@ -91,7 +93,6 @@ public class Monster_Kim : MonoBehaviour
         else if (type == MonsterDoingType.skill_1)
         {
             pattern = true;
-            animator.Play("Idle");
             StartCoroutine(Skill_1());
 
         }
@@ -110,8 +111,6 @@ public class Monster_Kim : MonoBehaviour
             {
                 StartCoroutine(Ultimate());
             }
-            Debug.Log("111");
-
         }
         else if (type == MonsterDoingType.die)
         {
@@ -125,7 +124,7 @@ public class Monster_Kim : MonoBehaviour
     {
         if (checkTime > attackTrigger)
         {
-            type = MonsterDoingType.attack;
+            type = MonsterDoingType.skill_1;
         }
     }
     private void Pase2()
@@ -167,13 +166,13 @@ public class Monster_Kim : MonoBehaviour
 
     private IEnumerator Attack()
     {
-        // ¹Ì»çÀÏ ³¯¶ó°¨
+        // ë¯¸ì‚¬ì¼ ë‚ ë¼ê°
         if(!doOnce)
         {
             StartCoroutine(monsterAttack.Missile());
             doOnce = true;
         }
-        yield return new WaitForSeconds(8f);      // ¸ğ¼Ç ½Ã°£ º¸¸é¼­ ½Ã°£ Á¶Á¤ÇØ¾ßµÊ
+        yield return new WaitForSeconds(8f);      // ëª¨ì…˜ ì‹œê°„ ë³´ë©´ì„œ ì‹œê°„ ì¡°ì •í•´ì•¼ë¨
 
         checkTime = 0;
         type = MonsterDoingType.idle;
@@ -183,29 +182,43 @@ public class Monster_Kim : MonoBehaviour
 
     private IEnumerator Skill_1()
     {
-        // ¸ŞÅ×¿À
-        yield return new WaitForSeconds(1.1f);      // ¸ğ¼Ç ½Ã°£ º¸¸é¼­ ½Ã°£ Á¶Á¤ÇØ¾ßµÊ
+        // ë©”í…Œì˜¤
+        if (!doOnce)
+        {
+            animator.Play("Idle");
+
+            StartCoroutine(skill_1.Skill_1());
+            doOnce = true;
+        }
+        yield return new WaitForSeconds(6.667f);      // ëª¨ì…˜ ì‹œê°„ ë³´ë©´ì„œ ì‹œê°„ ì¡°ì •í•´ì•¼ë¨
         checkTime = 0;
+        type = MonsterDoingType.idle;
+        doOnce = false;
         pattern = false;
     }
 
     private IEnumerator Skill_2()
     {
-        yield return new WaitForSeconds(1.1f);      // ¸ğ¼Ç ½Ã°£ º¸¸é¼­ ½Ã°£ Á¶Á¤ÇØ¾ßµÊ
+        if (!doOnce)
+        {
+
+            doOnce = true;
+        }
+        yield return new WaitForSeconds(1.1f);      // ëª¨ì…˜ ì‹œê°„ ë³´ë©´ì„œ ì‹œê°„ ì¡°ì •í•´ì•¼ë¨
         checkTime = 0;
+        doOnce = false;
         pattern = false;
     }
     private IEnumerator Ultimate()
     {
-        // È­¿°¹æ»ç
-        
-            doOnce = true;
-            StartCoroutine(ult.Ultimate_());
-        
-        yield return new WaitForSeconds(13f);      // ¸ğ¼Ç ½Ã°£ º¸¸é¼­ ½Ã°£ Á¶Á¤ÇØ¾ßµÊ
-        animator.Play("Land");  
+        // í™”ì—¼ë°©ì‚¬
+
+        doOnce = true;
+        StartCoroutine(ult.Ultimate_());
+
+        yield return new WaitForSeconds(13f);      // ëª¨ì…˜ ì‹œê°„ ë³´ë©´ì„œ ì‹œê°„ ì¡°ì •í•´ì•¼ë¨
+        animator.Play("Land");
         yield return new WaitForSeconds(4f);
-        Debug.Log(type);
         checkTime = 0;
         type = MonsterDoingType.idle;
         doOnce = false;

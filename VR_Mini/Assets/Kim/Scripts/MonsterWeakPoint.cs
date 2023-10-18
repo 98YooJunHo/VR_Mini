@@ -5,16 +5,21 @@ using UnityEngine;
 
 public class MonsterWeakPoint : MonsterHP
 {
-    public List<GameObject> ultWeakPoint; 
-    public List<GameObject> skill_1WeakPoint;
-    public List<GameObject> skill_2WeakPoint;
+    public List<GameObject> landWeakPoint; 
+    public List<GameObject> flyWeakPoint;
 
-    private List<GameObject> activateWeakPoint;
+    private List<GameObject> weakPoints;
+
+    private DamagedPoint point;
+    private DamagedPoint point_;
+    private Monster_Kim monster;
+
+    public bool isWork = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        monster = GetComponent<Monster_Kim>();
     }
 
     // Update is called once per frame
@@ -25,22 +30,46 @@ public class MonsterWeakPoint : MonsterHP
 
     public void MakeWeakPoint()
     {
-        for (int i = 0; i < 3; i++)
+        if(!isWork)
         {
-            int a = Random.Range(1, 8);
-            ultWeakPoint[a].SetActive(true);
+            weakPoints = null;
+            isWork = true;
+        }
+        if (monster.type == Monster_Kim.MonsterDoingType.ultimate)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                int a = Random.Range(1, 8);
+                point = landWeakPoint[i].GetComponent<DamagedPoint>();
+                point.isWeakPoint = true;
+                weakPoints.Add(landWeakPoint[i]);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                int a = Random.Range(1, 8);
+                point = landWeakPoint[i].GetComponent<DamagedPoint>();
+                point.isWeakPoint = true;
+                weakPoints.Add(landWeakPoint[i]);
+            }
         }
     }
 
     public bool BreakUp()
     {
-        bool anyActive = activateWeakPoint.Any(obj => obj.activeSelf);
-        if(!anyActive)
+        for (int i = 0; i < weakPoints.Count; i++)
         {
-            return true;
-        }
-        
-        return false;
+            point_ = weakPoints[i].GetComponent<DamagedPoint>();
 
+            if (point_.weakPoint > 0)
+            {
+                return false;
+            }
+        }
+        weakPoints = null;
+        return true;
     }
+
 }
