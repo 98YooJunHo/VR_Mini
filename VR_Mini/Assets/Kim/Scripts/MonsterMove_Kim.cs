@@ -17,9 +17,14 @@ public class MonsterMove_Kim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(monster.type == Monster_Kim.MonsterDoingType.idle)
+        if (GameManager.Instance.gameOver)
         {
-            // ∏ÛΩ∫≈Õ ¿Ãµø
+            return;
+        }
+
+        if (monster.type == Monster_Kim.MonsterDoingType.idle)
+        {
+            // Î™¨Ïä§ÌÑ∞ Ïù¥Îèô
             float move = speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, targetLocation.position, move);
 

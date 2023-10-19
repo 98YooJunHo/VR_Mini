@@ -19,7 +19,7 @@ public class Ultimate_Kim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isBreak = monsterWeakPoint.BreakUp();
+        //isBreak = monsterWeakPoint.BreakUp();
     }
     public IEnumerator Ultimate_()
     {

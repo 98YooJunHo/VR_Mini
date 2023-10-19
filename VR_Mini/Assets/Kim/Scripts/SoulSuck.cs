@@ -15,7 +15,7 @@ public class SoulSuck : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        isBreak = monsterWeakPoint.BreakUp();
+        //isBreak = monsterWeakPoint.BreakUp();
 
         animator = GetComponent<Animator>();
         monsterWeakPoint = GetComponent<MonsterWeakPoint>();

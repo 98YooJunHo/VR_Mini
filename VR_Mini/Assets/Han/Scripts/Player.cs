@@ -22,6 +22,7 @@ public class Player: MonoBehaviour
     private bool isHited = false;                // 피격코루틴 실행여부
     //=================== 보스 피격 이펙트를 위한 변수 ============================================
     private int projectileDamage = default;      // 몬스터 데미지
+    private MonsterHP boss = default;            // 보스 체력 스크립트
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +36,7 @@ public class Player: MonoBehaviour
         currentWeapon = 1;                                            // 무기 번호 초기화
         gun1 = GameObject.Find("Gun1");                               // 일반무기 오브젝트 가져오기
         gun2 = GameObject.Find("Gun2");                               // 강화무기 오브젝트 가져오기
+        boss = FindFirstObjectByType<MonsterHP>();                    // 보스 체력 스크립트 가져오기
         // 괴수 투사체 데미지가져오기
         // projectileDamage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_PROJECTILE, Projectile.DMG);
 
@@ -91,6 +93,11 @@ public class Player: MonoBehaviour
             // TODO : 괴수의 피격당하는 함수실행시키기.
             if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Boss"))
             {
+                // 보스 체력 깎기
+                if (boss != null)
+                {
+                    boss.OnHit((int)ResourceManager.Instance.GetSingleDataFromID(Order.WEAPON1, Weapon.DMG));
+                }
                 // 이펙트를 만드는 코드
                 if (!isEffectSpawning)
                 {
@@ -163,9 +170,10 @@ public class Player: MonoBehaviour
 
 
     //======================================= 피격 계산 함수 ===============================================
-    private void DamageTake()
+    public void DamageTake(int value)
     {
         //HP 계산하기
+        GameManager.Instance.playerHp -= value;
         //GameManager.playerHP -= projectileDamage;   // 추후 주석 해제하기
         if (isHited == false)
         {
@@ -211,13 +219,13 @@ public class Player: MonoBehaviour
     }
 
     //======================================= 피격 계산 함수 ===============================================
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.layer.Equals("Boss"))
-        {
-            DamageTake();
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if(other.gameObject.layer.Equals("Boss"))
+    //    {
+    //        DamageTake();
+    //    }
+    //}
 
     public void InforceWeapon()
     {

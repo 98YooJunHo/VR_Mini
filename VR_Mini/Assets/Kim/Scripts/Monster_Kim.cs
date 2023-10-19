@@ -50,6 +50,11 @@ public class Monster_Kim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.gameOver)
+        {
+            return;
+        }
+
         if (!pattern)
         {
             checkTime += Time.deltaTime;
