@@ -37,7 +37,7 @@ public class Ultimate_Kim : MonoBehaviour
             breath.SetActive(true);
             yield return new WaitForSeconds(1);
             breath.SetActive(false);
-            monsterWeakPoint.isWork = false;
+           // monsterWeakPoint.isWork = false;
         }
         else
         {

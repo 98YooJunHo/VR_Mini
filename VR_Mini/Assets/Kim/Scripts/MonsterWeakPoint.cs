@@ -8,13 +8,14 @@ public class MonsterWeakPoint : MonsterHP
     public List<GameObject> landWeakPoint; 
     public List<GameObject> flyWeakPoint;
 
-    private List<GameObject> weakPoints;
+    public List<GameObject> weakPoints;
 
+    public GameObject weakpoint;
     private DamagedPoint point;
-    private DamagedPoint point_;
+    //private DamagedPoint point_;
     private Monster_Kim monster;
 
-    public bool isWork = false;
+    //public bool isWork = false;
 
     // Start is called before the first frame update
     void Start()
@@ -22,54 +23,51 @@ public class MonsterWeakPoint : MonsterHP
         monster = GetComponent<Monster_Kim>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //// Update is called once per frame
+    //void Update()
+    //{
+
+    //}
 
     public void MakeWeakPoint()
     {
-        if(!isWork)
-        {
-            weakPoints = null;
-            isWork = true;
-        }
         if (monster.type == Monster_Kim.MonsterDoingType.ultimate)
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 5; i++)
             {
-                int a = Random.Range(1, 8);
-                point = landWeakPoint[i].GetComponent<DamagedPoint>();
-                point.isWeakPoint = true;
-                weakPoints.Add(landWeakPoint[i]);
+                int rnd = Random.Range(0, flyWeakPoint.Count);
+                weakPoints.Add(flyWeakPoint[rnd]);
+                weakPoints[i].SetActive(true);
+                flyWeakPoint.RemoveAt(rnd);
             }
         }
         else
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 5; i++)
             {
-                int a = Random.Range(1, 8);
-                point = landWeakPoint[i].GetComponent<DamagedPoint>();
-                point.isWeakPoint = true;
-                weakPoints.Add(landWeakPoint[i]);
+                int rnd = Random.Range(0, landWeakPoint.Count);
+                weakPoints.Add(landWeakPoint[rnd]);
+                weakPoints[i].SetActive(true);
+
+                landWeakPoint.RemoveAt(rnd);
             }
         }
     }
-
+    
     public bool BreakUp()
-    {
-        for (int i = 0; i < weakPoints.Count; i++)
+    {      
+        if(weakpoint != null)
         {
-            point_ = weakPoints[i].GetComponent<DamagedPoint>();
-
-            if (point_.weakPoint > 0)
-            {
-                return false;
-            }
+            weakPoints.Remove(weakpoint);
         }
-        weakPoints = null;
+        if(weakPoints.Count == 0)
+        {
+            return false;
+        }
+
+
         return true;
+
     }
 
 }

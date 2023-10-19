@@ -9,6 +9,7 @@ public class Monster_Kim : MonoBehaviour
     private MonsterAttack monsterAttack;
     private Ultimate_Kim ult;
     private MonsterSkill_1 skill_1;
+    private SoulSuck soulSuck;
 
     private int paseTrigger = 30;
     private float attackTrigger = 5;
@@ -38,6 +39,7 @@ public class Monster_Kim : MonoBehaviour
         monsterAttack = GetComponent<MonsterAttack>();
         ult = GetComponent<Ultimate_Kim>();
         skill_1 = GetComponent<MonsterSkill_1>();
+        soulSuck = transform.GetComponent<SoulSuck>();
 
         monsterHP = transform.GetComponent<MonsterHP>();
         maxHP = monsterHP.hp;
@@ -99,7 +101,7 @@ public class Monster_Kim : MonoBehaviour
         else if (type == MonsterDoingType.skill_2)
         {
             pattern = true;
-            animator.Play("");
+            //animator.Play("");
             StartCoroutine(Skill_2());
 
 
@@ -124,7 +126,7 @@ public class Monster_Kim : MonoBehaviour
     {
         if (checkTime > attackTrigger)
         {
-            type = MonsterDoingType.skill_1;
+            type = MonsterDoingType.skill_2;
         }
     }
     private void Pase2()
@@ -201,11 +203,17 @@ public class Monster_Kim : MonoBehaviour
     {
         if (!doOnce)
         {
+            animator.Play("Idle");
+            StartCoroutine(soulSuck.Skill_2());
 
             doOnce = true;
         }
-        yield return new WaitForSeconds(1.1f);      // 모션 시간 보면서 시간 조정해야됨
+        yield return null; yield return null; yield return null;
+        yield return new WaitForSeconds(soulSuck.wayTime + 4.668f);      // 모션 시간 보면서 시간 조정해야됨
+
         checkTime = 0;
+        type = MonsterDoingType.idle;
+
         doOnce = false;
         pattern = false;
     }

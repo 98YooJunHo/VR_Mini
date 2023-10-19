@@ -14,6 +14,7 @@ public class MonsterSkill_1 : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         monsterWeakPoint = GetComponent<MonsterWeakPoint>();
+        isBreak = monsterWeakPoint.BreakUp();
     }
     public IEnumerator Skill_1()
     {
