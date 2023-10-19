@@ -5,42 +5,69 @@ using UnityEngine;
 
 public class MonsterWeakPoint : MonsterHP
 {
-    public List<GameObject> ultWeakPoint; 
-    public List<GameObject> skill_1WeakPoint;
-    public List<GameObject> skill_2WeakPoint;
+    public List<GameObject> landWeakPoint; 
+    public List<GameObject> flyWeakPoint;
 
-    private List<GameObject> activateWeakPoint;
+    public List<GameObject> weakPoints;
+
+    public GameObject weakpoint;
+    private DamagedPoint point;
+    //private DamagedPoint point_;
+    private Monster_Kim monster;
+
+    //public bool isWork = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        monster = GetComponent<Monster_Kim>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //// Update is called once per frame
+    //void Update()
+    //{
+
+    //}
 
     public void MakeWeakPoint()
     {
-        for (int i = 0; i < 3; i++)
+        if (monster.type == Monster_Kim.MonsterDoingType.ultimate)
         {
-            int a = Random.Range(1, 8);
-            ultWeakPoint[a].SetActive(true);
+            for (int i = 0; i < 5; i++)
+            {
+                int rnd = Random.Range(0, flyWeakPoint.Count);
+                weakPoints.Add(flyWeakPoint[rnd]);
+                weakPoints[i].SetActive(true);
+                flyWeakPoint.RemoveAt(rnd);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                int rnd = Random.Range(0, landWeakPoint.Count);
+                weakPoints.Add(landWeakPoint[rnd]);
+                weakPoints[i].SetActive(true);
+
+                landWeakPoint.RemoveAt(rnd);
+            }
         }
     }
-
+    
     public bool BreakUp()
-    {
-        bool anyActive = activateWeakPoint.Any(obj => obj.activeSelf);
-        if(!anyActive)
+    {      
+        if(weakpoint != null)
         {
-            return true;
+            weakPoints.Remove(weakpoint);
         }
-        
-        return false;
+        if(weakPoints.Count == 0)
+        {
+            return false;
+        }
+
+
+        return true;
 
     }
+
 }

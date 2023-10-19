@@ -15,8 +15,7 @@ public class MonsterHP : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //hp = (int)rm.GetSingleDataFromID(Order.PC, PC.INIT_GOLD);
-        hp = 100;
+        hp = (int)rm.GetSingleDataFromID(Order.MONSTER, Monster.HP);
     }
 
     // Update is called once per frame
