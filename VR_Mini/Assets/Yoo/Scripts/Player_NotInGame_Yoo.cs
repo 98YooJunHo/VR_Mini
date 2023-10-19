@@ -49,7 +49,7 @@ public class Player_NotInGame_Yoo : MonoBehaviour
                     button = hitInfo.collider.transform.GetComponent<GameUIButton_Yoo>();
                     button.OnRayIn();
                 }
-                if (ARAVRInput.GetDown(ARAVRInput.Button.One, ARAVRInput.Controller.RTouch))
+                if (ARAVRInput.GetDown(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
                 {
                     if (hitInfo.collider.gameObject.name == "GameExit")
                     {
