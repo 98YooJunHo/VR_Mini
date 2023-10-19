@@ -4,55 +4,44 @@ using UnityEngine.UI;
 
 public class Player: MonoBehaviour
 {
-    public static Player instance;
-
-    //선을 그릴 라인 렌더러
-    private LineRenderer lineRenderer = default;
-    
-    private int currentWeapon = default;
-
-    GameObject shopCanvas;
-
-    private bool isEffectSpawning = false; // 효과를 생성 중인지 여부를 나타내는 플래그
-    private Coroutine effectCoroutine; // 코루틴 참조를 저장할 변수 
-
-    private Image hitImage;
-    private float fadeDuration = 1.5f; // 페이드 아웃에 걸리는 시간
-    private float currentAlpha;       // 현재 알파값
-    private float targetAlpha;        // 목표 알파값
-    private float timer;              // 타이머
-    private float originAlpha;        // 최조 알파값
-
-    private bool isHited = false;     // 피격코루틴 실행여부
-
-    private int projectileDamage = default; // 몬스터 데미지
+    public static Player instance;               // 스태틱 객체
+    private LineRenderer lineRenderer = default; // 선을 그릴 라인 렌더러
+    //=================== 무기 업그레이드를 위한 변수 ============================================
+    private int currentWeapon = default;         // 현재 무기번호
+    private GameObject gun1;                     // 일반무기 오브젝트
+    private GameObject gun2;                     // 강화무기 오브젝트
+    //=================== 보스 피격 이펙트를 위한 변수 ============================================
+    private bool isEffectSpawning = false;       // 보스피격이펙트를 생성 중인지 여부를 나타내는 플래그
+    private Coroutine effectCoroutine;           // 코루틴 참조를 저장할 변수 
+    private Image hitImage;                      // 플레이어피격이미지
+    private float fadeDuration = 1.5f;           // 페이드 아웃에 걸리는 시간
+    private float currentAlpha;                  // 현재 알파값
+    private float targetAlpha;                   // 목표 알파값
+    private float timer;                         // 타이머
+    private float originAlpha;                   // 최조 알파값
+    private bool isHited = false;                // 피격코루틴 실행여부
+    //=================== 보스 피격 이펙트를 위한 변수 ============================================
+    private int projectileDamage = default;      // 몬스터 데미지
     // Start is called before the first frame update
     void Start()
     {
-        // 인스턴스 생성
-        instance = this;
-        // 라인렌더러 
-        lineRenderer = GetComponent<LineRenderer>();
-        // 피격캔버스이미지 가져오기
-        hitImage = GameObject.Find("hitImage").GetComponent<Image>();
-        // 피격 캔버스이미지 끄기
-        hitImage.gameObject.SetActive(false);
-        // 페이드 아웃 목표 알파 값 설정
-        targetAlpha = 0.00000001f;
-        // 데미지 받을때부터 시간 측정 값
-        timer = 0f;
-        // 최초 알파값 저장
-        originAlpha = hitImage.color.a;
-        // 무기 번호 지정
-        currentWeapon = 1;
+        instance = this;                                              // 인스턴스 생성
+        lineRenderer = GetComponent<LineRenderer>();                  // 라인렌더러
+        hitImage = GameObject.Find("hitImage").GetComponent<Image>(); // 피격캔버스이미지 가져오기
+        hitImage.gameObject.SetActive(false);                         // 피격 캔버스이미지 끄기
+        targetAlpha = 0.00000001f;                                    // 페이드 아웃 목표 알파 값 설정
+        timer = 0f;                                                   // 데미지 받을때부터 시간 측정 값
+        originAlpha = hitImage.color.a;                               // 최초 알파값 저장   
+        currentWeapon = 1;                                            // 무기 번호 초기화
+        gun1 = GameObject.Find("Gun1");                               // 일반무기 오브젝트 가져오기
+        gun2 = GameObject.Find("Gun2");                               // 강화무기 오브젝트 가져오기
         // 괴수 투사체 데미지가져오기
-        //projectileDamage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_PROJECTILE, Projectile.DMG);
+        // projectileDamage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_PROJECTILE, Projectile.DMG);
 
-        /*
+        /* Resource 파일에서 불러오는 예시
         List<object> test = ResourceManager.Instance.GetDataFromID(Order.PC);
         int id = (int)test[(int)PC.ID];
         string dec = test[(int)PC.DESCRIPTION].ToString();
-
         int id2 = (int)ResourceManager.Instance.GetSingleDataFromID(Order.PC, PC.ID);
         */
     }
@@ -60,19 +49,20 @@ public class Player: MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Todo : 게임오버 상태일때는 Return 해버려서 못하게해야한다.
+        //=================== 각종 상태동안 작동안하도록하는 처리 ============================================
         if (GameManager.Instance.gameOver == true)
         {
             return;
         }
-
         if(GameManager.Instance.shopOpen == true)
         {
             return;
         }
+        //=================== 각종 상태동안 작동안하도록하는 처리 ============================================
+
+        //========================================= 레이 쏘기 =============================================
         Ray ray = new Ray(ARAVRInput.RHandPosition, ARAVRInput.RHandDirection);
         RaycastHit hitInfo = default;
-        
         if(!lineRenderer.enabled)
         {
             lineRenderer.enabled = true;
@@ -93,56 +83,17 @@ public class Player: MonoBehaviour
                 lineRenderer.SetPosition(1, hitInfo.point);
             }
         }
-        else
-        {
-            lineRenderer.SetPosition(0, ray.origin);
-            lineRenderer.SetPosition(1, hitInfo.point);
-        }
-        /*
-        if (ARAVRInput.GetDown(ARAVRInput.Button.One, ARAVRInput.Controller.LTouch))
-        {
-            if(shopCanvas.activeSelf == true)
-            {
-                shopCanvas.SetActive(false);
-            }
-            if (shopCanvas.activeSelf == false)
-            {
-                shopCanvas.SetActive(true);
-            }
-        }
-        // 게임 상점이 열렸을때
-        if (shopCanvas.activeSelf == true)
-        {
-            Ray ray = new Ray(ARAVRInput.RHandPosition, ARAVRInput.RHandDirection);
-            RaycastHit hitInfo = default;
-            int layer = 1 << LayerMask.NameToLayer("ShopUI");
+        //========================================= 레이 쏘기 =============================================
 
-            if (ARAVRInput.GetDown(ARAVRInput.Button.One, ARAVRInput.Controller.RTouch) && (Physics.Raycast(ray, out hitInfo, 200f, layer)))
-            {
-                // 버튼 실행.
-            }    
-        }
-
-
-        // 게임 상점이 열린상태일떄는 공격입력을 받지 못하게하는 코드
-        if ( shopCanvas.activeSelf == true)
-        {
-            return;
-        }
-        */
-
-        // 공격코드
+        //========================================= 공격 하기 =============================================
         if (ARAVRInput.Get(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
         {
-            
             // TODO : 괴수의 피격당하는 함수실행시키기.
             if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Boss"))
             {
-                Debug.Log("boss는 인지했어");
                 // 이펙트를 만드는 코드
                 if (!isEffectSpawning)
                 {
-                    Debug.Log("이펙트는 인지했어");
                     // 코루틴이 실행 중이 아닌 경우에만 실행
                     effectCoroutine = StartCoroutine(SpawnEffectPeriodically(hitInfo, currentWeapon));
                     isEffectSpawning = true;
@@ -167,15 +118,17 @@ public class Player: MonoBehaviour
         {
             StopEffectCoroutine();
         }
+        //========================================= 공격 하기 =============================================
     }
+
+    //======================================= 이펙트 터지는 코루틴 ==========================================
     private IEnumerator SpawnEffectPeriodically(RaycastHit hitInfo, int currentWeapon)
     {
-        
+        Debug.Log("코루틴속 1번째확인");
         if (currentWeapon == 1)
         {
             while (true)
             {
-                Debug.Log("웨폰넘버는 인지했어");
                 // effect를 생성하거나 위치를 업데이트하는 코드
                 GameObject effect = EffectPoolManager.instance.GetQueue(1);
                 effect.transform.position = hitInfo.point;
@@ -187,6 +140,7 @@ public class Player: MonoBehaviour
         {
             while (true)
             {
+                Debug.Log("코루틴속 2번째확인");
                 // effect를 생성하거나 위치를 업데이트하는 코드
                 GameObject effect = EffectPoolManager.instance.GetQueue(2);
                 effect.transform.position = hitInfo.point;
@@ -195,6 +149,7 @@ public class Player: MonoBehaviour
             }
         }
     }
+    
 
     private void StopEffectCoroutine()
     {
@@ -204,7 +159,10 @@ public class Player: MonoBehaviour
             isEffectSpawning = false;
         }
     }
+    //======================================= 이펙트 터지는 코루틴 ==========================================
 
+
+    //======================================= 피격 계산 함수 ===============================================
     private void DamageTake()
     {
         //HP 계산하기
@@ -220,29 +178,19 @@ public class Player: MonoBehaviour
             Color newColor = hitImage.color;
             newColor.a = originAlpha;
             hitImage.color = newColor;
-            // currentAlpha = newColor.a;
             // 코루틴 시작하기
             StartCoroutine(Hited());
         }
         /*
-        if (GameManager.playerHp == 0)
+        if (GameManager.playerHp <= 0)
         {
             GameManager.gameOver = true;                // 주석 해제하기
         }
         */
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.layer.Equals("Boss"))
-        {
-            DamageTake();
-        }
-    }
-
     private IEnumerator Hited()
     {
-        float alphaPercentage =0f; 
+        float alphaPercentage = 0f;
         while (timer <= fadeDuration)
         {
             timer += Time.deltaTime;
@@ -262,4 +210,20 @@ public class Player: MonoBehaviour
         isHited = false;
     }
 
+    //======================================= 피격 계산 함수 ===============================================
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.layer.Equals("Boss"))
+        {
+            DamageTake();
+        }
+    }
+
+    public void InforceWeapon()
+    {
+        //TODO : 지속시간 끝나면 원래대로 돌아가는 코드도 짜야함.
+        gun1.SetActive(false);
+        gun2.SetActive(true);
+        currentWeapon = 2;
+    }
 }
