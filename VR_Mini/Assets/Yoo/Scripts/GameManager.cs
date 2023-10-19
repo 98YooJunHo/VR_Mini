@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     #region !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse
     /* !게임의 승패, 점수와 관련된 GameManager입니다.
      * gold, playerHp, bossHp, 게임의 상태를 알려주는 gameOver, 시간을 표시하는 time을 포함한 스크립트입니다.
+     * 보스의 페이즈를 bossPhase를 통해 값을 가져갈 수 있습니다. { 10/19 유준호 추가 }
      * Start_Game, End_Game, Restart_Game, Exit_Game 함수를 통해 게임 시작, 게임 끝, 게임 재시작, 게임 종료를 실행 할 수 있습니다.
      * gold, score의 경우 Add_xxx(value)를 통해 증가 시킬 수 있습니다.
      * gold의 경우 Use_Gold(value)로 사용할 수 있습니다.
@@ -43,12 +44,14 @@ public class GameManager : MonoBehaviour
     private WaitForSeconds scoreDelay = default;
     public int score { get; private set; }
     public bool gameOver { get; private set; }
+    public int bossPhase { get; private set; }
     public float time { get; private set; }
     public int playerMaxHp { get; private set; }
     public int bossMaxHp { get; private set; }
     public int gold { get; private set; }
     private int mBossHp;
     private int mPlayerHp;
+    private int pastBossHp;
     public int bossHp
     {
         get { return mBossHp; }
@@ -111,6 +114,7 @@ public class GameManager : MonoBehaviour
             {
                 End_Game();
             }
+            Check_BossPase();
         }
     }
 
@@ -133,6 +137,8 @@ public class GameManager : MonoBehaviour
         gold = (int)ResourceManager.Instance.GetSingleDataFromID(Order.PC, PC.INIT_GOLD);
         playerHp = playerMaxHp;
         bossHp = bossMaxHp;
+        pastBossHp = bossMaxHp;
+        bossPhase = 1;
     }
 
     public void Init_Delay()
@@ -201,6 +207,33 @@ public class GameManager : MonoBehaviour
         else
         {
             gold -= price;
+        }
+    }
+
+    private void Check_BossPase()
+    {
+        if(pastBossHp == mBossHp)
+        {
+            return;
+        }
+
+        if(bossPhase == 3)
+        {
+            return;
+        }
+
+        pastBossHp = mBossHp;
+        
+        switch(bossPhase)
+        {
+            case 1:
+                if (mBossHp <= bossMaxHp - 350) // 현재 뒤의 빼는 값은 확정되지 않은 값(추후 csv에서 읽어올 예정)
+                    bossPhase = 2;
+                break;
+            case 2:
+                if (mBossHp <= bossMaxHp - 600) // 현재 뒤의 빼는 값은 확정되지 않은 값(추후 csv에서 읽어올 예정)
+                    bossPhase = 3;
+                break;
         }
     }
 

@@ -8,7 +8,7 @@ public class HUD_Canvas_Yoo : MonoBehaviour
 {
     private enum Target
     {
-        time, gold, playerHp, bossHp
+        TIME, GOLD, PLAYER_HP, BOSS_HP
     }
 
     #region Variable
@@ -22,12 +22,12 @@ public class HUD_Canvas_Yoo : MonoBehaviour
 
     private void Awake()
     {
-        timeTMP = transform.GetChild((int)Target.time).GetComponentInChildren<TMP_Text>();
-        goldTMP = transform.GetChild((int)Target.gold).GetComponentInChildren<TMP_Text>();
-        playerHpTMP = transform.GetChild((int)Target.playerHp).GetComponentInChildren<TMP_Text>();
-        bossHpTMP = transform.GetChild((int)Target.bossHp).GetComponentInChildren<TMP_Text>();
-        playerHpImg = transform.GetChild((int)Target.playerHp).GetComponent<Image>();
-        bossHpImg = transform.GetChild((int)Target.bossHp).GetComponent<Image>();
+        timeTMP = transform.GetChild((int)Target.TIME).GetComponentInChildren<TMP_Text>();
+        goldTMP = transform.GetChild((int)Target.GOLD).GetComponentInChildren<TMP_Text>();
+        playerHpTMP = transform.GetChild((int)Target.PLAYER_HP).GetComponentInChildren<TMP_Text>();
+        bossHpTMP = transform.GetChild((int)Target.BOSS_HP).GetComponentInChildren<TMP_Text>();
+        playerHpImg = transform.GetChild((int)Target.PLAYER_HP).GetComponent<Image>();
+        bossHpImg = transform.GetChild((int)Target.BOSS_HP).GetComponent<Image>();
     }
 
     // Start is called before the first frame update

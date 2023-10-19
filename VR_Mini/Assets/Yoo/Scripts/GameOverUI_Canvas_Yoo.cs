@@ -10,13 +10,13 @@ public class GameOverUI_Canvas_Yoo : MonoBehaviour
 
     private enum Target
     {
-        time, result
+        TIME, RESULT
     }
 
     private void Awake()
     {
-        timeTMP = transform.GetChild((int)Target.time).GetComponentInChildren<TMP_Text>();
-        resultTMP = transform.GetChild((int)Target.result).GetComponentInChildren<TMP_Text>();
+        timeTMP = transform.GetChild((int)Target.TIME).GetComponentInChildren<TMP_Text>();
+        resultTMP = transform.GetChild((int)Target.RESULT).GetComponentInChildren<TMP_Text>();
         timeTMP.text = null;
     }
 

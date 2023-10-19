@@ -11,6 +11,7 @@ public class Player_NotInGame_Yoo : MonoBehaviour
     int targetLayer;
     GameUIButton_Yoo button;
     #endregion
+
     // Start is called before the first frame update
     void Start()
     {
