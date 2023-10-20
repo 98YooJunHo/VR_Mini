@@ -56,7 +56,7 @@ public class RayTest : MonoBehaviour
                 if (hitInfo.collider.gameObject.name == "AttackSpeedButton")
                 {
                     attButton.OnRayIn();
-                    if (ARAVRInput.GetDown(ARAVRInput.Button.One, ARAVRInput.Controller.RTouch))
+                    if (ARAVRInput.GetDown(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
                     {
                         attButton.OnRayClick();
                     }
@@ -64,14 +64,14 @@ public class RayTest : MonoBehaviour
                 else if (hitInfo.collider.gameObject.name == "WeakPointButton")
                 {
                     weakButton.OnRayIn();
-                    if (ARAVRInput.GetDown(ARAVRInput.Button.One, ARAVRInput.Controller.RTouch))
+                    if (ARAVRInput.GetDown(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
                     {
                         weakButton.OnRayClick();
                     }
                 }
                 else if (hitInfo.collider.gameObject.name == "ESCButton")
                 {
-                    if (ARAVRInput.GetDown(ARAVRInput.Button.One, ARAVRInput.Controller.RTouch))
+                    if (ARAVRInput.GetDown(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
                     { 
                         isClicked = !isClicked;
                         UIManager.Instance.Close_ShopUI(); 
