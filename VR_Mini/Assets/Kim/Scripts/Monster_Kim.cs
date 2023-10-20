@@ -23,6 +23,14 @@ public class Monster_Kim : MonoBehaviour
     public bool pattern = false;
     private bool doOnce = false;
 
+    public bool useUlt = false;
+    public bool pase_1UseUlt = true;
+    public bool pase_2UseUlt = true;
+    public bool pase_3UseUlt = true;
+
+    private int after = 0;
+    private int before = 0;
+
     public enum MonsterDoingType
     {
         idle,
@@ -61,6 +69,18 @@ public class Monster_Kim : MonoBehaviour
         }
         MonsterPase();
         MonsterMove();
+        if(pase_1UseUlt && monsterHP.hp <= maxHP - paseTrigger && monsterHP.hp > maxHP - (paseTrigger * 2))
+        {
+            after++;
+        }
+        else if(pase_2UseUlt && monsterHP.hp < maxHP - (paseTrigger * 2))
+        {
+            after++;
+        }
+        else if(pase_3UseUlt && monsterHP.hp <= 0)
+        {
+            after++;
+        }
     }
 
     private void MonsterPase()
@@ -71,17 +91,44 @@ public class Monster_Kim : MonoBehaviour
         }
         else if (monsterHP.hp <= maxHP - paseTrigger && monsterHP.hp > maxHP - (paseTrigger * 2))
         {
+            if(after != before)
+            {
+                before ++;
+                type = MonsterDoingType.ultimate;
+                
+            }
             Debug.Log("2");
-            Pase2();
+            if (!useUlt)
+            {
+                Pase2();
+            }
         }
         else if (monsterHP.hp < maxHP - (paseTrigger * 2))
         {
+            if (after != before)
+            {
+                before++;
+                type = MonsterDoingType.ultimate;
+
+            }
             Debug.Log("3");
-            Pase3();
+            if (!useUlt)
+            {
+                Pase3();
+            } 
         }
         else if (monsterHP.hp <= 0)
         {
-            type = MonsterDoingType.die;
+            if (after != before)
+            {
+                before++;
+                type = MonsterDoingType.ultimate;
+
+            }
+            if (!useUlt)
+            {
+                type = MonsterDoingType.die;
+            }
         }
     }
 
@@ -123,7 +170,6 @@ public class Monster_Kim : MonoBehaviour
         {
             pattern = true;
             animator.Play("Die");
-
         }
     }
 

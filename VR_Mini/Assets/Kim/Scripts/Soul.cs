@@ -24,7 +24,6 @@ public class Soul : MonoBehaviour
             //Debug.Log("!");
             transform.position = new Vector3(0, 0, 0);
             WayTime();
-            Debug.Log(wayTime);
 
             reset = true;
         }

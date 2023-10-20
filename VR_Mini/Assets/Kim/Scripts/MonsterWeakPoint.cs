@@ -48,7 +48,11 @@ public class MonsterWeakPoint : MonsterHP
         {
             for (int i = 0; i < addWeakPoint; i++)
             {
-                int rnd = Random.Range(0, landWeakPoint.Count-1);
+                int rnd = Random.Range(0, landWeakPoint.Count);
+                Debug.LogFormat("a {0}", rnd);
+                Debug.LogFormat("b {0}",landWeakPoint.Count);
+                Debug.LogFormat("{0}", landWeakPoint[rnd]);
+                Debug.LogFormat("{0}", "--------------------");
                 weakPoints.Add(landWeakPoint[rnd]);
                 weakPoints[i].SetActive(true);
 
@@ -79,6 +83,7 @@ public class MonsterWeakPoint : MonsterHP
         
         if(weakPoints.Count <= 0)
         {
+            // 여기에 약점공략시 대미지 주는 코드
             return true;
         }
 
@@ -91,6 +96,7 @@ public class MonsterWeakPoint : MonsterHP
     {
         for(int i = 0;i < weakPoints.Count;i++)
         {
+            weakPoints[i].SetActive(false);
             if (monster.type == Monster_Kim.MonsterDoingType.ultimate)
             {
                 flyWeakPoint.Add(weakPoints[i]);

@@ -14,7 +14,7 @@ public class MonsterAttack : MonoBehaviour
 
     public Transform makeMissile;
 
-    private int blowCount = 10;     //»ı¼ºÇÒ ¹Ì»çÀÏ °¹¼ö
+    private int blowCount = 10;     //ìƒì„±í•  ë¯¸ì‚¬ì¼ ê°¯ìˆ˜
 
     // Start is called before the first frame update
     void Start()
@@ -29,23 +29,23 @@ public class MonsterAttack : MonoBehaviour
         for (int i = 0; i < blowCount; i++)
         {
             SpawnObject();
-            // »ı¼ºµÉ¶§¸¶´Ù »ç¿îµå ³Ö°í½ÍÀ½
-            yield return new WaitForSeconds(0.5f); // 0.5ÃÊ ´ë±â
+            // ìƒì„±ë ë•Œë§ˆë‹¤ ì‚¬ìš´ë“œ ë„£ê³ ì‹¶ìŒ
+            yield return new WaitForSeconds(0.5f); // 0.5ì´ˆ ëŒ€ê¸°
         }
     }
 
     private void SpawnObject()
     {
         Vector3 spawnPosition = GetRandomPositionWithinObject(makeMissile, makeMissile.localScale.x, makeMissile.localScale.y, makeMissile.localScale.z);
-        // ¿ÀºêÁ§Æ® »ı¼º
+        // ì˜¤ë¸Œì íŠ¸ ìƒì„±
         GameObject spawnedObject = Instantiate(missile, spawnPosition, Quaternion.identity);
     }
 
     private Vector3 GetRandomPositionWithinObject(Transform objectTransform, float objectWidth, float objectHeight, float objectDepth)
     {
-        float randomX = Random.Range(-objectWidth / 2f, objectWidth / 2f);
-        float randomY = Random.Range(-objectHeight / 2f, objectHeight / 2f);
-        float randomZ = Random.Range(-objectDepth / 2f, objectDepth / 2f);
+        float randomX = Random.Range(-objectWidth * 2f, objectWidth * 2f);
+        float randomY = Random.Range(-objectHeight * 2f, objectHeight * 2f);
+        float randomZ = Random.Range(-objectDepth * 2f, objectDepth * 2f);
 
         return objectTransform.position + new Vector3(randomX, randomY, randomZ);
     }
