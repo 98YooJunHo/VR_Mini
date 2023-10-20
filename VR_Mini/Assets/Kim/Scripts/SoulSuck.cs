@@ -27,20 +27,17 @@ public class SoulSuck : MonoBehaviour
         yield return null;
         float second = soul_.wayTime;
         wayTime = second;
-        Debug.Log(second);
 
         monsterWeakPoint.MakeWeakPoint();
         // 약점 노출
         animator.Play("Idle");
         yield return new WaitForSeconds(second);
-        Debug.Log(second);
         isBreak = monsterWeakPoint.BreakUp();
         if (!isBreak)
         {
             monsterWeakPoint.Fail();
             animator.Play("Bite");
-            Debug.Log("!");
-            Debug.Log("@");
+     
             yield return new WaitForSeconds(2f);
 
             soul.SetActive(false);

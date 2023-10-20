@@ -9,11 +9,13 @@ public class Ultimate_Kim : MonoBehaviour
     private Animator animator;
     private MonsterWeakPoint monsterWeakPoint;
     public bool isBreak;
+    private Monster_Kim monster;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         monsterWeakPoint = GetComponent<MonsterWeakPoint>();
+        monster = GetComponent<Monster_Kim>();
     }
 
     // Update is called once per frame
@@ -23,6 +25,7 @@ public class Ultimate_Kim : MonoBehaviour
     }
     public IEnumerator Ultimate_()
     {
+        monster.useUlt = true;
         animator.Play("Fly Up");
         yield return new WaitForSeconds(4.0f);
         monsterWeakPoint.MakeWeakPoint();
@@ -38,10 +41,12 @@ public class Ultimate_Kim : MonoBehaviour
             breath.SetActive(true);
             yield return new WaitForSeconds(1);
             breath.SetActive(false);
-           // monsterWeakPoint.isWork = false;
+            monster.useUlt = false;
+            // monsterWeakPoint.isWork = false;
         }
         else
         {
+            monster.useUlt = false;
             yield break;
         }
     }
