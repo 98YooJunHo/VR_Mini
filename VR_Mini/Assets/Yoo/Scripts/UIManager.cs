@@ -36,6 +36,7 @@ public class UIManager : MonoBehaviour
     private GameObject gameOverUI;
     private GameObject hudObj;
     private GameObject shopUIObj;
+    private GameObject scoreUIObj;
 
     //{ 10/17 홍한범
     public TextMeshProUGUI weakGoldTxt;
@@ -64,7 +65,7 @@ public class UIManager : MonoBehaviour
         gameOverUI = GameObject.Find("GameOverUI");
         hudObj = GameObject.Find("HUD");
         shopUIObj = GameObject.Find("ShopUI");
-
+        scoreUIObj = GameObject.Find("ScoreUI");
 
     }
 
@@ -74,7 +75,6 @@ public class UIManager : MonoBehaviour
         hudObj.transform.localScale = Vector3.zero;
         shopUIObj.transform.localScale = Vector3.zero;
         gameOverUI.transform.localScale = Vector3.zero;
-
         //{ 10/17 홍한범
         PrintItemText();
         //} 10/17 홍한범
@@ -114,13 +114,25 @@ public class UIManager : MonoBehaviour
     public void Open_ShopUI()
     {
         shopUIObj.transform.localScale = Vector3.one * 0.8f;
+        Close_ScoreUI();
         GameManager.Instance.shopOpen = true;
     }
 
     public void Close_ShopUI()
     {
         shopUIObj.transform.localScale = Vector3.zero;
+        Open_ScoreUI();
         GameManager.Instance.shopOpen = false;
+    }
+
+    public void Open_ScoreUI()
+    {
+        scoreUIObj.transform.localScale = Vector3.one;
+    }
+
+    public void Close_ScoreUI()
+    {
+        scoreUIObj.transform.localScale = Vector3.zero;
     }
 
     public void Open_Hud()

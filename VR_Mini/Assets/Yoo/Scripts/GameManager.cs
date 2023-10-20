@@ -37,9 +37,12 @@ public class GameManager : MonoBehaviour
     public int goldPerTime = 5;
     public float scorePerTimeDelay = 1f;
     public int scorePerTime = 5;
+    public int scorePerPhase = 20;
     public float goldToScorePer = 0.4f;
     public bool shopOpen = false;
 
+    private GameObject boss = default;
+    private Transform originBossTransform = default;
     private WaitForSeconds goldDelay = default;
     private WaitForSeconds scoreDelay = default;
     public int score { get; private set; }
@@ -102,6 +105,7 @@ public class GameManager : MonoBehaviour
         //Invoke("Start_Game", 3f);
         //Invoke("End_Game", 5.5f);
         //Invoke("Exit_Game", 7f);
+        originBossTransform = boss.transform;
     }
 
     // Update is called once per frame
@@ -139,6 +143,12 @@ public class GameManager : MonoBehaviour
         bossHp = bossMaxHp;
         pastBossHp = bossMaxHp;
         bossPhase = 1;
+        boss = GameObject.Find("Dragon");
+        if(originBossTransform != null && boss != null)
+        {
+            boss.transform.position = originBossTransform.position;
+            boss.transform.rotation = originBossTransform.rotation;
+        }
     }
 
     public void Init_Delay()
@@ -176,11 +186,12 @@ public class GameManager : MonoBehaviour
     {
         gameOver = true;
         shopOpen = false;
-        score += (int)((float)gold * goldToScorePer);
+        Add_Score_End();
         // ToDo: 몬스터 페이즈에 따른 점수 추가 필요
         UIManager.Instance.Close_Hud();
         UIManager.Instance.Open_GameOverUI();
         UIManager.Instance.Close_ShopUI();
+        UIManager.Instance.Close_ScoreUI();
     }
 
     public void Exit_Game()
@@ -235,6 +246,12 @@ public class GameManager : MonoBehaviour
                     bossPhase = 3;
                 break;
         }
+    }
+
+    private void Add_Score_End()
+    {
+        score += (int)((float)gold * goldToScorePer);
+        score += bossPhase * scorePerPhase;
     }
 
     private IEnumerator Add_GoldPerTime()

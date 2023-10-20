@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HUD_FollowCam_Yoo : MonoBehaviour
+public class FollowCamRotation_Yoo : MonoBehaviour
 {
     private GameObject centerEyeObj;
     // Start is called before the first frame update
