@@ -10,6 +10,7 @@ public class DamagedPoint : MonoBehaviour
     private void Start()
     {
         monsterWeakPoint = GetComponent<MonsterWeakPoint>();
+        weakpoint = 10;
     }
 
     private void Update()
@@ -17,6 +18,7 @@ public class DamagedPoint : MonoBehaviour
         if (weakpoint == 0)
         {
             monsterWeakPoint.weakpoint = transform.gameObject;
+            monsterWeakPoint.PointBreak();
             transform.gameObject.SetActive(false);
         }
     }

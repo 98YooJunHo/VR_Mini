@@ -20,15 +20,15 @@ public class MonsterHP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GameManager.Instance.gameOver)
-        {
-            return;
-        }
+        //if(GameManager.Instance.gameOver)
+        //{
+        //    return;
+        //}
 
-        if(GameManager.Instance.bossHp == 0)
-        {
-            GameManager.Instance.End_Game();
-        }
+        //if(GameManager.Instance.bossHp == 0)
+        //{
+        //    GameManager.Instance.End_Game();
+        //}
     }
 
     public void OnHit(int value)
