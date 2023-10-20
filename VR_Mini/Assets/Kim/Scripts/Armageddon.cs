@@ -5,7 +5,6 @@ using UnityEngine;
 public class Armageddon : MonoBehaviour
 {
     private float speed = 30.0f;
-    public Transform targetLocation;
     private bool doOnce = false;
    
     // Update is called once per frame
@@ -16,7 +15,7 @@ public class Armageddon : MonoBehaviour
             transform.localPosition = new Vector3 (0, 0, 0);
             doOnce = true;
         }
-        transform.position = Vector3.MoveTowards(transform.position, targetLocation.position, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, 0, 0), speed * Time.deltaTime);
         if (transform.position.y < 1)   // y 값 수정해야됨
         {
             doOnce= false;

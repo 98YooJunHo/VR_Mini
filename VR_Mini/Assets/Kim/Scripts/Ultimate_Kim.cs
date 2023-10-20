@@ -19,7 +19,7 @@ public class Ultimate_Kim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //isBreak = monsterWeakPoint.BreakUp();
+        
     }
     public IEnumerator Ultimate_()
     {
@@ -28,10 +28,11 @@ public class Ultimate_Kim : MonoBehaviour
         monsterWeakPoint.MakeWeakPoint();
         animator.Play("Fly Idle");
         yield return new WaitForSeconds(6.0f);
-
+        isBreak = monsterWeakPoint.BreakUp();
         // 약점 공격하면 끊기는 코드
         if (!isBreak)
         {
+            monsterWeakPoint.Fail();
             animator.Play("Ultimate");
             yield return new WaitForSeconds(3.0f);
             breath.SetActive(true);

@@ -14,16 +14,17 @@ public class MonsterSkill_1 : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         monsterWeakPoint = GetComponent<MonsterWeakPoint>();
-        isBreak = monsterWeakPoint.BreakUp();
+       
     }
     public IEnumerator Skill_1()
     {
         monsterWeakPoint.MakeWeakPoint();
         // 약점 노출
-
         yield return new WaitForSeconds(4);
+        isBreak = monsterWeakPoint.BreakUp();       
         if(!isBreak)
         {
+            monsterWeakPoint.Fail();
             animator.Play("Flame Attack");
             yield return new WaitForSeconds(1.667f);
             armageddon.SetActive(true);

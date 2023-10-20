@@ -15,12 +15,15 @@ public class MonsterWeakPoint : MonsterHP
     //private DamagedPoint point_;
     private Monster_Kim monster;
 
+    private int addWeakPoint;
+
     //public bool isWork = false;
 
     // Start is called before the first frame update
     void Start()
     {
         monster = GetComponent<Monster_Kim>();
+            addWeakPoint = 5;
     }
 
     //// Update is called once per frame
@@ -33,7 +36,7 @@ public class MonsterWeakPoint : MonsterHP
     {
         if (monster.type == Monster_Kim.MonsterDoingType.ultimate)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < addWeakPoint; i++)
             {
                 int rnd = Random.Range(0, flyWeakPoint.Count);
                 weakPoints.Add(flyWeakPoint[rnd]);
@@ -43,9 +46,9 @@ public class MonsterWeakPoint : MonsterHP
         }
         else
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < addWeakPoint; i++)
             {
-                int rnd = Random.Range(0, landWeakPoint.Count);
+                int rnd = Random.Range(0, landWeakPoint.Count-1);
                 weakPoints.Add(landWeakPoint[rnd]);
                 weakPoints[i].SetActive(true);
 
@@ -54,20 +57,49 @@ public class MonsterWeakPoint : MonsterHP
         }
     }
     
-    public bool BreakUp()
-    {      
-        if(weakpoint != null)
+    public void PointBreak()
+    {
+        if (weakpoint != null)
         {
             weakPoints.Remove(weakpoint);
+            if (monster.type == Monster_Kim.MonsterDoingType.ultimate)
+            {
+                flyWeakPoint.Add(weakpoint);
+            }
+            else
+            {
+                weakPoints.Add(weakpoint);
+            }
+            weakpoint = null;
         }
-        if(weakPoints.Count == 0)
+    }
+
+    public bool BreakUp()
+    {      
+        
+        if(weakPoints.Count <= 0)
         {
-            return false;
+            return true;
         }
 
 
-        return true;
+        return false;
 
     }
 
+    public void Fail()
+    {
+        for(int i = 0;i < weakPoints.Count;i++)
+        {
+            if (monster.type == Monster_Kim.MonsterDoingType.ultimate)
+            {
+                flyWeakPoint.Add(weakPoints[i]);
+            }
+            else
+            {
+                landWeakPoint.Add(weakPoints[i]);
+            }
+        }
+        weakPoints = null;
+    }
 }
