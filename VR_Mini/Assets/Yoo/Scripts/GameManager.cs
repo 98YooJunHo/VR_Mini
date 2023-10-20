@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour
         gameOver = true;
         shopOpen = false;
         playerMaxHp = (int)ResourceManager.Instance.GetSingleDataFromID(Order.PC, PC.HP);
-        bossMaxHp = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, Monster.HP);
+        //bossMaxHp = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, Monster.HP);
         gold = (int)ResourceManager.Instance.GetSingleDataFromID(Order.PC, PC.INIT_GOLD);
         playerHp = playerMaxHp;
         bossHp = bossMaxHp;

@@ -5,8 +5,7 @@ public class DamageButton : ShopButtonOrigin_HHB
 
     public override void Init()
     {
-        buyGold = ResourceManager.Instance.ChangeType<int>("int", ResourceManager.Instance.GetSingleDataFromID(Order.ITEM2, Item.GOLD));
-        coolTime = ResourceManager.Instance.ChangeType<float>("float", ResourceManager.Instance.GetSingleDataFromID(Order.ITEM2, Item.DURATION));
+     
     }
 
     public override void Effect()

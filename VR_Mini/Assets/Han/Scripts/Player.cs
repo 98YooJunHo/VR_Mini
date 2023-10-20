@@ -96,7 +96,7 @@ public class Player: MonoBehaviour
                 // 보스 체력 깎기
                 if (boss != null)
                 {
-                    boss.OnHit((int)ResourceManager.Instance.GetSingleDataFromID(Order.WEAPON1, Weapon.DMG));
+                    //boss.OnHit((int)ResourceManager.Instance.GetSingleDataFromID(Order.WEAPON1, Weapon.DMG));
                 }
                 // 이펙트를 만드는 코드
                 if (!isEffectSpawning)

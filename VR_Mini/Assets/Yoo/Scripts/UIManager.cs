@@ -148,10 +148,7 @@ public class UIManager : MonoBehaviour
     //{ 10/17 홍한범
     public void PrintItemText()
     {
-         weakGoldTxt.text = ResourceManager.Instance.GetSingleDataFromID(Order.ITEM1, Item.GOLD).ToString();
-         weakTimeTxt.text = ResourceManager.Instance.GetSingleDataFromID(Order.ITEM1, Item.DURATION).ToString();
-         attGoldTxt.text = ResourceManager.Instance.GetSingleDataFromID(Order.ITEM2, Item.GOLD).ToString();
-         attTimeTxt.text = ResourceManager.Instance.GetSingleDataFromID(Order.ITEM2, Item.DURATION).ToString();
+
     }
 
 

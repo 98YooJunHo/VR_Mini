@@ -6,7 +6,8 @@ using UnityEngine;
 // 순서
 public enum Order
 {
-    PC, ITEM1, ITEM2, MONSTER, MONSTER_PROJECTILE, SPAWN_MONSTER1, SPAWN_MONSTER2, WEAPON1, WEAPON2
+    PC, LASER_WEAPON, LIGHTING_WEAPON, ICE_WEAPON, MONSTER ,MONSTER_MOVE_SKILL, MONSTER_NORMAL_SKILL,
+    MONSTER_SOUL_SKILL, MONSTER_METEOR_SKILL, MONSTER_BREATHE_SKILL
 }
 
 // KEYS
@@ -14,38 +15,76 @@ public enum Order
 // ID 1
 public enum PC 
 {
-    ID, DESCRIPTION, HP, WEAPON_NORMAL, WEAPON_POWERED, TIME_GOLD, INIT_GOLD
+    ID, DESCRIPTION, HP,TIME_GOLD, INIT_GOLD
 }
 
-// ID 10~11
-public enum Item 
+
+// HIT_GOLD = 맞출때마다 골드
+
+// ID 1000
+//! Laser HIT_GOLD는 초당, OVERHIT_MAX 최대과열, OVERHIT_INCREASE 과열증가량,
+//  OVERHIT_DECREASE 과열 감소량, OVERHIT_PENALTY 과열오버시딜레이(초)
+public enum LASER_WEAPON
 {
-    ID, DESCRIPTION, TYPE, DURATION, VAL1, GOLD
+    ID, NAME, DESCRIPTION, DMG, HIT_GOLD, OVERHIT_MAX, OVERHIT_INCREASE, OVERHIT_DECREASE, OVERHIT_PENALTY
 }
+
+// ID 1001
+public enum LIGHTING_WEAPON
+{
+    ID, NAME, DESCRIPTION, DMG, HIT_GOLD, BUY_GOLD, ATTACK_SPEED
+}
+
+// ID 1002
+//! PROJECTILE_SPEED 투사체 속도, CHARGING_PER_DMG 충전 초당 데미지증가량, CHARGING_MAX_TIME 최대 충전가능시간
+// CHARGING_MAX_SCALE 최대충전스케일
+public enum ICE_WEAPON
+{
+    ID, NAME, DESCRIPTION, DMG, HIT_GOLD, BUY_GOLD, ATTACK_SPEED, PROJECTILE_SPEED, CHARGING_PER_DMG,
+    CHARGING_MAX_TIME, CHARGING_MAX_SCALE
+}
+
+
+//! P1_HP, P2_HP, P3_HP  페이즈별 HP
 
 // ID 100
-public enum Monster 
+//! WEAKPOINT_ACT_TIME 약점활성화시간, WEAKPOINT_COUNT 약점개수, WEAKPOINT_HP 약점HP, 
+public enum MONSTER
 {
-    ID, DESCRIPTION, WEAKPOINT_RATE, ACT_TIME, HP, MOVESPEED, NORMAL_GOLD, CRI_GOLD
+    ID, DESCRIPTION, WEAKPOINT_ACT_TIME, WEAKPOINT_COUNT, WEAKPOINT_HP, WEAKPOINT_DMG, P1_HP, P2_HP, P3_HP
 }
 
 // ID 200
-public enum Projectile 
+public enum MONSTER_MOVE_SKILL
 {
-    ID, DESCRIPTION, HP, PROJECTILE_LIFETIME, DMG, SPEED
+    ID, DESCRIPTION, MOVE_TIME, MOVE_SPEED_P1, MOVE_SPEED_P2, MOVE_SPEED_P3, PROB_P1, PROB_P2, PROB_P3
 }
 
-// ID 300, 301
-public enum SpawnMonster 
+// ID 201
+public enum MONSTER_NORMAL_SKILL
 {
-    ID, DESCRIPTION, HP, DMG, SPEED, ATTACK_RANGE, EXPLOSION_RANGE
+    ID, DESCRIPTION, CASTING_TIME, SKILL_DMG, SKILL_SPEED, PROJECTILE_HP, PROB_P1, PROB_P2, PROB_P3
 }
 
-// ID 1000, 1001
-public enum Weapon 
+// ID 202
+public enum MONSTER_SOUL_SKILL
 {
-    ID, DESCRIPTION, INTERVAL, DMG
+    ID, DESCRIPTION, CASTING_TIME, SKILL_DMG, SKILL_SPEED, PROB_P2, PROB_P3
 }
+
+// ID 203
+public enum MONSTER_METEOR_SKILL
+{
+    ID, DESCRIPTION, CASTING_TIME, SKILL_DMG, PROJECTILE_SPEED, PROB_P3
+}
+
+// ID 204
+public enum MONSTER_BREATHE_SKILL
+{
+    ID, DESCRIPTION, CASTING_TIME, SKILL_DMG
+}
+
+
 
 
 
@@ -87,21 +126,29 @@ public class ResourceManager : MonoBehaviour
 
     #region 변수
     // 경로
-    private string itemPath = "CSVFiles/ItemTable";
-    private string monsterPath = "CSVFiles/MonsterTable";
-    private string pcPath = "CSVFiles/PCTable";
-    private string weaponPath = "CSVFiles/WeaponTable";
-    private string spawnMonsterPath = "CSVFiles/SpwanMonsterTable";
-    private string monsterProjectilePath = "CSVFiles/MonsterProjectileTable";
+    private string iceWeaponPath = "CSVFiles/IceWeapon";
+    private string laserWeaponPath = "CSVFiles/LaserWeapon";
+    private string lightingWeaponPath = "CSVFiles/LightingWeapon";
+    private string mBreatheSkillPath = "CSVFiles/MonsterBreatheSkill";
+    private string mMeteorSkillPath = "CSVFiles/MonsterMeteorSkill";
+    private string mMoveSkillPath = "CSVFiles/MonsterMoveSkill";
+    private string mNormalSkillPath = "CSVFiles/MonsterNormalSkill";
+    private string mSoulSkillPath = "CSVFiles/MonsterSoulSkill";
+    private string monsterTablePath = "CSVFiles/MonsterTable";
+    private string pcTablePath = "CSVFiles/PCTable";
 
     // Data
     private List<Dictionary<string, object>> data = new List<Dictionary<string, object>>();
-    private List<Dictionary<string, object>> itemTable = new List<Dictionary<string, object>>();
+    private List<Dictionary<string, object>> iceWeaponTable = new List<Dictionary<string, object>>();
+    private List<Dictionary<string, object>> laserWeaponTable = new List<Dictionary<string, object>>();
+    private List<Dictionary<string, object>> lightingWeaponTable = new List<Dictionary<string, object>>();
+    private List<Dictionary<string, object>> mBreatheSkillTable = new List<Dictionary<string, object>>();
+    private List<Dictionary<string, object>> mMeteorSkillTable = new List<Dictionary<string, object>>();
+    private List<Dictionary<string, object>> mMoveSkillTable = new List<Dictionary<string, object>>();
+    private List<Dictionary<string, object>> mNormalSkillTable = new List<Dictionary<string, object>>();
+    private List<Dictionary<string, object>> mSoulSkillTable = new List<Dictionary<string, object>>();
     private List<Dictionary<string, object>> monsterTable = new List<Dictionary<string, object>>();
-    private List<Dictionary<string, object>> PCTable = new List<Dictionary<string, object>>();
-    private List<Dictionary<string, object>> weaponTable = new List<Dictionary<string, object>>();
-    private List<Dictionary<string, object>> spawnMonsterTable = new List<Dictionary<string, object>>();
-    private List<Dictionary<string, object>> monsterProjectileTable = new List<Dictionary<string, object>>();
+    private List<Dictionary<string, object>> pcTable = new List<Dictionary<string, object>>();
     #endregion
 
     public void Awake()
@@ -115,35 +162,16 @@ public class ResourceManager : MonoBehaviour
     {
 
         //test
-        //List<object> test = GetDataFromID(Order.PC);
-        //Debug.Log("*�ð� ��� : " + test[(int)PC.TIME_GOLD].GetType());
-        //Debug.Log("���� ��� : " + test[(int)PC.INIT_GOLD]);
-        //Debug.Log("�÷��̾� ü�� : " + test[(int)PC.HP]);
-        //Debug.Log("*���� : " + test[(int)PC.DESCRIPTION].GetType());
-
-        //List<object> test2 = GetDataFromID(Order.WEAPON1);
-        //Debug.Log("Weapon1 ������ : " + test2[(int)Weapon.DMG]);
-        //Debug.Log("Weapon1 ���� : " + test2[(int)Weapon.INTERVAL]);
-
-        //List<object> test3 = GetDataFromID(Order.MONSTER);
-        //Debug.Log("���� �̵��ӵ�: " + test3[(int)Monster.MOVESPEED]);
-        //Debug.Log("���� ũ�����: " + test3[(int)Monster.CRI_GOLD]);
-
-        //int t = (int)GetSingleDataFromID(Order.PC, PC.INIT_GOLD);
-        //Debug.Log("t InitGold :"+t);
-
-
-        //string str = GetSingleDataFromID(Order.PC, PC.DESCRIPTION).ToString();
-        //Debug.Log("str description :" + str);
-
-        //string str2 = ChangeType<string>("string", GetSingleDataFromID(Order.PC, PC.ID));
-        //Debug.Log("str2 : " +str2);
+        List<object> test = GetDataFromID(Order.LIGHTING_WEAPON);
+        Debug.Log("attackSpeed : " + test[(int)LIGHTING_WEAPON.ATTACK_SPEED].GetType());
+        Debug.Log("attackSpeed f : " + ChangeType<float>("float", GetSingleDataFromID
+            (Order.LIGHTING_WEAPON, LIGHTING_WEAPON.ATTACK_SPEED)).GetType());
+        Debug.Log("attackSpeed type : " + test[(int)LIGHTING_WEAPON.ATTACK_SPEED]);
     }
 
     #region INIT
     private void InitTable()
-    {
-           
+    {      
         InitItemTable();
         InitAllData();
     }
@@ -151,22 +179,30 @@ public class ResourceManager : MonoBehaviour
 
     private void InitItemTable()
     {
-        itemTable = CSVReader.Read(itemPath);
-        monsterTable = CSVReader.Read(monsterPath);
-        weaponTable = CSVReader.Read(weaponPath);
-        PCTable = CSVReader.Read(pcPath);
-        spawnMonsterTable = CSVReader.Read(spawnMonsterPath);
-        monsterProjectileTable = CSVReader.Read(monsterProjectilePath);
+        iceWeaponTable = CSVReader.Read(iceWeaponPath);
+        laserWeaponTable = CSVReader.Read(laserWeaponPath);
+        lightingWeaponTable = CSVReader.Read(lightingWeaponPath);
+        mBreatheSkillTable = CSVReader.Read(mBreatheSkillPath);
+        mMeteorSkillTable = CSVReader.Read(mMeteorSkillPath);
+        mMoveSkillTable = CSVReader.Read(mMoveSkillPath);
+        mNormalSkillTable = CSVReader.Read(mNormalSkillPath);
+        mSoulSkillTable = CSVReader.Read(mSoulSkillPath);
+        monsterTable = CSVReader.Read(monsterTablePath);
+        pcTable = CSVReader.Read(pcTablePath);
     }
 
     private void InitAllData()
     {
-        data.AddRange(PCTable);
-        data.AddRange(itemTable);
+        data.AddRange(pcTable);
+        data.AddRange(laserWeaponTable);
+        data.AddRange(lightingWeaponTable);
+        data.AddRange(iceWeaponTable);
         data.AddRange(monsterTable);
-        data.AddRange(monsterProjectileTable);
-        data.AddRange(spawnMonsterTable);
-        data.AddRange(weaponTable);
+        data.AddRange(mMoveSkillTable);
+        data.AddRange(mNormalSkillTable);
+        data.AddRange(mSoulSkillTable);
+        data.AddRange(mMeteorSkillTable);
+        data.AddRange(mBreatheSkillTable);
     }
     #endregion
 
