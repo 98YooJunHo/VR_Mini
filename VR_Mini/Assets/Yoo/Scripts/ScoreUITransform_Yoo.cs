@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class ScoreUITransform_Yoo : MonoBehaviour
 {
+    private const string PLAYER_NAME = "Player";
+
     private Vector3 playerPos = default;
     private Vector3 dir = default;
     // Start is called before the first frame update
     void Start()
     {
-        playerPos = GameObject.Find("Player").transform.position;
+        playerPos = GameObject.Find(PLAYER_NAME).transform.position;
     }
 
     // Update is called once per frame

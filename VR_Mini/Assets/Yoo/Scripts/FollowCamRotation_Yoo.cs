@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class FollowCamRotation_Yoo : MonoBehaviour
 {
+    private const string OCULUS_CAM = "CenterEyeAnchor";
     private GameObject centerEyeObj;
     // Start is called before the first frame update
     void Start()
     {
-        centerEyeObj = GameObject.Find("CenterEyeAnchor");
+        centerEyeObj = GameObject.Find(OCULUS_CAM);
     }
 
     // Update is called once per frame

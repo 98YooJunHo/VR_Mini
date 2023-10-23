@@ -13,10 +13,9 @@ public class UIManager : MonoBehaviour
             if (m_instance == null)
             {
                 m_instance = FindObjectOfType<UIManager>();
-                if(m_instance == null)
+                if (m_instance == null)
                 {
-                    GameObject uiManager = new GameObject("UIManager");
-                    uiManager.AddComponent<UIManager>();
+                    Debug.LogError("UIManager 찾지 못함");
                 }
             }
             return m_instance;
@@ -32,6 +31,13 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region Variable
+    private const string GAME_START_UI = "GameStartUI";
+    private const string GAME_OVER_UI = "GameOverUI";
+    private const string HUD = "HUD";
+    private const string SHOP_UI = "ShopUI";
+    private const string SCORE_UI = "ScoreUI";
+    private const string OCULUS_CAM = "CenterEyeAnchor";
+
     private GameObject gameStartUI;
     private GameObject gameOverUI;
     private GameObject hudObj;
@@ -61,11 +67,11 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        gameStartUI = GameObject.Find("GameStartUI");
-        gameOverUI = GameObject.Find("GameOverUI");
-        hudObj = GameObject.Find("HUD");
-        shopUIObj = GameObject.Find("ShopUI");
-        scoreUIObj = GameObject.Find("ScoreUI");
+        gameStartUI = GameObject.Find(GAME_START_UI);
+        gameOverUI = GameObject.Find(GAME_OVER_UI);
+        hudObj = GameObject.Find(HUD);
+        shopUIObj = GameObject.Find(SHOP_UI);
+        scoreUIObj = GameObject.Find(SCORE_UI);
 
     }
 
@@ -105,7 +111,7 @@ public class UIManager : MonoBehaviour
 
     public void Close_GameOverUI()
     {
-        gameOverUI.transform.parent = GameObject.Find("CenterEyeAnchor").transform;
+        gameOverUI.transform.parent = GameObject.Find(OCULUS_CAM).transform;
         gameOverUI.transform.localPosition = Vector3.zero;
         gameOverUI.transform.localRotation = Quaternion.Euler(Vector3.zero);
         gameOverUI.transform.localScale = Vector3.zero;

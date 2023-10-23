@@ -13,8 +13,7 @@ public class GameManager : MonoBehaviour
                 m_instance = FindObjectOfType<GameManager>();
                 if (m_instance == null)
                 {
-                    GameObject gameManager = new GameObject("GameManager");
-                    gameManager.AddComponent<GameManager>();
+                    Debug.LogError("GameManager 찾지 못함");
                 }
             }
             return m_instance;
@@ -33,6 +32,8 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Variable
+    private const string BOSS_NAME = "Dragon";
+
     public float goldPerTimeDelay = 1f;
     public int goldPerTime = 5;
     public float scorePerTimeDelay = 1f;
@@ -143,7 +144,7 @@ public class GameManager : MonoBehaviour
         bossHp = bossMaxHp;
         pastBossHp = bossMaxHp;
         bossPhase = 1;
-        boss = GameObject.Find("Dragon");
+        boss = GameObject.Find(BOSS_NAME);
         if(originBossTransform != null && boss != null)
         {
             boss.transform.position = originBossTransform.position;

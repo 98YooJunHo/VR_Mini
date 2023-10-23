@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class GameOverUI_Canvas_Yoo : MonoBehaviour
 {
+    private const string WIN_TEXT = "Win!";
+    private const string LOSE_TEXT = "Lose";
+    private const string SCORE_TEXT = "Score: ";
+
     private TMP_Text timeTMP;
     private TMP_Text resultTMP;
     private TMP_Text scoreTMP;
@@ -35,14 +39,14 @@ public class GameOverUI_Canvas_Yoo : MonoBehaviour
         {
             timeTMP.text = ((int)(GameManager.Instance.time / 60)) + ":"
                 + ((int)(GameManager.Instance.time % 60)).ToString("D2");
-            scoreTMP.text = "Score: " + GameManager.Instance.score;
+            scoreTMP.text = SCORE_TEXT + GameManager.Instance.score;
             if(GameManager.Instance.bossHp == 0)
             {
-                resultTMP.text = "Win!";
+                resultTMP.text = WIN_TEXT;
             }
             else
             {
-                resultTMP.text = "Lose";
+                resultTMP.text = LOSE_TEXT;
             }
         }
 
