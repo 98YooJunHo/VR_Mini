@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Monster_Kim : MonoBehaviour
 {
+    public static Monster_Kim Instance;
     private MonsterAttack monsterAttack;
     private Ultimate_Kim ult;
     private MonsterSkill_1 skill_1;
@@ -18,7 +19,7 @@ public class Monster_Kim : MonoBehaviour
     private int maxHP;
 
     private Animator animator;
-    private float speed = 3.2f;
+    //private float speed = 3.2f;
 
     public bool pattern = false;
     private bool doOnce = false;
@@ -31,6 +32,7 @@ public class Monster_Kim : MonoBehaviour
     private int after = 0;
     private int before = 0;
 
+
     public enum MonsterDoingType
     {
         idle,
@@ -41,6 +43,10 @@ public class Monster_Kim : MonoBehaviour
         die
     }
     public MonsterDoingType type;
+    private void Awake()
+    {
+        Instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -49,7 +55,7 @@ public class Monster_Kim : MonoBehaviour
         skill_1 = GetComponent<MonsterSkill_1>();
         soulSuck = transform.GetComponent<SoulSuck>();
 
-        monsterHP = transform.GetComponent<MonsterHP>();
+        monsterHP = FindObjectOfType<MonsterHP>();
         maxHP = monsterHP.hp;
         type = MonsterDoingType.idle;
         animator = GetComponent<Animator>();
@@ -89,7 +95,7 @@ public class Monster_Kim : MonoBehaviour
         {
             Pase1();
         }
-        else if (monsterHP.hp <= maxHP - paseTrigger && monsterHP.hp > maxHP - (paseTrigger * 2))
+        else if (monsterHP.hp <= maxHP - monsterHP.hp1 && monsterHP.hp > maxHP - (monsterHP.hp1 + monsterHP.hp2))
         {
             if(after != before)
             {
@@ -103,7 +109,7 @@ public class Monster_Kim : MonoBehaviour
                 Pase2();
             }
         }
-        else if (monsterHP.hp < maxHP - (paseTrigger * 2))
+        else if (monsterHP.hp < maxHP - (monsterHP.hp1 + monsterHP.hp2))
         {
             if (after != before)
             {
@@ -260,8 +266,8 @@ public class Monster_Kim : MonoBehaviour
             doOnce = true;
         }
         yield return null; yield return null; yield return null;
-        yield return new WaitForSeconds(soulSuck.wayTime + 4.668f);      // 모션 시간 보면서 시간 조정해야됨
 
+        yield return new WaitForSeconds(soulSuck.wayTime + 4.668f);      // 모션 시간 보면서 시간 조정해야됨
         checkTime = 0;
         type = MonsterDoingType.idle;
 

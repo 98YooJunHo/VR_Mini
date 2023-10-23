@@ -34,30 +34,38 @@ public class MonsterWeakPoint : MonsterHP
 
     public void MakeWeakPoint()
     {
+        weakPoints = new List<GameObject>();
         if (monster.type == Monster_Kim.MonsterDoingType.ultimate)
         {
             for (int i = 0; i < addWeakPoint; i++)
             {
                 int rnd = Random.Range(0, flyWeakPoint.Count);
+                do
+                {
+                    rnd = Random.Range(0, flyWeakPoint.Count);
+                } while (weakPoints.Contains(flyWeakPoint[rnd]));
                 weakPoints.Add(flyWeakPoint[rnd]);
                 weakPoints[i].SetActive(true);
-                flyWeakPoint.RemoveAt(rnd);
             }
+                //flyWeakPoint.RemoveAt(rnd);
         }
         else
         {
             for (int i = 0; i < addWeakPoint; i++)
             {
                 int rnd = Random.Range(0, landWeakPoint.Count);
-                Debug.LogFormat("a {0}", rnd);
-                Debug.LogFormat("b {0}",landWeakPoint.Count);
-                Debug.LogFormat("{0}", landWeakPoint[rnd]);
-                Debug.LogFormat("{0}", "--------------------");
+
+                do
+                {
+                    rnd = Random.Range(0, landWeakPoint.Count);
+                } while (weakPoints.Contains(landWeakPoint[rnd]));
+
+
                 weakPoints.Add(landWeakPoint[rnd]);
                 weakPoints[i].SetActive(true);
 
-                landWeakPoint.RemoveAt(rnd);
             }
+                //landWeakPoint.RemoveAt(rnd);
         }
     }
     
@@ -94,17 +102,17 @@ public class MonsterWeakPoint : MonsterHP
 
     public void Fail()
     {
-        for(int i = 0;i < weakPoints.Count;i++)
+        for (int i = 0; i < weakPoints.Count; i++)
         {
             weakPoints[i].SetActive(false);
-            if (monster.type == Monster_Kim.MonsterDoingType.ultimate)
-            {
-                flyWeakPoint.Add(weakPoints[i]);
-            }
-            else
-            {
-                landWeakPoint.Add(weakPoints[i]);
-            }
+            //if (monster.type == Monster_Kim.MonsterDoingType.ultimate)
+            //{
+            //    flyWeakPoint.Add(weakPoints[i]);
+            //}
+            //else
+            //{
+            //    landWeakPoint.Add(weakPoints[i]);
+            //}
         }
         weakPoints = null;
     }

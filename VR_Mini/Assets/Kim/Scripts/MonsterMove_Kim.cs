@@ -10,8 +10,11 @@ public class MonsterMove_Kim : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //speed = (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_MOVE_SKILL, MONSTER_MOVE_SKILL.MOVE_SPEED_P1);
         monster = GetComponent<Monster_Kim>();
+        //hp1 = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.P1_HP);
     }
+
 
     // Update is called once per frame
     void Update()
@@ -25,9 +28,10 @@ public class MonsterMove_Kim : MonoBehaviour
         {
             // 몬스터 이동
             float move = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3 (0, 0, 0), move);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, 0, 0), move);
 
         }
 
     }
 }
+
