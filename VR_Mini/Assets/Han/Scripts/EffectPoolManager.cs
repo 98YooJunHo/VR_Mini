@@ -1,18 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Player;
 
 public class EffectPoolManager : MonoBehaviour
 {
     public static EffectPoolManager instance;
 
-    public GameObject normalEffectPrefab;
+    public GameObject laserEffectPrefab;
 
-    public GameObject inforceEffectPrefab;
+    public GameObject electricEffectPrefab;
 
-    public Queue<GameObject> normalQueue = new Queue<GameObject>();
+    public GameObject iceEffectPrefab;
 
-    public Queue<GameObject> inforceQueue = new Queue<GameObject>();
+    public Queue<GameObject> laserEffectQueue = new Queue<GameObject>();
+
+    public Queue<GameObject> electricEffectQueue = new Queue<GameObject>();
+
+    public Queue<GameObject> iceEffectQueue = new Queue<GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -21,17 +27,24 @@ public class EffectPoolManager : MonoBehaviour
 
         for (int i=0; i< 50; i++)
         {
-            GameObject normalEffect = Instantiate(normalEffectPrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
-            normalEffect.transform.SetParent(gameObject.transform);
-            normalQueue.Enqueue(normalEffect);
-            normalEffect.SetActive(false);
+            GameObject laserEffect = Instantiate(laserEffectPrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
+            laserEffect.transform.SetParent(gameObject.transform);
+            laserEffectQueue.Enqueue(laserEffect);
+            laserEffect.SetActive(false);
         }
         for (int i = 0; i < 50; i++)
         {
-            GameObject inforceEffect = Instantiate(inforceEffectPrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
-            inforceEffect.transform.SetParent(gameObject.transform);
-            inforceQueue.Enqueue(inforceEffect);
-            inforceEffect.SetActive(false);
+            GameObject electricEffect = Instantiate(electricEffectPrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
+            electricEffect.transform.SetParent(gameObject.transform);
+            electricEffectQueue.Enqueue(electricEffect);
+            electricEffect.SetActive(false);
+        }
+        for (int i = 0; i < 50; i++)
+        {
+            GameObject iceEffect = Instantiate(iceEffectPrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
+            iceEffect.transform.SetParent(gameObject.transform);
+            iceEffectQueue.Enqueue(iceEffect);
+            iceEffect.SetActive(false);
         }
     }
 
@@ -41,31 +54,41 @@ public class EffectPoolManager : MonoBehaviour
         
     }
 
-    public void InsertQueue(GameObject gameobject, int weaponNum)
+    public void InsertEffectQueue(GameObject gameobject, int userWeaponState )
     {
-        if (weaponNum == 1)
+        if (userWeaponState == (int)WeaponState.LASER)
         {
-            normalQueue.Enqueue(gameObject);
+            laserEffectQueue.Enqueue(gameobject);
             gameobject.SetActive(false);
         }
-        else if (weaponNum ==2)
+        else if (userWeaponState == (int)WeaponState.LIGHTING)
         {
-            inforceQueue.Enqueue(gameObject);
+            electricEffectQueue.Enqueue(gameobject);
+            gameobject.SetActive(false);
+        }
+        else if (userWeaponState == (int)WeaponState.ICE)
+        {
+            iceEffectQueue.Enqueue(gameobject);
             gameobject.SetActive(false);
         }
     }
 
-    public GameObject GetQueue(int weaponNum)
+    public GameObject GetQueue(int userWeaponState)
     {
         GameObject gameObject =default;
-        if (weaponNum == 1)
+        if (userWeaponState == (int)WeaponState.LASER)
         {
-            gameObject= normalQueue.Dequeue();
+            gameObject = laserEffectQueue.Dequeue();
             gameObject.SetActive(true);
         }
-        else if (weaponNum ==2)
+        else if (userWeaponState == (int)WeaponState.LIGHTING)
         {
-            gameObject = inforceQueue.Dequeue();
+            gameObject = electricEffectQueue.Dequeue();
+            gameObject.SetActive(true);
+        }
+        else if (userWeaponState == (int)WeaponState.ICE)
+        {
+            gameObject = iceEffectQueue.Dequeue();
             gameObject.SetActive(true);
         }
         return gameObject;

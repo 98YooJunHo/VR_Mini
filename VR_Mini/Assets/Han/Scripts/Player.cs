@@ -1,15 +1,36 @@
 using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum WeaponState
+{
+    LASER, LIGHTING, ICE
+}
+
 public class Player: MonoBehaviour
 {
+    public const string iceMuzzle = "IceMuzzle";
+    public const string electricMuzzle = "electricMuzzle";
+    public const string chargeEffectName = "WaterCharge";
+    public const string weaponMuzzleName = "Aurous_Crystal";
+
+    Ray ray = default;                           // 레이 변수   
+    RaycastHit hitInfo = default;                // 레이캐스트 힛인포 변수   
+    public int userWeaponState;                  // 웨폰스테이트 객체
     public static Player instance;               // 스태틱 객체
     private LineRenderer lineRenderer = default; // 선을 그릴 라인 렌더러
     //=================== 무기 업그레이드를 위한 변수 ============================================
-    private int currentWeapon = default;         // 현재 무기번호
-    private GameObject gun1;                     // 일반무기 오브젝트
-    private GameObject gun2;                     // 강화무기 오브젝트
+    private GameObject weaponMuzzle;                   // 일반무기 오브젝트
+    private GameObject chargeEffect;             // 차지 이펙트 오브젝트
+    private bool chargingStop;                   // 차징 멈추는 플래그
+    private GameObject weaponIceMuzzle;          // 무기 아이스투사체 생성위치
+    private GameObject weaponElectricMuzzle;     // 무기 전기투사체 생성위치
+    GameObject iceProjectile =default;           // 아이스 투사체
+    public Material laserMaterial = default;     // 레이저 메테리얼
+    public Material normalMaterial = default;    // 기본 메테리얼
     //=================== 보스 피격 이펙트를 위한 변수 ============================================
     private bool isEffectSpawning = false;       // 보스피격이펙트를 생성 중인지 여부를 나타내는 플래그
     private Coroutine effectCoroutine;           // 코루틴 참조를 저장할 변수 
@@ -33,13 +54,12 @@ public class Player: MonoBehaviour
         targetAlpha = 0.00000001f;                                    // 페이드 아웃 목표 알파 값 설정
         timer = 0f;                                                   // 데미지 받을때부터 시간 측정 값
         originAlpha = hitImage.color.a;                               // 최초 알파값 저장   
-        currentWeapon = 1;                                            // 무기 번호 초기화
-        gun1 = GameObject.Find("Gun1");                               // 일반무기 오브젝트 가져오기
-        gun2 = GameObject.Find("Gun2");                               // 강화무기 오브젝트 가져오기
         boss = FindFirstObjectByType<MonsterHP>();                    // 보스 체력 스크립트 가져오기
-        // 괴수 투사체 데미지가져오기
-        // projectileDamage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_PROJECTILE, Projectile.DMG);
-
+        weaponIceMuzzle = GameObject.Find(iceMuzzle);                 // 아이스 발사되는 위치
+        weaponElectricMuzzle = GameObject.Find(electricMuzzle);       // 전기 발사되는 위치
+        chargeEffect = GameObject.Find(chargeEffectName);             // 차지 이펙트
+        chargeEffect.SetActive(false);                                // 차지 이펙트 꺼두기
+        weaponMuzzle = GameObject.Find(weaponMuzzleName);             // 무기 머즐
         /* Resource 파일에서 불러오는 예시
         List<object> test = ResourceManager.Instance.GetDataFromID(Order.PC);
         int id = (int)test[(int)PC.ID];
@@ -56,15 +76,14 @@ public class Player: MonoBehaviour
         {
             return;
         }
-        if(GameManager.Instance.shopOpen == true)
+        if (GameManager.Instance.shopOpen == true)
         {
             return;
         }
         //=================== 각종 상태동안 작동안하도록하는 처리 ============================================
 
         //========================================= 레이 쏘기 =============================================
-        Ray ray = new Ray(ARAVRInput.RHandPosition, ARAVRInput.RHandDirection);
-        RaycastHit hitInfo = default;
+        ray = new Ray(weaponMuzzle.transform.position, ARAVRInput.RHandDirection);
         if(!lineRenderer.enabled)
         {
             lineRenderer.enabled = true;
@@ -72,104 +91,62 @@ public class Player: MonoBehaviour
 
         if (Physics.Raycast(ray, out hitInfo, 600f))
         {
-            //Debug.Log("레이가 맞기는해?");
             if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Boss")) //|| hitInfo.collider.gameObject.layer.Equals("Projectile"))
             {
-                //Debug.Log("보스레이로 인식하고있어?");
-                lineRenderer.SetPosition(0, ray.origin);
+                lineRenderer.SetPosition(0, weaponMuzzle.transform.position);
                 lineRenderer.SetPosition(1, hitInfo.point);
             }
             else
             {
-                lineRenderer.SetPosition(0, ray.origin);
+                lineRenderer.SetPosition(0, weaponMuzzle.transform.position);
                 lineRenderer.SetPosition(1, hitInfo.point);
             }
         }
         //========================================= 레이 쏘기 =============================================
 
+
+
         //========================================= 공격 하기 =============================================
-        if (ARAVRInput.Get(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
-        {
-            // TODO : 괴수의 피격당하는 함수실행시키기.
-            if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Boss"))
-            {
-                // 보스 체력 깎기
-                if (boss != null)
-                {
-                    //boss.OnHit((int)ResourceManager.Instance.GetSingleDataFromID(Order.WEAPON1, Weapon.DMG));
-                }
-                // 이펙트를 만드는 코드
-                if (!isEffectSpawning)
-                {
-                    // 코루틴이 실행 중이 아닌 경우에만 실행
-                    effectCoroutine = StartCoroutine(SpawnEffectPeriodically(hitInfo, currentWeapon));
-                    isEffectSpawning = true;
-                }
-            }
-            /* else if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Projectile"))
-             {
-                 // 이펙트를 만드는 코드
-                 if (!isEffectSpawning)
-                 {
-                     // 코루틴이 실행 중이 아닌 경우에만 실행
-                     effectCoroutine = StartCoroutine(SpawnEffectPeriodically(hitInfo, currentWeapon));
-                     isEffectSpawning = true;
-                 }
-             }*/
-            else
-            {
-                StopEffectCoroutine();
-            }
-        }
-        else
-        {
-            StopEffectCoroutine();
-        }
+            AttackEnemy();
         //========================================= 공격 하기 =============================================
     }
 
     //======================================= 이펙트 터지는 코루틴 ==========================================
-    private IEnumerator SpawnEffectPeriodically(RaycastHit hitInfo, int currentWeapon)
+    #region 이펙트 터지는 코루틴
+    private IEnumerator SpawnEffect(RaycastHit hitInfo, int  userWeaponState)
     {
-        Debug.Log("코루틴속 1번째확인");
-        if (currentWeapon == 1)
+        //TODO : 코루틴이 시작하는데 끝나지 않고있음 문제해결필요
+        if (userWeaponState == (int)WeaponState.LASER)
         {
             while (true)
             {
-                // effect를 생성하거나 위치를 업데이트하는 코드
-                GameObject effect = EffectPoolManager.instance.GetQueue(1);
-                effect.transform.position = hitInfo.point;
-
-                yield return new WaitForSeconds(0.5f); // 0.5초 동안 대기
+                EffectPoolManager.instance.GetQueue(userWeaponState).transform.position = hitInfo.point;
+                yield return new WaitForSeconds(0.5f);
             }
         }
-        else if (currentWeapon == 2)
+        else if (userWeaponState == (int)WeaponState.LIGHTING)
         {
             while (true)
             {
-                Debug.Log("코루틴속 2번째확인");
-                // effect를 생성하거나 위치를 업데이트하는 코드
-                GameObject effect = EffectPoolManager.instance.GetQueue(2);
-                effect.transform.position = hitInfo.point;
-
-                yield return new WaitForSeconds(0.5f); // 0.5초 동안 대기
+                EffectPoolManager.instance.GetQueue(userWeaponState).transform.position = hitInfo.point;
+                yield return new WaitForSeconds(0.5f);
+            }
+        }
+        else if (userWeaponState == (int)WeaponState.ICE)
+        {
+            while (true)
+            {
+                EffectPoolManager.instance.GetQueue(userWeaponState).transform.position = hitInfo.point;
+                yield return new WaitForSeconds(0.5f);
             }
         }
     }
-    
-
-    private void StopEffectCoroutine()
-    {
-        if (effectCoroutine != null)
-        {
-            StopCoroutine(effectCoroutine);
-            isEffectSpawning = false;
-        }
-    }
+    #endregion
     //======================================= 이펙트 터지는 코루틴 ==========================================
 
 
     //======================================= 피격 계산 함수 ===============================================
+    #region 피격함수,코루틴
     public void DamageTake(int value)
     {
         //HP 계산하기
@@ -217,21 +194,126 @@ public class Player: MonoBehaviour
         hitImage.gameObject.SetActive(false);
         isHited = false;
     }
-
+    #endregion
     //======================================= 피격 계산 함수 ===============================================
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if(other.gameObject.layer.Equals("Boss"))
-    //    {
-    //        DamageTake();
-    //    }
-    //}
 
-    public void InforceWeapon()
+    public void AttackEnemy()
     {
-        //TODO : 지속시간 끝나면 원래대로 돌아가는 코드도 짜야함.
-        gun1.SetActive(false);
-        gun2.SetActive(true);
-        currentWeapon = 2;
+
+        if (userWeaponState == (int)WeaponState.LASER)
+        {
+            if (ARAVRInput.GetDown(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
+            {
+                chargeEffect.SetActive(true);
+                lineRenderer.material = laserMaterial;
+            }
+            else if (ARAVRInput.GetUp(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
+            {
+                chargeEffect.SetActive(false);
+                lineRenderer.material = normalMaterial;
+            }
+            if (ARAVRInput.Get(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
+            {
+                if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Boss"))
+                {
+                    // 보스 체력 깎기
+                    if (boss != null)
+                    {
+                        // 코루틴으로 보스체력을 깎는 코드를 만들어야한다.
+                        // TODO : 보스 체력깎는 코드
+                    }
+                    // 이펙트를 만드는 코드
+                }
+            }
+            
+        }
+
+
+        if (userWeaponState == (int)WeaponState.LIGHTING)
+        {
+            
+            if (ARAVRInput.GetDown(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
+            {
+                // hitInfo가 boss일때 맞는 판정으로 만들기s
+                if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Boss"))
+                {
+                    // 보스 체력 깎기
+                    if (boss != null)
+                    {
+                        // TODO : 보스 체력깎는 코드
+                    }
+                    // 이펙트를 만드는 코드
+                }
+                GameObject electricProjectile = ProjectilePool.instance.GetQueue(userWeaponState);
+                electricProjectile.transform.position = weaponElectricMuzzle.transform.position;
+
+                // 이펙트를 만드는 코드
+            }
+        }
+
+        if (userWeaponState == (int)WeaponState.ICE)
+        {
+            // Ice
+            if (ARAVRInput.GetDown(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
+            {
+                chargingStop = false;
+                chargeEffect.SetActive(true);
+                iceProjectile = ProjectilePool.instance.GetQueue(userWeaponState);
+                iceProjectile.transform.position = weaponIceMuzzle.transform.position;
+                StartCoroutine(chargeDMG(iceProjectile));
+                StartCoroutine(chargeScale(iceProjectile));
+            }
+            else if (ARAVRInput.GetUp(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
+            {
+                chargingStop = true;
+                chargeEffect.SetActive(false);
+                iceProjectile.GetComponent<IceProjectile>().shot();
+                
+            }
+
+
+        }
+    }
+
+    //데미지 올려주는 코루틴.
+    private IEnumerator chargeDMG(GameObject iceProjectile)
+    {
+        int timer = 0;
+        int chargeTime = (int)ResourceManager.Instance.GetSingleDataFromID(Order.ICE_WEAPON, ICE_WEAPON.CHARGING_MAX_TIME);
+        int originDMG = iceProjectile.GetComponent<IceProjectile>().originDMG;
+        int chargeDMG = iceProjectile.GetComponent<IceProjectile>().chargeDMG;
+        while (timer <= chargeTime)
+        {
+            if(chargingStop == true)
+            {
+                break;
+            }
+            timer++;
+            iceProjectile.GetComponent<IceProjectile>().currentDMG += chargeDMG;
+            yield return new WaitForSeconds(1.0f);
+        }    
+    }
+
+    //크기를 키워주는 코루틴
+    private IEnumerator chargeScale(GameObject iceProjectile)
+    {
+        float timer = 0;
+        int chargeTime = (int)ResourceManager.Instance.GetSingleDataFromID(Order.ICE_WEAPON, ICE_WEAPON.CHARGING_MAX_TIME);
+        Transform currentScale = iceProjectile.GetComponent<IceProjectile>().currentScale;
+        float percentage = 0f;
+        float originScale = 1f;
+        float maxScale = (int)ResourceManager.Instance.GetSingleDataFromID(Order.ICE_WEAPON, ICE_WEAPON.CHARGING_MAX_SCALE);
+        while (timer <= chargeTime)
+        {
+            if (chargingStop == true)
+            {
+                break;
+            }
+            timer += Time.deltaTime;
+            percentage = timer / chargeTime;
+            currentScale.localScale = new Vector3 (Mathf.Lerp(originScale, maxScale, percentage), Mathf.Lerp(originScale, maxScale, percentage), Mathf.Lerp(originScale, maxScale, percentage));
+
+            yield return null;
+        }
     }
 }
