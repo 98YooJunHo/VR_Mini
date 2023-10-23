@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    enum BOSS_PHASE
+    {
+        ONE = 1, TWO = 2, THREE = 3
+    }
+
+    enum BOSS_HP
+    {
+        PHASE_ONE, PHASE_TWO, PHASE_THREE
+    }
+
     public static GameManager Instance
     {
         get
@@ -33,6 +43,7 @@ public class GameManager : MonoBehaviour
 
     #region Variable
     private const string BOSS_NAME = "Dragon";
+    private const int TOTAL_BOSS_PHASE = 3;
 
     public float goldPerTimeDelay = 1f;
     public int goldPerTime = 5;
@@ -46,6 +57,8 @@ public class GameManager : MonoBehaviour
     private Transform originBossTransform = default;
     private WaitForSeconds goldDelay = default;
     private WaitForSeconds scoreDelay = default;
+
+    private int[] bossPhaseHp = new int[TOTAL_BOSS_PHASE];
     public int score { get; private set; }
     public bool gameOver { get; private set; }
     public int bossPhase { get; private set; }
@@ -55,7 +68,6 @@ public class GameManager : MonoBehaviour
     public int gold { get; private set; }
     private int mBossHp;
     private int mPlayerHp;
-    private int pastBossHp;
     public int bossHp
     {
         get { return mBossHp; }
@@ -95,7 +107,7 @@ public class GameManager : MonoBehaviour
                 Destroy(this);
             }
         }
-
+        Init_OneTime();
         Init_Stats();
     }
     // Start is called before the first frame update
@@ -115,11 +127,11 @@ public class GameManager : MonoBehaviour
         if(!gameOver)
         {
             time += Time.deltaTime;
-            if (playerHp <= 0 || bossHp <= 0)
+            if (playerHp <= 0 || (bossPhase == (int)BOSS_PHASE.THREE && bossHp <= 0))
             {
                 End_Game();
             }
-            Check_BossPase();
+            Check_BossPhase();
         }
     }
 
@@ -131,20 +143,27 @@ public class GameManager : MonoBehaviour
         Init_UI();
     }
 
+    public void Init_OneTime()
+    {
+        List<object> boss = ResourceManager.Instance.GetDataFromID(Order.MONSTER);
+        bossPhaseHp[(int)BOSS_HP.PHASE_ONE] = (int)boss[(int)MONSTER.P1_HP];
+        bossPhaseHp[(int)BOSS_HP.PHASE_TWO] = (int)boss[(int)MONSTER.P2_HP];
+        bossPhaseHp[(int)BOSS_HP.PHASE_THREE] = (int)boss[(int)MONSTER.P3_HP];
+    }
+
     public void Init_Stats()
     {
         time = 0;
         score = 0;
         gameOver = true;
         shopOpen = false;
-        playerMaxHp = (int)ResourceManager.Instance.GetSingleDataFromID(Order.PC, PC.HP);
-        //bossMaxHp = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, Monster.HP);
         gold = (int)ResourceManager.Instance.GetSingleDataFromID(Order.PC, PC.INIT_GOLD);
+        playerMaxHp = (int)ResourceManager.Instance.GetSingleDataFromID(Order.PC, PC.HP);
         playerHp = playerMaxHp;
-        bossHp = bossMaxHp;
-        pastBossHp = bossMaxHp;
-        bossPhase = 1;
         boss = GameObject.Find(BOSS_NAME);
+        bossPhase = (int)BOSS_PHASE.ONE;
+        bossMaxHp = bossPhaseHp[(int)BOSS_HP.PHASE_ONE];
+        bossHp = bossMaxHp;
         if(originBossTransform != null && boss != null)
         {
             boss.transform.position = originBossTransform.position;
@@ -222,36 +241,37 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Check_BossPase()
+    private void Check_BossPhase()
     {
-        if(pastBossHp == mBossHp)
+        if(bossHp != 0 || bossMaxHp == bossPhaseHp[(int)BOSS_HP.PHASE_THREE])
         {
             return;
         }
 
-        if(bossPhase == 3)
+        if(bossHp == 0)
         {
-            return;
-        }
-
-        pastBossHp = mBossHp;
-        
-        switch(bossPhase)
-        {
-            case 1:
-                if (mBossHp <= bossMaxHp - 350) // 현재 뒤의 빼는 값은 확정되지 않은 값(추후 csv에서 읽어올 예정)
-                    bossPhase = 2;
-                break;
-            case 2:
-                if (mBossHp <= bossMaxHp - 600) // 현재 뒤의 빼는 값은 확정되지 않은 값(추후 csv에서 읽어올 예정)
-                    bossPhase = 3;
-                break;
+            switch(bossPhase)
+            {
+                case (int)BOSS_PHASE.ONE:
+                    bossMaxHp = bossPhaseHp[(int)BOSS_HP.PHASE_TWO];
+                    bossHp = bossMaxHp;
+                    bossPhase = (int)BOSS_PHASE.TWO;
+                    break;
+                case (int)BOSS_PHASE.TWO:
+                    bossMaxHp = bossPhaseHp[(int)BOSS_HP.PHASE_THREE];
+                    bossHp = bossMaxHp;
+                    bossPhase = (int)BOSS_PHASE.THREE;
+                    break;
+                default:
+                    Debug.LogError("예기치 못한 오류, 찾아야 함");
+                    break;
+            }
         }
     }
 
     private void Add_Score_End()
     {
-        score += (int)((float)gold * goldToScorePer);
+        score += (int)(gold * goldToScorePer);
         score += bossPhase * scorePerPhase;
     }
 

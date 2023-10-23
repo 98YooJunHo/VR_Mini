@@ -7,7 +7,7 @@ public class ScoreUI_Canvas_Yoo : MonoBehaviour
 {
     private TMP_Text scoreTMP;
 
-    private enum Target
+    private enum TARGET
     {
         SCORE = 2
     }
@@ -15,7 +15,7 @@ public class ScoreUI_Canvas_Yoo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        scoreTMP = transform.GetChild((int)Target.SCORE).GetComponent<TMP_Text>();
+        scoreTMP = transform.GetChild((int)TARGET.SCORE).GetComponent<TMP_Text>();
     }
 
     // Update is called once per frame

@@ -6,28 +6,53 @@ using UnityEngine.UI;
 
 public class HUD_Canvas_Yoo : MonoBehaviour
 {
-    private enum Target
+    private enum TARGET
     {
         TIME, GOLD, PLAYER_HP, BOSS_HP
     }
 
+    enum BOSS_PHASE
+    {
+        ONE = 1, TWO = 2, THREE = 3
+    }
+
+    enum COLOR
+    {
+        PHASE_ONE, PHASE_TWO, PHASE_THREE
+    }
+
     #region Variable
+    private const int TOTAL_BOSS_PHASE = 3;
+
     private TMP_Text timeTMP;
     private TMP_Text goldTMP;
     private TMP_Text playerHpTMP;
     private TMP_Text bossHpTMP;
     private Image playerHpImg;
     private Image bossHpImg;
+
+    private Color[] bossHpColors = new Color[TOTAL_BOSS_PHASE];
+    private int bossPhase;
+    private int bossHp;
+    private int playerHp;
     #endregion
 
     private void Awake()
     {
-        timeTMP = transform.GetChild((int)Target.TIME).GetComponentInChildren<TMP_Text>();
-        goldTMP = transform.GetChild((int)Target.GOLD).GetComponentInChildren<TMP_Text>();
-        playerHpTMP = transform.GetChild((int)Target.PLAYER_HP).GetComponentInChildren<TMP_Text>();
-        bossHpTMP = transform.GetChild((int)Target.BOSS_HP).GetComponentInChildren<TMP_Text>();
-        playerHpImg = transform.GetChild((int)Target.PLAYER_HP).GetComponent<Image>();
-        bossHpImg = transform.GetChild((int)Target.BOSS_HP).GetComponent<Image>();
+        timeTMP = transform.GetChild((int)TARGET.TIME).GetComponentInChildren<TMP_Text>();
+        goldTMP = transform.GetChild((int)TARGET.GOLD).GetComponentInChildren<TMP_Text>();
+        playerHpTMP = transform.GetChild((int)TARGET.PLAYER_HP).GetComponentInChildren<TMP_Text>();
+        bossHpTMP = transform.GetChild((int)TARGET.BOSS_HP).GetComponentInChildren<TMP_Text>();
+        playerHpImg = transform.GetChild((int)TARGET.PLAYER_HP).GetComponent<Image>();
+        bossHpImg = transform.GetChild((int)TARGET.BOSS_HP).GetComponent<Image>();
+
+        bossPhase = GameManager.Instance.bossPhase;
+        bossHp = GameManager.Instance.bossHp;
+        playerHp = GameManager.Instance.playerHp;
+
+        //bossHpColors[(int)COLOR.PHASE_ONE] = bossHpImg.GetComponent<Color>();
+        //bossHpColors[(int)COLOR.PHASE_TWO] = new Color();
+        //bossHpColors[(int)COLOR.PHASE_THREE] = new Color();
     }
 
     // Start is called before the first frame update
@@ -53,16 +78,33 @@ public class HUD_Canvas_Yoo : MonoBehaviour
     }
 
     #region Function
-    public void Set_PlayerHpGauge()
+    private void Set_PlayerHpGauge()
     {
-        playerHpImg.fillAmount = (float)GameManager.Instance.playerHp / (float)GameManager.Instance.playerMaxHp * 0.5f;
+        if(playerHp == GameManager.Instance.playerHp)
+        {
+            return;
+        }
+
+        playerHp = GameManager.Instance.playerHp;
+        playerHpImg.fillAmount = GameManager.Instance.playerHp / (float)GameManager.Instance.playerMaxHp * 0.5f;
         playerHpTMP.text = GameManager.Instance.playerHp + "/" + GameManager.Instance.playerMaxHp;
     }
 
-    public void Set_BossHpGauge()
+    private void Set_BossHpGauge()
     {
-        bossHpImg.fillAmount = (float)GameManager.Instance.bossHp / (float)GameManager.Instance.bossMaxHp * 0.5f;
+        if (bossHp == GameManager.Instance.bossHp)
+        {
+            return;
+        }
+
+        bossHp = GameManager.Instance.bossHp;
+        bossHpImg.fillAmount = GameManager.Instance.bossHp / (float)GameManager.Instance.bossMaxHp * 0.5f;
         bossHpTMP.text = GameManager.Instance.bossHp + "/" + GameManager.Instance.bossMaxHp;
+    }
+
+    private void Set_BossHpColor()
+    {
+
     }
     #endregion
 }
