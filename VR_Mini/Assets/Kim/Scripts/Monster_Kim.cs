@@ -11,11 +11,12 @@ public class Monster_Kim : MonoBehaviour
     private Ultimate_Kim ult;
     private MonsterSkill_1 skill_1;
     private SoulSuck soulSuck;
+    private GameManager gameManager;
 
     private int paseTrigger = 30;
     private float attackTrigger = 5;
     private float checkTime = 0;
-    private MonsterHP monsterHP;
+    public MonsterHP monsterHP;
     private int maxHP;
 
     private Animator animator;
@@ -29,9 +30,8 @@ public class Monster_Kim : MonoBehaviour
     public bool pase_2UseUlt = true;
     public bool pase_3UseUlt = true;
 
-    private int after = 0;
-    private int before = 0;
-
+    public int after = 0;
+    public int before = 0;
 
     public enum MonsterDoingType
     {
@@ -45,20 +45,21 @@ public class Monster_Kim : MonoBehaviour
     public MonsterDoingType type;
     private void Awake()
     {
-        Instance = this;
     }
     // Start is called before the first frame update
     void Start()
     {
+        Instance = this;
         monsterAttack = GetComponent<MonsterAttack>();
         ult = GetComponent<Ultimate_Kim>();
         skill_1 = GetComponent<MonsterSkill_1>();
         soulSuck = transform.GetComponent<SoulSuck>();
 
-        monsterHP = FindObjectOfType<MonsterHP>();
-        maxHP = monsterHP.hp;
+        monsterHP = GetComponent<MonsterHP>();
         type = MonsterDoingType.idle;
         animator = GetComponent<Animator>();
+        maxHP = monsterHP.hp;
+        gameManager = GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -73,65 +74,83 @@ public class Monster_Kim : MonoBehaviour
         {
             checkTime += Time.deltaTime;
         }
-        MonsterPase();
+        if (type != MonsterDoingType.die)
+        {
+            MonsterPase();
+        }
         MonsterMove();
-        if(pase_1UseUlt && monsterHP.hp <= maxHP - paseTrigger && monsterHP.hp > maxHP - (paseTrigger * 2))
+        if (pase_1UseUlt && monsterHP.hp < monsterHP.maxHP - monsterHP.hp1)
         {
             after++;
+            pase_1UseUlt = false;
         }
-        else if(pase_2UseUlt && monsterHP.hp < maxHP - (paseTrigger * 2))
+        else if (pase_2UseUlt && monsterHP.hp < monsterHP.maxHP - (monsterHP.hp1 + monsterHP.hp2))
         {
             after++;
+            pase_2UseUlt = false;
         }
-        else if(pase_3UseUlt && monsterHP.hp <= 0)
+        else if (pase_3UseUlt && monsterHP.hp <= 0)
         {
             after++;
+            pase_3UseUlt = false;
         }
     }
 
     private void MonsterPase()
     {
-        if (monsterHP.hp > maxHP - paseTrigger)
-        {
+        if (monsterHP.hp > monsterHP.maxHP - monsterHP.hp1)
+        {            
             Pase1();
         }
-        else if (monsterHP.hp <= maxHP - monsterHP.hp1 && monsterHP.hp > maxHP - (monsterHP.hp1 + monsterHP.hp2))
+        else if (monsterHP.hp <= monsterHP.maxHP - monsterHP.hp1 && monsterHP.hp > monsterHP.maxHP - (monsterHP.hp1 + monsterHP.hp2))
         {
-            if(after != before)
+            if(after != before && !pattern)
             {
+                Debug.Log("1");
+
+                Debug.LogFormat("{0}, {1}", before, after);
                 before ++;
                 type = MonsterDoingType.ultimate;
-                
+                Debug.LogFormat("{0}, {1}", before, after);
+                pase_1UseUlt = false;
             }
-            Debug.Log("2");
+
             if (!useUlt)
             {
                 Pase2();
             }
         }
-        else if (monsterHP.hp < maxHP - (monsterHP.hp1 + monsterHP.hp2))
+        else if (monsterHP.hp < monsterHP.maxHP - (monsterHP.hp1 + monsterHP.hp2))
         {
-            if (after != before)
+            if (after != before && !pattern)
             {
+                Debug.Log("2");
+
+                Debug.LogFormat("{0}, {1}", before, after);
                 before++;
                 type = MonsterDoingType.ultimate;
-
+                Debug.LogFormat("{0}, {1}", before, after);
+                pase_2UseUlt = false;
             }
-            Debug.Log("3");
+
             if (!useUlt)
             {
                 Pase3();
             } 
         }
-        else if (monsterHP.hp <= 0)
+        else if (monsterHP.hp <= 0 && !pattern)
         {
             if (after != before)
             {
+                Debug.Log("3");
+
+                Debug.LogFormat("{0}, {1}", before, after);
                 before++;
                 type = MonsterDoingType.ultimate;
-
+                Debug.LogFormat("{0}, {1}", before, after);
+                pase_3UseUlt = false;
             }
-            if (!useUlt)
+            if (!pase_1UseUlt)
             {
                 type = MonsterDoingType.die;
             }
@@ -140,7 +159,7 @@ public class Monster_Kim : MonoBehaviour
 
     private void MonsterMove()
     {
-        if (type == MonsterDoingType.idle)
+        if (type == MonsterDoingType.idle && !useUlt)
         {
             animator.Play("Walk");
         }
@@ -176,6 +195,7 @@ public class Monster_Kim : MonoBehaviour
         {
             pattern = true;
             animator.Play("Die");
+            gameManager.End_Game();
         }
     }
 
@@ -183,7 +203,7 @@ public class Monster_Kim : MonoBehaviour
     {
         if (checkTime > attackTrigger)
         {
-            type = MonsterDoingType.skill_2;
+            type = MonsterDoingType.attack;
         }
     }
     private void Pase2()
@@ -192,7 +212,7 @@ public class Monster_Kim : MonoBehaviour
 
         if (checkTime > attackTrigger)
         {
-            if(pattern < 8)
+            if(pattern < (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.PROB_P2))
             {
                 type = MonsterDoingType.attack;
             }
@@ -208,16 +228,19 @@ public class Monster_Kim : MonoBehaviour
 
         if (checkTime > attackTrigger)
         {
-            if(pattern < 6)
+            if(pattern < (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.PROB_P3))
             {
                 type = MonsterDoingType.attack;
             }
-            else if(pattern <= 6 && pattern < 9)
+            else if(pattern <= (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.PROB_P3) 
+                && pattern < (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_SOUL_SKILL, MONSTER_SOUL_SKILL.PROB_P3))
             {
                 type = MonsterDoingType.skill_1;
             }
-            else if (pattern >= 9 && pattern <= 10)
+            else if (pattern >= (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_SOUL_SKILL, MONSTER_SOUL_SKILL.PROB_P3)
+                && pattern <= (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_METEOR_SKILL, MONSTER_METEOR_SKILL.PROB_P3))
             {
+                
                 type = MonsterDoingType.skill_2;
             }
         }
@@ -234,7 +257,10 @@ public class Monster_Kim : MonoBehaviour
         yield return new WaitForSeconds(8f);      // 모션 시간 보면서 시간 조정해야됨
 
         checkTime = 0;
-        type = MonsterDoingType.idle;
+        if (after == before)
+        {
+            type = MonsterDoingType.idle;
+        }
         doOnce = false;
         pattern = false;
     }
@@ -251,7 +277,10 @@ public class Monster_Kim : MonoBehaviour
         }
         yield return new WaitForSeconds(6.667f);      // 모션 시간 보면서 시간 조정해야됨
         checkTime = 0;
-        type = MonsterDoingType.idle;
+        if (after == before)
+        {
+            type = MonsterDoingType.idle;
+        }
         doOnce = false;
         pattern = false;
     }
@@ -269,8 +298,10 @@ public class Monster_Kim : MonoBehaviour
 
         yield return new WaitForSeconds(soulSuck.wayTime + 4.668f);      // 모션 시간 보면서 시간 조정해야됨
         checkTime = 0;
-        type = MonsterDoingType.idle;
-
+        if (after == before)
+        {
+            type = MonsterDoingType.idle;
+        }
         doOnce = false;
         pattern = false;
     }
@@ -284,8 +315,11 @@ public class Monster_Kim : MonoBehaviour
         yield return new WaitForSeconds(13f);      // 모션 시간 보면서 시간 조정해야됨
         animator.Play("Land");
         yield return new WaitForSeconds(4f);
+        if (after == before)
+        {
+            type = MonsterDoingType.idle;
+        }
         checkTime = 0;
-        type = MonsterDoingType.idle;
         doOnce = false;
         pattern = false;
         yield break;

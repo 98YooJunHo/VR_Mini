@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static Monster_Kim;
 
-public class MonsterWeakPoint : MonsterHP
+public class MonsterWeakPoint : MonoBehaviour
 {
     public List<GameObject> landWeakPoint; 
     public List<GameObject> flyWeakPoint;
@@ -11,10 +12,9 @@ public class MonsterWeakPoint : MonsterHP
     public List<GameObject> weakPoints;
 
     public GameObject weakpoint;
-    private DamagedPoint point;
     //private DamagedPoint point_;
     private Monster_Kim monster;
-
+    private Player player;
     private int addWeakPoint;
 
     //public bool isWork = false;
@@ -23,7 +23,8 @@ public class MonsterWeakPoint : MonsterHP
     void Start()
     {
         monster = GetComponent<Monster_Kim>();
-            addWeakPoint = 5;
+        addWeakPoint = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_COUNT);
+        player = GameObject.Find("Player").GetComponent<Player>();
     }
 
     //// Update is called once per frame
@@ -46,6 +47,7 @@ public class MonsterWeakPoint : MonsterHP
                 } while (weakPoints.Contains(flyWeakPoint[rnd]));
                 weakPoints.Add(flyWeakPoint[rnd]);
                 weakPoints[i].SetActive(true);
+
             }
                 //flyWeakPoint.RemoveAt(rnd);
         }
@@ -73,6 +75,7 @@ public class MonsterWeakPoint : MonsterHP
     {
         if (weakpoint != null)
         {
+            Debug.Log(weakpoint);
             weakPoints.Remove(weakpoint);
             if (monster.type == Monster_Kim.MonsterDoingType.ultimate)
             {
@@ -87,11 +90,23 @@ public class MonsterWeakPoint : MonsterHP
     }
 
     public bool BreakUp()
-    {      
-        
-        if(weakPoints.Count <= 0)
+    {
+
+        if (weakPoints.Count <= 0)
         {
             // 여기에 약점공략시 대미지 주는 코드
+            if (monster.monsterHP.hp <= monster.monsterHP.maxHP - monster.monsterHP.hp1 && monster.monsterHP.hp > monster.monsterHP.maxHP - (monster.monsterHP.hp1 + monster.monsterHP.hp2))
+            {
+                int pase = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.P2_HP);
+                float damage = (float)pase / (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_DMG);
+                player.DamageTake((int)damage);
+            }
+            else if(monster.monsterHP.hp < monster.monsterHP.maxHP - (monster.monsterHP.hp1 + monster.monsterHP.hp2))
+            {
+                int pase = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.P3_HP);
+                float damage = (float)pase / (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_DMG);
+                player.DamageTake((int)damage);
+            }
             return true;
         }
 
@@ -105,14 +120,14 @@ public class MonsterWeakPoint : MonsterHP
         for (int i = 0; i < weakPoints.Count; i++)
         {
             weakPoints[i].SetActive(false);
-            //if (monster.type == Monster_Kim.MonsterDoingType.ultimate)
-            //{
-            //    flyWeakPoint.Add(weakPoints[i]);
-            //}
-            //else
-            //{
-            //    landWeakPoint.Add(weakPoints[i]);
-            //}
+            if (monster.type == Monster_Kim.MonsterDoingType.ultimate)
+            {
+                flyWeakPoint.Add(weakPoints[i]);
+            }
+            else
+            {
+                landWeakPoint.Add(weakPoints[i]);
+            }
         }
         weakPoints = null;
     }

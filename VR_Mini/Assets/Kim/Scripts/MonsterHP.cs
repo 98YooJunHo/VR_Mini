@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class MonsterHP : MonoBehaviour
@@ -13,25 +14,24 @@ public class MonsterHP : MonoBehaviour
     public int hp1;
     public int hp2;
     public int hp3;
+    public int maxHP;
     private float moveSpeed;
 
 
     private void Awake()
     {
-        Instance = this;
     }
     // Start is called before the first frame update
     void Start()
     {
-        //List<object> monster = ResourceManager.Instance.GetDataFromID(Order.MONSTER);
-        //hp1 = (int)monster[(int)MONSTER.P1_HP];
-        //hp2 = (int)monster[(int)MONSTER.P2_HP];
-        //hp3 = (int)monster[(int)MONSTER.P3_HP];
-        //hp = hp1 + hp2 + hp3; 
-        hp1 = 1;
-        hp2 = 1;
-        hp3 = 1;
+        Instance = this;
+        List<object> monster = ResourceManager.Instance.GetDataFromID(Order.MONSTER);
+        hp1 = (int)monster[(int)MONSTER.P1_HP];
+        hp2 = (int)monster[(int)MONSTER.P2_HP];
+        hp3 = (int)monster[(int)MONSTER.P3_HP];
         hp = hp1 + hp2 + hp3;
+        maxHP = hp;
+     
     }
 
     // Update is called once per frame
