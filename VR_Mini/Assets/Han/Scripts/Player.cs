@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+
 public class Player: MonoBehaviour
 {
     public static Player instance;               // 스태틱 객체
@@ -23,6 +25,8 @@ public class Player: MonoBehaviour
     //=================== 보스 피격 이펙트를 위한 변수 ============================================
     private int projectileDamage = default;      // 몬스터 데미지
     private MonsterHP boss = default;            // 보스 체력 스크립트
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,8 +41,8 @@ public class Player: MonoBehaviour
         gun1 = GameObject.Find("Gun1");                               // 일반무기 오브젝트 가져오기
         gun2 = GameObject.Find("Gun2");                               // 강화무기 오브젝트 가져오기
         boss = FindFirstObjectByType<MonsterHP>();                    // 보스 체력 스크립트 가져오기
-        // 괴수 투사체 데미지가져오기
-        // projectileDamage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_PROJECTILE, Projectile.DMG);
+                                                                      // 괴수 투사체 데미지가져오기
+                                                                      // projectileDamage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_PROJECTILE, Projectile.DMG);
 
         /* Resource 파일에서 불러오는 예시
         List<object> test = ResourceManager.Instance.GetDataFromID(Order.PC);
@@ -46,6 +50,9 @@ public class Player: MonoBehaviour
         string dec = test[(int)PC.DESCRIPTION].ToString();
         int id2 = (int)ResourceManager.Instance.GetSingleDataFromID(Order.PC, PC.ID);
         */
+
+
+
     }
 
     // Update is called once per frame
@@ -61,6 +68,9 @@ public class Player: MonoBehaviour
             return;
         }
         //=================== 각종 상태동안 작동안하도록하는 처리 ============================================
+
+
+
 
         //========================================= 레이 쏘기 =============================================
         Ray ray = new Ray(ARAVRInput.RHandPosition, ARAVRInput.RHandDirection);
