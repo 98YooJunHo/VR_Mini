@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
         //Invoke("Start_Game", 3f);
         //Invoke("End_Game", 5.5f);
         //Invoke("Exit_Game", 7f);
-        originBossTransform = boss.transform;
+        //originBossTransform = boss.transform;
     }
 
     // Update is called once per frame

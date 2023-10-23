@@ -8,11 +8,9 @@ public class RayTest : MonoBehaviour
     private GameObject shopUI;
     private bool isClicked = false;
 
-    private DamageButton attButton;
-    private WeakButton weakButton;
-
-    public Transform att;
-    public Transform weak;
+    private LaserButton laserButton;
+    private LightingButton lightingButton;
+    private IceButton iceButton;
 
     // Start is called before the first frame update
     void Start()
@@ -50,42 +48,53 @@ public class RayTest : MonoBehaviour
             {
                 lineRenderer.SetPosition(0, ray.origin);
                 lineRenderer.SetPosition(1, hitInfo.point);
-                attButton = hitInfo.transform.gameObject.GetComponent<DamageButton>();
-                weakButton = hitInfo.transform.gameObject.GetComponent<WeakButton>();
+                laserButton = hitInfo.transform.gameObject.GetComponent<LaserButton>();
+                lightingButton = hitInfo.transform.gameObject.GetComponent<LightingButton>();
+                iceButton = hitInfo.transform.gameObject.GetComponent<IceButton>();
 
-                if (hitInfo.collider.gameObject.name == "AttackSpeedButton")
+                if (hitInfo.collider.gameObject.name == "LaserWeapon")
                 {
-                    attButton.OnRayIn();
+                    laserButton.OnRayIn();
                     if (ARAVRInput.GetDown(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
                     {
-                        attButton.OnRayClick();
+                        laserButton.OnRayClick();
                     }
                 }
-                else if (hitInfo.collider.gameObject.name == "WeakPointButton")
+                else if (hitInfo.collider.gameObject.name == "LightingWeapon")
                 {
-                    weakButton.OnRayIn();
+                    lightingButton.OnRayIn();
                     if (ARAVRInput.GetDown(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
                     {
-                        weakButton.OnRayClick();
+                        lightingButton.OnRayClick();
+                    }
+                }
+                else if (hitInfo.collider.gameObject.name == "IceWeapon")
+                {
+                    iceButton.OnRayIn();
+                    if (ARAVRInput.GetDown(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
+                    {
+                        iceButton.OnRayClick();
                     }
                 }
                 else if (hitInfo.collider.gameObject.name == "ESCButton")
                 {
                     if (ARAVRInput.GetDown(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
-                    { 
+                    {
                         isClicked = !isClicked;
-                        UIManager.Instance.Close_ShopUI(); 
-                        lineRenderer.enabled = false;                    
+                        UIManager.Instance.Close_ShopUI();
+                        lineRenderer.enabled = false;
                     }
                 }
-                else 
+                else
                 {
                     if (hitInfo.collider.name == "Terrain" || hitInfo.collider.name == "Sphere_128_flip")
                     {
-                        DamageButton a = att.GetComponent<DamageButton>();
-                        WeakButton w = weak.GetComponent<WeakButton>();
-                        w.OnRayOut();
-                        a.OnRayOut();
+                        LaserButton noLaser = FindObjectOfType<LaserButton>();
+                        LightingButton noLight = FindObjectOfType<LightingButton>();
+                        IceButton noIce = FindObjectOfType<IceButton>();
+                        noLaser.OnRayOut();
+                        noLight.OnRayOut();
+                        noIce.OnRayOut();
                     }
                 }
             }
