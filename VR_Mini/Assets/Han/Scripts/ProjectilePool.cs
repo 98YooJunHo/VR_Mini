@@ -17,6 +17,7 @@ public class ProjectilePool : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
         for (int i = 0; i < 50; i++)
         {
             GameObject electricProjectile = Instantiate(electricProjectilePrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
@@ -24,6 +25,7 @@ public class ProjectilePool : MonoBehaviour
             electricProjectileQueue.Enqueue(electricProjectile);
             electricProjectile.SetActive(false);
         }
+
         for (int i = 0; i < 50; i++)
         {
             GameObject iceProjectile = Instantiate(iceProjectilePrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
@@ -34,10 +36,6 @@ public class ProjectilePool : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void InsertProjectileQueue(GameObject gameobject, string projectileName)
     {
@@ -58,11 +56,31 @@ public class ProjectilePool : MonoBehaviour
         GameObject gameObject = default;
         if (userWeaponState == (int)WeaponState.LIGHTING)
         {
+            if(electricProjectileQueue.Count <50)
+            {
+                while(electricProjectileQueue.Count<=50)
+                {
+                    GameObject electricProjectile = Instantiate(electricProjectilePrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
+                    electricProjectile.transform.SetParent(gameObject.transform);
+                    electricProjectileQueue.Enqueue(electricProjectile);
+                    electricProjectile.SetActive(false);
+                }
+            }
             gameObject = electricProjectileQueue.Dequeue();
             gameObject.SetActive(true);
         }
         else if (userWeaponState == (int)WeaponState.ICE)
         {
+            if (iceProjectileQueue.Count < 50)
+            {
+                while (iceProjectileQueue.Count <= 50)
+                {
+                    GameObject iceProjectile = Instantiate(iceProjectilePrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
+                    iceProjectile.transform.SetParent(gameObject.transform);
+                    iceProjectileQueue.Enqueue(iceProjectile);
+                    iceProjectile.SetActive(false);
+                }
+            }
             gameObject = iceProjectileQueue.Dequeue();
             gameObject.SetActive(true);
         }
