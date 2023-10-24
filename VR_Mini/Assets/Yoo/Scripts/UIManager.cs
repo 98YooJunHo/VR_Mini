@@ -81,15 +81,13 @@ public class UIManager : MonoBehaviour
         hudObj.transform.localScale = Vector3.zero;
         shopUIObj.transform.localScale = Vector3.zero;
         gameOverUI.transform.localScale = Vector3.zero;
-        //{ 10/17 홍한범
-        PrintItemText();
-        //} 10/17 홍한범
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     #region Function
@@ -149,12 +147,6 @@ public class UIManager : MonoBehaviour
     public void Close_Hud()
     {
         hudObj.transform.localScale = Vector3.zero;
-    }
-
-    //{ 10/17 홍한범
-    public void PrintItemText()
-    {
-
     }
 
 

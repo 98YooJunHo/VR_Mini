@@ -18,6 +18,9 @@ public class HUD_Canvas_Yoo : MonoBehaviour
     private TMP_Text bossHpTMP;
     private Image playerHpImg;
     private Image bossHpImg;
+
+    //{ 10/23 홍한범
+    private TextMeshProUGUI shopGoldTxt;
     #endregion
 
     private void Awake()
@@ -35,6 +38,7 @@ public class HUD_Canvas_Yoo : MonoBehaviour
     {
         Set_PlayerHpGauge();
         Set_BossHpGauge();
+        SetShopGold();
     }
 
     // Update is called once per frame
@@ -50,6 +54,7 @@ public class HUD_Canvas_Yoo : MonoBehaviour
 
         Set_PlayerHpGauge();
         Set_BossHpGauge();
+        UpdateShopGold(goldTMP.text);
     }
 
     #region Function
@@ -64,5 +69,19 @@ public class HUD_Canvas_Yoo : MonoBehaviour
         bossHpImg.fillAmount = (float)GameManager.Instance.bossHp / (float)GameManager.Instance.bossMaxHp * 0.5f;
         bossHpTMP.text = GameManager.Instance.bossHp + "/" + GameManager.Instance.bossMaxHp;
     }
+
+    //{ 10/23 홍한범
+    public void UpdateShopGold(string gold)
+    {
+        shopGoldTxt.text = gold;
+    }
+
+    public void SetShopGold()
+    { 
+        GameObject coinObj = GameObject.Find("CurrentCoin");
+        shopGoldTxt = coinObj.gameObject.transform.Find("Coin").Find("CoinTxt").GetComponent<TextMeshProUGUI>();
+        shopGoldTxt.text = GameManager.Instance.gold.ToString();
+    }
+    //} 10/23 홍한범
     #endregion
 }
