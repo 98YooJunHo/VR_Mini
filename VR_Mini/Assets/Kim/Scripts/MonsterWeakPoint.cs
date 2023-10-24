@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using static Monster_Kim;
 
-public class MonsterWeakPoint : MonoBehaviour
+public class MonsterWeakPoint : EctGetDamage
 {
     public List<GameObject> landWeakPoint; 
     public List<GameObject> flyWeakPoint;
@@ -17,6 +17,8 @@ public class MonsterWeakPoint : MonoBehaviour
     private Player player;
     private int addWeakPoint;
 
+    private MonsterHP monsterHP;
+
     //public bool isWork = false;
 
     // Start is called before the first frame update
@@ -25,6 +27,7 @@ public class MonsterWeakPoint : MonoBehaviour
         monster = GetComponent<Monster_Kim>();
         addWeakPoint = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_COUNT);
         player = GameObject.Find("Player").GetComponent<Player>();
+        monsterHP = GetComponent<MonsterHP>();
     }
 
     //// Update is called once per frame
@@ -75,6 +78,7 @@ public class MonsterWeakPoint : MonoBehaviour
     {
         if (weakpoint != null)
         {
+            Debug.Log("여기도");
             Debug.Log(weakpoint);
             weakPoints.Remove(weakpoint);
             if (monster.type == Monster_Kim.MonsterDoingType.ultimate)
@@ -91,21 +95,21 @@ public class MonsterWeakPoint : MonoBehaviour
 
     public bool BreakUp()
     {
-
+        Debug.Log(weakPoints.Count);
         if (weakPoints.Count <= 0)
         {
             // 여기에 약점공략시 대미지 주는 코드
             if (monster.monsterHP.hp <= monster.monsterHP.maxHP - monster.monsterHP.hp1 && monster.monsterHP.hp > monster.monsterHP.maxHP - (monster.monsterHP.hp1 + monster.monsterHP.hp2))
             {
-                int pase = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.P2_HP);
-                float damage = (float)pase / (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_DMG);
-                player.DamageTake((int)damage);
+                float pase = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.P2_HP);
+                float damage = pase / (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_DMG);
+                monsterHP.hp =- damage;
             }
             else if(monster.monsterHP.hp < monster.monsterHP.maxHP - (monster.monsterHP.hp1 + monster.monsterHP.hp2))
             {
-                int pase = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.P3_HP);
-                float damage = (float)pase / (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_DMG);
-                player.DamageTake((int)damage);
+                float pase = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.P3_HP);
+                float damage = pase / (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_DMG);
+                monsterHP.hp =- damage;
             }
             return true;
         }

@@ -10,11 +10,11 @@ public class MonsterHP : MonoBehaviour
     private string description;
     public float weakPointRate;
     private int actTime;
-    public int hp;
-    public int hp1;
-    public int hp2;
-    public int hp3;
-    public int maxHP;
+    public float hp;
+    public float hp1;
+    public float hp2;
+    public float hp3;
+    public float maxHP;
     private float moveSpeed;
 
 

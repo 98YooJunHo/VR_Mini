@@ -32,6 +32,8 @@ public class Ultimate_Kim : MonoBehaviour
     }
     public IEnumerator Ultimate_()
     {
+        Debug.Log("3");
+
         monster.useUlt = true;
         animator.Play("Fly Up");
         yield return new WaitForSeconds(4.0f);

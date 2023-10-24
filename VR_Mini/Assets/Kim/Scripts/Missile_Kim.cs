@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Missile_Kim : MonoBehaviour
+public class Missile_Kim : EctGetDamage
 {
     private float speed = 0.3f; // 이동 속도
     private float arcHeight = 50f; // 아치의 높이 조절
@@ -14,8 +14,6 @@ public class Missile_Kim : MonoBehaviour
     public float startTime;
     public float delayTime;
     private bool isFlying = false;
-
-    private int hp;
 
     void Start()
     {

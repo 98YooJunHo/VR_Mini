@@ -48,6 +48,8 @@ public class SoulSuck : MonoBehaviour
         }
         else
         {
+            animator.Play("Get Hit");
+            yield return new WaitForSeconds(1.333f);
             yield break;
         }
 

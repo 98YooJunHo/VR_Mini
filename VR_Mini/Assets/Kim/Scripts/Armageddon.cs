@@ -24,7 +24,7 @@ public class Armageddon : MonoBehaviour
             doOnce = true;
         }
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, 0, 0), speed * Time.deltaTime);
-        if (transform.localPosition.y < 1)   // y 값 수정해야됨
+        if (transform.position.y < 1)   // y 값 수정해야됨
         {
             player.DamageTake(damage);
             doOnce = false;

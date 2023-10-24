@@ -17,13 +17,14 @@ public class Monster_Kim : MonoBehaviour
     private float attackTrigger = 5;
     private float checkTime = 0;
     public MonsterHP monsterHP;
-    private int maxHP;
+    private float maxHP;
 
     private Animator animator;
     //private float speed = 3.2f;
 
     public bool pattern = false;
     private bool doOnce = false;
+    private bool doUlt = false;
 
     public bool useUlt = false;
     public bool pase_1UseUlt = true;
@@ -98,20 +99,16 @@ public class Monster_Kim : MonoBehaviour
 
     private void MonsterPase()
     {
-        if (monsterHP.hp > monsterHP.maxHP - monsterHP.hp1)
+        if (monsterHP.hp > monsterHP.maxHP - monsterHP.hp1 && !pattern)
         {            
             Pase1();
         }
-        else if (monsterHP.hp <= monsterHP.maxHP - monsterHP.hp1 && monsterHP.hp > monsterHP.maxHP - (monsterHP.hp1 + monsterHP.hp2))
+        else if (monsterHP.hp <= monsterHP.maxHP - monsterHP.hp1 && monsterHP.hp > monsterHP.maxHP - (monsterHP.hp1 + monsterHP.hp2) && !pattern)
         {
             if(after != before && !pattern)
             {
-                Debug.Log("1");
-
-                Debug.LogFormat("{0}, {1}", before, after);
                 before ++;
                 type = MonsterDoingType.ultimate;
-                Debug.LogFormat("{0}, {1}", before, after);
                 pase_1UseUlt = false;
             }
 
@@ -120,16 +117,13 @@ public class Monster_Kim : MonoBehaviour
                 Pase2();
             }
         }
-        else if (monsterHP.hp < monsterHP.maxHP - (monsterHP.hp1 + monsterHP.hp2))
+        else if (monsterHP.hp < monsterHP.maxHP - (monsterHP.hp1 + monsterHP.hp2) && !pattern)
         {
             if (after != before && !pattern)
             {
-                Debug.Log("2");
-
-                Debug.LogFormat("{0}, {1}", before, after);
+              
                 before++;
                 type = MonsterDoingType.ultimate;
-                Debug.LogFormat("{0}, {1}", before, after);
                 pase_2UseUlt = false;
             }
 
@@ -142,12 +136,9 @@ public class Monster_Kim : MonoBehaviour
         {
             if (after != before)
             {
-                Debug.Log("3");
 
-                Debug.LogFormat("{0}, {1}", before, after);
                 before++;
                 type = MonsterDoingType.ultimate;
-                Debug.LogFormat("{0}, {1}", before, after);
                 pase_3UseUlt = false;
             }
             if (!pase_1UseUlt)
@@ -186,8 +177,9 @@ public class Monster_Kim : MonoBehaviour
         else if (type == MonsterDoingType.ultimate)
         {
             pattern = true;
-            if (!doOnce)
+            if (!doUlt)
             {
+                doUlt = true;
                 StartCoroutine(Ultimate());
             }
         }
@@ -201,47 +193,58 @@ public class Monster_Kim : MonoBehaviour
 
     private void Pase1()
     {
-        if (checkTime > attackTrigger)
+        if (before == after)
         {
-            type = MonsterDoingType.attack;
+            if (checkTime > attackTrigger)
+            {
+                type = MonsterDoingType.attack;
+            }
         }
     }
     private void Pase2()
     {
-        int pattern = Random.Range(0, 10);
-
-        if (checkTime > attackTrigger)
+        if (before == after)
         {
-            if(pattern < (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.PROB_P2))
+
+
+            int pattern = Random.Range(0, 10);
+
+            if (checkTime > attackTrigger)
             {
-                type = MonsterDoingType.attack;
-            }
-            else
-            {
-                type = MonsterDoingType.skill_1;
+                if (pattern < (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.PROB_P2))
+                {
+                    type = MonsterDoingType.attack;
+                }
+                else
+                {
+                    type = MonsterDoingType.skill_1;
+                }
             }
         }
     }
     private void Pase3()
     {
         int pattern = Random.Range(0, 10);
-
-        if (checkTime > attackTrigger)
+        if (before == after)
         {
-            if(pattern < (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.PROB_P3))
+
+            if (checkTime > attackTrigger)
             {
-                type = MonsterDoingType.attack;
-            }
-            else if(pattern <= (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.PROB_P3) 
-                && pattern < (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_SOUL_SKILL, MONSTER_SOUL_SKILL.PROB_P3))
-            {
-                type = MonsterDoingType.skill_1;
-            }
-            else if (pattern >= (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_SOUL_SKILL, MONSTER_SOUL_SKILL.PROB_P3)
-                && pattern <= (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_METEOR_SKILL, MONSTER_METEOR_SKILL.PROB_P3))
-            {
-                
-                type = MonsterDoingType.skill_2;
+                if (pattern < (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.PROB_P3))
+                {
+                    type = MonsterDoingType.attack;
+                }
+                else if (pattern <= (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.PROB_P3)
+                    && pattern < (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_SOUL_SKILL, MONSTER_SOUL_SKILL.PROB_P3))
+                {
+                    type = MonsterDoingType.skill_1;
+                }
+                else if (pattern >= (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_SOUL_SKILL, MONSTER_SOUL_SKILL.PROB_P3)
+                    && pattern <= (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_METEOR_SKILL, MONSTER_METEOR_SKILL.PROB_P3))
+                {
+
+                    type = MonsterDoingType.skill_2;
+                }
             }
         }
     }
@@ -257,7 +260,7 @@ public class Monster_Kim : MonoBehaviour
         yield return new WaitForSeconds(8f);      // 모션 시간 보면서 시간 조정해야됨
 
         checkTime = 0;
-        if (after == before)
+        if (after == before && !useUlt)
         {
             type = MonsterDoingType.idle;
         }
@@ -277,7 +280,7 @@ public class Monster_Kim : MonoBehaviour
         }
         yield return new WaitForSeconds(6.667f);      // 모션 시간 보면서 시간 조정해야됨
         checkTime = 0;
-        if (after == before)
+        if (after == before && !useUlt)
         {
             type = MonsterDoingType.idle;
         }
@@ -298,8 +301,9 @@ public class Monster_Kim : MonoBehaviour
 
         yield return new WaitForSeconds(soulSuck.wayTime + 4.668f);      // 모션 시간 보면서 시간 조정해야됨
         checkTime = 0;
-        if (after == before)
+        if (after == before && !useUlt)
         {
+
             type = MonsterDoingType.idle;
         }
         doOnce = false;
@@ -309,7 +313,8 @@ public class Monster_Kim : MonoBehaviour
     {
         // 화염방사
 
-        doOnce = true;
+        doUlt = true;
+
         StartCoroutine(ult.Ultimate_());
 
         yield return new WaitForSeconds(13f);      // 모션 시간 보면서 시간 조정해야됨
@@ -320,7 +325,7 @@ public class Monster_Kim : MonoBehaviour
             type = MonsterDoingType.idle;
         }
         checkTime = 0;
-        doOnce = false;
+        doUlt = false;
         pattern = false;
         yield break;
     }
