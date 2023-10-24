@@ -23,6 +23,12 @@ public class RayTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.gameOver == true)
+        {
+            isClicked = false;
+            return;
+        }
+
         if (ARAVRInput.GetDown(ARAVRInput.Button.One, ARAVRInput.Controller.LTouch))
         {
             if (shopUI.transform.localScale == Vector3.zero)
@@ -37,16 +43,18 @@ public class RayTest : MonoBehaviour
         if (isClicked == true)
         {
             lineRenderer.enabled = true;
-            Ray ray = new Ray(ARAVRInput.RHandPosition, ARAVRInput.RHandDirection);
-            lineRenderer.SetPosition(0, ray.origin);
-            lineRenderer.SetPosition(1, ray.origin + ARAVRInput.RHandDirection * 300);
+            GameObject magicWeapon = GameObject.Find("Aurous_Crystal");
+            Ray ray = new Ray(magicWeapon.transform.position, ARAVRInput.RHandDirection);
+
+            lineRenderer.SetPosition(0, magicWeapon.transform.position);
+            lineRenderer.SetPosition(1, magicWeapon.transform.position + ARAVRInput.RHandDirection * 300);
             RaycastHit hitInfo;
             int layer = 1 << LayerMask.NameToLayer("ShopLayer");
             int tLayer = 1 << LayerMask.NameToLayer("Terrain");
 
-            if (Physics.Raycast(ray, out hitInfo, 300f, layer | tLayer))
+            if (Physics.Raycast(ray, out hitInfo, 750f, layer | tLayer))
             {
-                lineRenderer.SetPosition(0, ray.origin);
+                lineRenderer.SetPosition(0, magicWeapon.transform.position);
                 lineRenderer.SetPosition(1, hitInfo.point);
                 laserButton = hitInfo.transform.gameObject.GetComponent<LaserButton>();
                 lightingButton = hitInfo.transform.gameObject.GetComponent<LightingButton>();

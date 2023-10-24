@@ -44,12 +44,12 @@ public class UIManager : MonoBehaviour
     private GameObject shopUIObj;
     private GameObject scoreUIObj;
 
-    //{ 10/17 홍한범
-    public TextMeshProUGUI weakGoldTxt;
-    public TextMeshProUGUI weakTimeTxt;
-    public TextMeshProUGUI attGoldTxt;
-    public TextMeshProUGUI attTimeTxt;
-    //} 10/17 홍한범
+    ////{ 10/17 홍한범
+    //public TextMeshProUGUI weakGoldTxt;
+    //public TextMeshProUGUI weakTimeTxt;
+    //public TextMeshProUGUI attGoldTxt;
+    //public TextMeshProUGUI attTimeTxt;
+    ////} 10/17 홍한범
     
     #endregion
 
@@ -76,9 +76,6 @@ public class UIManager : MonoBehaviour
         Close_Hud();
         Close_ShopUI();
         Close_GameOverUI();
-        //{ 10/17 홍한범
-        PrintItemText();
-        //} 10/17 홍한범
     }
 
     // Update is called once per frame

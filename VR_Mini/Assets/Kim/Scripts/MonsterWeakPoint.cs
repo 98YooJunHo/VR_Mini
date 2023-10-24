@@ -101,14 +101,16 @@ public class MonsterWeakPoint : EctGetDamage
             // 여기에 약점공략시 대미지 주는 코드
             if (monster.monsterHP.hp <= monster.monsterHP.maxHP - monster.monsterHP.hp1 && monster.monsterHP.hp > monster.monsterHP.maxHP - (monster.monsterHP.hp1 + monster.monsterHP.hp2))
             {
-                float pase = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.P2_HP);
-                float damage = pase / (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_DMG);
+                //float pase = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.P2_HP);
+                float pase = GameManager.Instance.bossMaxHp;
+                float damage = pase / (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_DMG);
                 monsterHP.hp =- damage;
             }
             else if(monster.monsterHP.hp < monster.monsterHP.maxHP - (monster.monsterHP.hp1 + monster.monsterHP.hp2))
             {
-                float pase = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.P3_HP);
-                float damage = pase / (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_DMG);
+                //float pase = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.P3_HP);
+                float pase = GameManager.Instance.bossMaxHp;
+                float damage = pase / (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_DMG);
                 monsterHP.hp =- damage;
             }
             return true;

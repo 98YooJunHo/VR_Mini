@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -56,10 +57,10 @@ public class GameManager : MonoBehaviour
     public float goldToScorePer = 0.4f;
     public bool shopOpen = false;
 
-    private GameObject boss = default;
-    private Transform originBossTransform = default;
-    private WaitForSeconds goldDelay = default;
-    private WaitForSeconds scoreDelay = default;
+    private GameObject boss;
+    private Transform originBossTransform;
+    private WaitForSeconds goldDelay;
+    private WaitForSeconds scoreDelay;
 
     private int[] bossPhaseHp = new int[TOTAL_BOSS_PHASE];
     public int score { get; private set; }
@@ -69,27 +70,27 @@ public class GameManager : MonoBehaviour
     public int playerMaxHp { get; private set; }
     public int bossMaxHp { get; private set; }
     public int gold { get; private set; }
-    private int mBossHp;
-    private int mPlayerHp;
-    public int bossHp
+    private float mBossHp;
+    private float mPlayerHp;
+    public float bossHp
     {
         get { return mBossHp; }
         set
         {
-            if (value < 0)
-                value = 0;
+            if (value < 0f)
+                value = 0f;
             if (value > bossMaxHp)
                 value = bossMaxHp;
             mBossHp = value;
         }
     }
-    public int playerHp
+    public float playerHp
     {
         get { return mPlayerHp; }
         set
         {
-            if (value < 0)
-                value = 0;
+            if (value < 0f)
+                value = 0f;
             if (value > playerMaxHp)
                 value = playerMaxHp;
             mPlayerHp = value;
@@ -126,7 +127,7 @@ public class GameManager : MonoBehaviour
         //Invoke("Deal", 5f);
         //Invoke("End_Game", 6.5f);
         //Invoke("Restart_Game", 7.5f);
-        //originBossTransform = boss.transform;
+        originBossTransform = boss.transform;
     }
 
     // Update is called once per frame
@@ -153,10 +154,11 @@ public class GameManager : MonoBehaviour
 
     public void Init_OneTime()
     {
-        List<object> boss = ResourceManager.Instance.GetDataFromID(Order.MONSTER);
-        bossPhaseHp[(int)BOSS_HP.PHASE_ONE] = (int)boss[(int)MONSTER.P1_HP];
-        bossPhaseHp[(int)BOSS_HP.PHASE_TWO] = (int)boss[(int)MONSTER.P2_HP];
-        bossPhaseHp[(int)BOSS_HP.PHASE_THREE] = (int)boss[(int)MONSTER.P3_HP];
+        List<object> bossStats = ResourceManager.Instance.GetDataFromID(Order.MONSTER);
+        bossPhaseHp[(int)BOSS_HP.PHASE_ONE] = (int)bossStats[(int)MONSTER.P1_HP];
+        bossPhaseHp[(int)BOSS_HP.PHASE_TWO] = (int)bossStats[(int)MONSTER.P2_HP];
+        bossPhaseHp[(int)BOSS_HP.PHASE_THREE] = (int)bossStats[(int)MONSTER.P3_HP];
+        boss = GameObject.Find(BOSS_NAME);
     }
 
     public void Init_Stats()
@@ -168,14 +170,12 @@ public class GameManager : MonoBehaviour
         gold = (int)ResourceManager.Instance.GetSingleDataFromID(Order.PC, PC.INIT_GOLD);
         playerMaxHp = (int)ResourceManager.Instance.GetSingleDataFromID(Order.PC, PC.HP);
         playerHp = playerMaxHp;
-        boss = GameObject.Find(BOSS_NAME);
         bossPhase = (int)BOSS_PHASE.ONE;
         bossMaxHp = bossPhaseHp[(int)BOSS_HP.PHASE_ONE];
         bossHp = bossMaxHp;
         if(originBossTransform != null && boss != null)
         {
-            boss.transform.position = originBossTransform.position;
-            boss.transform.rotation = originBossTransform.rotation;
+            boss.transform.SetPositionAndRotation(originBossTransform.position, originBossTransform.rotation);
         }
     }
 
@@ -206,8 +206,7 @@ public class GameManager : MonoBehaviour
 
     public void Restart_Game()
     {
-        Init_All();
-        Start_Game();
+        SceneManager.LoadScene("Scene_Han", LoadSceneMode.Single);
     }
 
     public void End_Game()
@@ -256,16 +255,18 @@ public class GameManager : MonoBehaviour
 
     private void Check_BossPhase()
     {
-        if(bossHp != 0 || bossMaxHp == bossPhaseHp[(int)BOSS_HP.PHASE_THREE])
+        if(bossHp != 0 || bossPhase == 3)
         {
             return;
         }
 
-        if(bossHp == 0)
+        if((int)bossHp == 0)
         {
-            switch(bossPhase)
+            Debug.Log("스위치는 옴?");
+            switch (bossPhase)
             {
                 case (int)BOSS_PHASE.ONE:
+                    Debug.Log("1페에서 2페로 넘어감?");
                     bossMaxHp = bossPhaseHp[(int)BOSS_HP.PHASE_TWO];
                     bossHp = bossMaxHp;
                     bossPhase = (int)BOSS_PHASE.TWO;

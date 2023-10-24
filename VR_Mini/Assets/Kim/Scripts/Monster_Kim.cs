@@ -41,7 +41,7 @@ public class Monster_Kim : MonoBehaviour
         skill_1,
         skill_2,
         ultimate,
-        die
+        die,
     }
     public MonsterDoingType type;
     private void Awake()
@@ -66,10 +66,10 @@ public class Monster_Kim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (GameManager.Instance.gameOver)
-        //{
-        //    return;
-        //}
+        if (GameManager.Instance.gameOver)
+        {
+            return;
+        }
 
         if (!pattern)
         {
@@ -80,12 +80,12 @@ public class Monster_Kim : MonoBehaviour
             MonsterPase();
         }
         MonsterMove();
-        if (pase_1UseUlt && monsterHP.hp < monsterHP.maxHP - monsterHP.hp1)
+        if (pase_1UseUlt && monsterHP.hp <= monsterHP.maxHP - monsterHP.hp1)
         {
             after++;
             pase_1UseUlt = false;
         }
-        else if (pase_2UseUlt && monsterHP.hp < monsterHP.maxHP - (monsterHP.hp1 + monsterHP.hp2))
+        else if (pase_2UseUlt && monsterHP.hp <= monsterHP.maxHP - (monsterHP.hp1 + monsterHP.hp2))
         {
             after++;
             pase_2UseUlt = false;
@@ -103,7 +103,8 @@ public class Monster_Kim : MonoBehaviour
         {            
             Pase1();
         }
-        else if (monsterHP.hp <= monsterHP.maxHP - monsterHP.hp1 && monsterHP.hp > monsterHP.maxHP - (monsterHP.hp1 + monsterHP.hp2) && !pattern)
+        else if (monsterHP.hp <= monsterHP.maxHP - monsterHP.hp1 
+            && monsterHP.hp > monsterHP.maxHP - monsterHP.hp1 - monsterHP.hp2 && !pattern)
         {
             if(after != before && !pattern)
             {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EctGetDamage : MonoBehaviour
+public class EctGetDamage : MonoBehaviour, IDamagable
 {
     public float hp;
     // Start is called before the first frame update
@@ -17,9 +17,10 @@ public class EctGetDamage : MonoBehaviour
         
     }
 
-    public void GetDamage(float damage)
+    public void OnDamage(float damage)
     {
         hp -= damage;
+        Debug.Log(hp);
     }
 
 }

@@ -10,7 +10,7 @@ public class Player_NotInGame_Yoo : MonoBehaviour
     private const string GAME_RESTART = "GameRestart";          // 게임 재시작 버튼 이름 (상수)
     private const string GAME_EXIT = "GameExit";                // 게임 나가기 버튼 이름 (상수)
     private const string STAFF_CRYSTAL = "Aurous_Crystal";      // 레이 시작 포지션을 정하기 위한 오브젝트를 가져오기 위한 이름 (상수)
-    private const int RAY_DISTANCE = 500;                       // 레이 사거리 (상수)
+    private const int RAY_DISTANCE = 750;                       // 레이 사거리 (상수)
 
     Ray ray;                                                    // 레이
     GameObject staffCrystal = default;                          // 레이 시작 포지션을 가져오기 위한 게임오브젝트

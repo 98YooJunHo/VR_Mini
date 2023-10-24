@@ -20,8 +20,8 @@ public class Missile_Kim : EctGetDamage
         initialPosition = transform.position;
         target = GameObject.Find("Player");
         player = target.transform.GetComponent<Player>();
-        speed = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.SKILL_SPEED);
-        hp = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.PROJECTILE_HP);
+        speed = (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.SKILL_SPEED);
+        hp = (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.PROJECTILE_HP);
         damage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.SKILL_DMG);
     }
 

@@ -5,13 +5,13 @@ using UnityEngine;
 public class DamagedPoint : EctGetDamage
 {
     //public bool isWeakPoint = false;
-    private GameObject dragon;
+    public GameObject dragon;
     //public int weakpoint;
     private MonsterWeakPoint monsterWeakPoint;
     private void Start()
     {
-        hp = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_HP);
-        dragon = GameObject.Find("Dragon");
+        hp = (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_HP);
+        //dragon = GameObject.Find("Dragon");  //80
     }
 
     private void Update()

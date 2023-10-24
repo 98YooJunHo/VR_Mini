@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 
-public class MonsterHP : MonoBehaviour
+public class MonsterHP : MonoBehaviour, IDamagable
 {
     public static MonsterHP Instance;
     private int iD;
@@ -51,5 +51,11 @@ public class MonsterHP : MonoBehaviour
     public void OnHit(int value)
     {
        // GameManager.Instance.bossHp -= value;
+    }
+
+    public void OnDamage(float damage)
+    {
+        GameManager.Instance.bossHp -= damage;
+        hp -= damage;
     }
 }

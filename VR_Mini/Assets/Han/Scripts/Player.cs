@@ -10,12 +10,18 @@ public enum WeaponState
     LASER, LIGHTING, ICE
 }
 
-public class Player: MonoBehaviour
+public class Player: MonoBehaviour, IDamagable
 {
     public const string iceMuzzle = "IceMuzzle";
     public const string electricMuzzle = "ElectricMuzzle";
     public const string chargeEffectName = "WaterCharge";
     public const string weaponMuzzleName = "Aurous_Crystal";
+
+    float hp = 0;
+    float lightningDamage;
+    float laserDamage;
+    float iceDamage;
+
 
     Ray ray = default;                           // 레이 변수   
     public RaycastHit hitInfo = default;                // 레이캐스트 힛인포 변수   
@@ -46,6 +52,8 @@ public class Player: MonoBehaviour
     //=================== 보스 피격 이펙트를 위한 변수 ============================================
     private int projectileDamage = default;      // 몬스터 데미지
     private MonsterHP boss = default;            // 보스 체력 스크립트
+    private Missile_Kim missile = default;
+    private DamagedPoint damagedPoint = default;
     // Start is called before the first frame update
     void Start()
     {
@@ -56,13 +64,18 @@ public class Player: MonoBehaviour
         targetAlpha = 0.00000001f;                                    // 페이드 아웃 목표 알파 값 설정
         timer = 0f;                                                   // 데미지 받을때부터 시간 측정 값
         originAlpha = hitImage.color.a;                               // 최초 알파값 저장   
-        boss = FindFirstObjectByType<MonsterHP>();                    // 보스 체력 스크립트 가져오기
+        boss = FindFirstObjectByType<MonsterHP>();                    // 보스 체력 스크립트 가져오기        
         weaponIceMuzzle = GameObject.Find(iceMuzzle);                 // 아이스 발사되는 위치
         weaponElectricMuzzle = GameObject.Find(electricMuzzle);       // 전기 발사되는 위치
         chargeEffect = GameObject.Find(chargeEffectName);             // 차지 이펙트
         chargeEffect.SetActive(false);                                // 차지 이펙트 꺼두기
         weaponMuzzle = GameObject.Find(weaponMuzzleName);             // 무기 머즐
         userWeaponState = (int)WeaponState.LASER;
+        hp = GameManager.Instance.playerHp;                           // 플레이어 체력
+
+        lightningDamage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.LIGHTING_WEAPON,LIGHTING_WEAPON.DMG);
+        laserDamage     = (int)ResourceManager.Instance.GetSingleDataFromID(Order.LASER_WEAPON,LASER_WEAPON.DMG);
+        iceDamage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.ICE_WEAPON, ICE_WEAPON.DMG);
         /* Resource 파일에서 불러오는 예시
         List<object> test = ResourceManager.Instance.GetDataFromID(Order.PC);
         int id = (int)test[(int)PC.ID];
@@ -150,7 +163,7 @@ public class Player: MonoBehaviour
             lineRenderer.enabled = true;
         }
 
-        if (Physics.Raycast(ray, out hitInfo, 600f))
+        if (Physics.Raycast(ray, out hitInfo, 750f))
         {
             if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Boss")) //|| hitInfo.collider.gameObject.layer.Equals("Projectile"))
             {
@@ -210,9 +223,54 @@ public class Player: MonoBehaviour
                     if (damageTime >1.0f && boss != null)
                     {
                         // TODO : 보스 체력깎는 코드
+                        MonsterHP.Instance.OnDamage(laserDamage);
                         damageTime = 0.0f;
                     }
                     // 이펙트를 만드는 코드
+                }
+                else if(hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("WeakPoint"))
+                {
+                    Debug.Log(hitInfo.transform.gameObject.name);
+                    if (hitInfo.transform.gameObject.name == "Cylinder(Clone)")
+                    {
+                        Debug.Log("투사체 맞음");
+                        effectTime += Time.deltaTime;
+                        damageTime += Time.deltaTime;
+                        if (effectTime > 0.1f)
+                        {
+
+                            effectTime = 0;
+                            GameObject gameObject = EffectPoolManager.instance.GetQueue(userWeaponState);
+                            gameObject.transform.position = hitInfo.point;
+                        }
+
+                        if (damageTime > 0.7f && boss != null)
+                        {
+                            missile = hitInfo.transform.GetComponent<Missile_Kim>();
+                            missile.OnDamage(laserDamage);
+                            damageTime = 0.0f;
+                        }
+                    }
+                    else if (hitInfo.transform.gameObject.name == "WeakPoint")
+                    {
+                        Debug.Log("약점 맞음");
+                        effectTime += Time.deltaTime;
+                        damageTime += Time.deltaTime;
+                        if (effectTime > 0.1f)
+                        {
+
+                            effectTime = 0;
+                            GameObject gameObject = EffectPoolManager.instance.GetQueue(userWeaponState);
+                            gameObject.transform.position = hitInfo.point;
+                        }
+
+                        if (damageTime > 0.7f && boss != null)
+                        {
+                            damagedPoint = hitInfo.transform.GetComponent<DamagedPoint>();
+                            damagedPoint.OnDamage(laserDamage);
+                            damageTime = 0.0f;
+                        }
+                    }
                 }
                 else
                 {
@@ -245,10 +303,31 @@ public class Player: MonoBehaviour
                 {
                     if (boss != null)
                     {
+                        Debug.Log("보스맞음");
+
+                        MonsterHP.Instance.OnDamage(lightningDamage);
 
                         // TODO : 보스 체력깎는 코드
                     }
                 }
+                else if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("WeakPoint"))
+                {
+                    Debug.LogFormat("레이 부딪힌 오브젝트 이름:" + hitInfo.collider.gameObject.name);
+
+                    if (hitInfo.transform.gameObject.name == "Cylinder(Clone)")
+                    {
+                        Debug.Log("투사체 맞음");
+                        missile = hitInfo.transform.GetComponent<Missile_Kim>();
+                        missile.OnDamage(lightningDamage);
+                    }
+                    else if (hitInfo.transform.gameObject.name == "WeakPoint")
+                    {
+                        Debug.Log("약점 맞음");
+                        damagedPoint = hitInfo.transform.GetComponent<DamagedPoint>();
+                        damagedPoint.OnDamage(lightningDamage);
+                    }
+                }
+
             }
             else
             {
@@ -350,4 +429,10 @@ public class Player: MonoBehaviour
     }
     #endregion
     //============================================ 전기 코루틴 함수 =========================================
+
+    //============================================ 피격 함수 =========================================
+    public void OnDamage(float damage)
+    {
+        hp -= damage;
+    }
 }

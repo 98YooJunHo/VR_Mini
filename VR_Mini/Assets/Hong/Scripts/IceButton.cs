@@ -21,7 +21,7 @@ public class IceButton : ItemButtonOrigin
 
     public override void Effect() 
     {
-        //Player.instance.userWeaponState = (int)WeaponState.ICE;
+        Player.instance.userWeaponState = (int)WeaponState.ICE;
     }
 
 

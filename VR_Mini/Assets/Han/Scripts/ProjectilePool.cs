@@ -53,7 +53,7 @@ public class ProjectilePool : MonoBehaviour
 
     public GameObject GetQueue(int userWeaponState)
     {
-        GameObject gameObject = default;
+        GameObject  Projectile = default;
         if (userWeaponState == (int)WeaponState.LIGHTING)
         {
             if(electricProjectileQueue.Count <50)
@@ -66,8 +66,8 @@ public class ProjectilePool : MonoBehaviour
                     electricProjectile.SetActive(false);
                 }
             }
-            gameObject = electricProjectileQueue.Dequeue();
-            gameObject.SetActive(true);
+            Projectile = electricProjectileQueue.Dequeue();
+            Projectile.SetActive(true);
         }
         else if (userWeaponState == (int)WeaponState.ICE)
         {
@@ -81,8 +81,8 @@ public class ProjectilePool : MonoBehaviour
                     iceProjectile.SetActive(false);
                 }
             }
-            gameObject = iceProjectileQueue.Dequeue();
-            gameObject.SetActive(true);
+            Projectile = iceProjectileQueue.Dequeue();
+            Projectile.SetActive(true);
         }
         return gameObject;
     }

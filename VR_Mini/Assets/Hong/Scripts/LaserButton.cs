@@ -20,7 +20,7 @@ public class LaserButton : ItemButtonOrigin
 
     public override void Effect() 
     {
-        //Player.instance.userWeaponState = (int)WeaponState.LASER;
+        Player.instance.userWeaponState = (int)WeaponState.LASER;
     }
 
 }

@@ -20,10 +20,10 @@ public class MonsterMove_Kim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (GameManager.Instance.gameOver)
-        //{
-        //    return;
-        //}
+        if (GameManager.Instance.gameOver)
+        {
+            return;
+        }
 
         if (monster.type == Monster_Kim.MonsterDoingType.idle && !monster.useUlt)
         {

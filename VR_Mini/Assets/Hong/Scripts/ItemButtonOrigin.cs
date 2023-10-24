@@ -52,6 +52,8 @@ public class ItemButtonOrigin : MonoBehaviour
         weaponNameImg = this.gameObject.transform.Find("WeaponName").gameObject.GetComponent<Image>();
         weaponBackGroundImg = this.gameObject.transform.Find("BackGround").gameObject.GetComponent<Image>();
 
+ 
+
         explainTxt = this.gameObject.transform.Find("WeaponExplain").Find("WeaponExplainTxt").gameObject.GetComponent<TextMeshProUGUI>();
         nameTxt = this.gameObject.transform.Find("WeaponName").Find("WeaponNameTxt").gameObject.GetComponent<TextMeshProUGUI>();
 

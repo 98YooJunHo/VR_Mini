@@ -23,7 +23,7 @@ public class LightingButton : ItemButtonOrigin
 
     public override void Effect() 
     {
-        //Player.instance.userWeaponState = (int)WeaponState.LIGHTING;
+        Player.instance.userWeaponState = (int)WeaponState.LIGHTING;
     }
 
 }

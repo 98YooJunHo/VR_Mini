@@ -41,8 +41,8 @@ public class HUD_Canvas_Yoo : MonoBehaviour
     private Color orangeColor = new (255 / 255f, 128 / 255f, 0, 100 / 255f);        // 2페이즈에 쓸 주황색
     private Color redColor = new (255 / 255f, 0, 0, 100 / 255f);                    // 3페이즈에 쓸 빨간색
     private int bossPhase;                              // 보스 페이즈를 받아와서 저장하는 변수
-    private int bossHp;                                 // 보스 체력을 받아와서 저장하는 변수
-    private int playerHp;                               // 플레이어 체력을 받아와서 저장하는 변수
+    private float bossHp;                                 // 보스 체력을 받아와서 저장하는 변수
+    private float playerHp;                               // 플레이어 체력을 받아와서 저장하는 변수
     // } 10/23 유준호 추가
 
     //{ 10/23 홍한범
