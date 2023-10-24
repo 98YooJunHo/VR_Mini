@@ -6,11 +6,12 @@ public class MonsterMove_Kim : MonoBehaviour
 {
     private Monster_Kim monster;
 
-    public float speed = 5.0f;
+    public int speed;
     // Start is called before the first frame update
     void Start()
     {
-        //speed = (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_MOVE_SKILL, MONSTER_MOVE_SKILL.MOVE_SPEED_P1);
+        //speed = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_MOVE_SKILL, MONSTER_MOVE_SKILL.MOVE_SPEED_P1);
+        speed = 5;
         monster = GetComponent<Monster_Kim>();
         //hp1 = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.P1_HP);
     }
@@ -24,7 +25,7 @@ public class MonsterMove_Kim : MonoBehaviour
         //    return;
         //}
 
-        if (monster.type == Monster_Kim.MonsterDoingType.idle)
+        if (monster.type == Monster_Kim.MonsterDoingType.idle && !monster.useUlt)
         {
             // 몬스터 이동
             float move = speed * Time.deltaTime;

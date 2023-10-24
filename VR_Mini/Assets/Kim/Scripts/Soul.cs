@@ -13,7 +13,7 @@ public class Soul : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        speed = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_SOUL_SKILL, MONSTER_SOUL_SKILL.SKILL_SPEED);
     }
 
     // Update is called once per frame
