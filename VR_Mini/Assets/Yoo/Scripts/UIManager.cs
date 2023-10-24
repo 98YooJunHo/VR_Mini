@@ -67,20 +67,15 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        gameStartUI = GameObject.Find(GAME_START_UI);
-        gameOverUI = GameObject.Find(GAME_OVER_UI);
-        hudObj = GameObject.Find(HUD);
-        shopUIObj = GameObject.Find(SHOP_UI);
-        scoreUIObj = GameObject.Find(SCORE_UI);
-
+        Init_UI();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        hudObj.transform.localScale = Vector3.zero;
-        shopUIObj.transform.localScale = Vector3.zero;
-        gameOverUI.transform.localScale = Vector3.zero;
+        Close_Hud();
+        Close_ShopUI();
+        Close_GameOverUI();
         //{ 10/17 홍한범
         PrintItemText();
         //} 10/17 홍한범
@@ -92,24 +87,35 @@ public class UIManager : MonoBehaviour
         
     }
 
+    #region Init
+    private void Init_UI()                  // UI오브젝트 찾아오는 함수
+    {
+        gameStartUI = GameObject.Find(GAME_START_UI);
+        gameOverUI = GameObject.Find(GAME_OVER_UI);
+        hudObj = GameObject.Find(HUD);
+        shopUIObj = GameObject.Find(SHOP_UI);
+        scoreUIObj = GameObject.Find(SCORE_UI);
+    }
+    #endregion
+
     #region Function
-    public void Open_GameStartUI()
+    public void Open_GameStartUI()          // 게임 시작 UI 여는 함수
     {
         gameStartUI.transform.localScale = Vector3.one;
     }
 
-    public void Close_GameStartUI()
+    public void Close_GameStartUI()         // 게임 시작 UI 닫는 함수
     {
         gameStartUI.transform.localScale = Vector3.zero;
     }
 
-    public void Open_GameOverUI()
+    public void Open_GameOverUI()           // 게임 오버 UI 여는 함수
     {
         gameOverUI.transform.parent = null;
         gameOverUI.transform.localScale = Vector3.one;
     }
 
-    public void Close_GameOverUI()
+    public void Close_GameOverUI()          // 게임 오버 UI 닫는 함수
     {
         gameOverUI.transform.parent = GameObject.Find(OCULUS_CAM).transform;
         gameOverUI.transform.localPosition = Vector3.zero;
@@ -117,36 +123,36 @@ public class UIManager : MonoBehaviour
         gameOverUI.transform.localScale = Vector3.zero;
     }
 
-    public void Open_ShopUI()
+    public void Open_ShopUI()               // 상점 UI 여는 함수
     {
         shopUIObj.transform.localScale = Vector3.one * 0.8f;
         Close_ScoreUI();
         GameManager.Instance.shopOpen = true;
     }
 
-    public void Close_ShopUI()
+    public void Close_ShopUI()              // 상점 UI 닫는 함수
     {
         shopUIObj.transform.localScale = Vector3.zero;
         Open_ScoreUI();
         GameManager.Instance.shopOpen = false;
     }
 
-    public void Open_ScoreUI()
+    public void Open_ScoreUI()              // 점수 UI 여는 함수
     {
         scoreUIObj.transform.localScale = Vector3.one;
     }
 
-    public void Close_ScoreUI()
+    public void Close_ScoreUI()             // 점수 UI 닫는 함수
     {
         scoreUIObj.transform.localScale = Vector3.zero;
     }
 
-    public void Open_Hud()
+    public void Open_Hud()                  // 플레이어 전방 UI 여는 함수
     {
         hudObj.transform.localScale = Vector3.one;
     }
 
-    public void Close_Hud()
+    public void Close_Hud()                 // 플레이어 전방 UI 닫는 함수
     {
         hudObj.transform.localScale = Vector3.zero;
     }

@@ -44,6 +44,9 @@ public class GameManager : MonoBehaviour
     #region Variable
     private const string BOSS_NAME = "Dragon";
     private const int TOTAL_BOSS_PHASE = 3;
+    private const int INIT_SCORE = 0;
+    private const float INIT_TIME = 0;
+
 
     public float goldPerTimeDelay = 1f;
     public int goldPerTime = 5;
@@ -115,9 +118,14 @@ public class GameManager : MonoBehaviour
     {
         Init_Delay();
         Init_UI();
-        //Invoke("Start_Game", 3f);
-        //Invoke("End_Game", 5.5f);
-        //Invoke("Exit_Game", 7f);
+        //Invoke("Start_Game", 1f);
+
+        //Invoke("Deal", 2f);
+        //Invoke("Deal", 3f);
+        //Invoke("Deal", 4f);
+        //Invoke("Deal", 5f);
+        //Invoke("End_Game", 6.5f);
+        //Invoke("Restart_Game", 7.5f);
         //originBossTransform = boss.transform;
     }
 
@@ -153,8 +161,8 @@ public class GameManager : MonoBehaviour
 
     public void Init_Stats()
     {
-        time = 0;
-        score = 0;
+        time = INIT_TIME;
+        score = INIT_SCORE;
         gameOver = true;
         shopOpen = false;
         gold = (int)ResourceManager.Instance.GetSingleDataFromID(Order.PC, PC.INIT_GOLD);
@@ -240,6 +248,11 @@ public class GameManager : MonoBehaviour
             gold -= price;
         }
     }
+
+    //private void Deal()
+    //{
+    //    bossHp -= 1;
+    //}
 
     private void Check_BossPhase()
     {

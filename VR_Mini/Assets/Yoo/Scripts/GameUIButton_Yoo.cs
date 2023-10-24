@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class GameUIButton_Yoo : MonoBehaviour
 {
+    private Color greenColor = new Color(122 / 255f, 255 / 255f, 122 / 255f);
+
     private Image buttonImg;
     private Color originButtonColor;
     private Color targetButtonColor;
@@ -13,7 +15,7 @@ public class GameUIButton_Yoo : MonoBehaviour
     {
         buttonImg = GetComponent<Image>();
         originButtonColor = buttonImg.color;
-        targetButtonColor = new Color(122f / 255f, 255f / 255f, 122f / 255f);
+        targetButtonColor = greenColor;
     }
     // Start is called before the first frame update
     void Start()
