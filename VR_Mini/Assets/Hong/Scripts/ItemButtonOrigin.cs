@@ -67,9 +67,9 @@ public class ItemButtonOrigin : MonoBehaviour
 
         weaponIcon = this.gameObject.transform.Find("WeaponIcon").gameObject.GetComponent<Image>();
         currentWeapon = GameObject.Find("CurrentWeapon");
-        currentWeaponImg = currentWeapon.transform.GetChild(1).GetComponent<Image>();
-        currentExplainTxt = currentWeapon.transform.Find("WeaponExplain").Find("WeaponExplainTxt").GetComponent<TextMeshProUGUI>();
-        currentNameTxt = currentWeapon.transform.Find("WeaponName").Find("WeaponNameTxt").GetComponent<TextMeshProUGUI>();
+        currentWeaponImg = currentWeapon.transform.Find("WeaponIcon").gameObject.GetComponent<Image>();
+        currentExplainTxt = currentWeapon.transform.Find("WeaponExplain").Find("WeaponExplainTxt").gameObject.GetComponent<TextMeshProUGUI>();
+        currentNameTxt = currentWeapon.transform.Find("WeaponName").Find("WeaponNameTxt").gameObject.GetComponent<TextMeshProUGUI>();
         lockedTxt = "LOCKED";
         Init();
     }
@@ -99,6 +99,8 @@ public class ItemButtonOrigin : MonoBehaviour
         {
             // 골드차감후, 산 상태로 바꿈
             GameManager.Instance.Use_Gold(buyGold);
+            HUD_Canvas_Yoo hUD_Canvas_Yoo = FindObjectOfType<HUD_Canvas_Yoo>();
+            hUD_Canvas_Yoo.UpdateShopGold(GameManager.Instance.gold.ToString());
             isBought = true;
             // unlocked -> 설명문으로 교체
             UnLockWeaponText();
@@ -112,7 +114,7 @@ public class ItemButtonOrigin : MonoBehaviour
             weaponExplainImg.color = selectedColor;
             weaponNameImg.color = selectedColor;
             // 현재 보유무기 이미지를 현재껄로 교체
-            currentWeaponImg = weaponIcon;
+            currentWeaponImg.sprite = weaponIcon.sprite;
             // 이름, 설명 바꾸기
             currentExplainTxt.text = explainTxt.text;
             currentNameTxt.text = nameTxt.text;

@@ -44,6 +44,9 @@ public class HUD_Canvas_Yoo : MonoBehaviour
     private int bossHp;                                 // 보스 체력을 받아와서 저장하는 변수
     private int playerHp;                               // 플레이어 체력을 받아와서 저장하는 변수
     // } 10/23 유준호 추가
+
+    //{ 10/23 홍한범
+    private TextMeshProUGUI shopGoldTxt;
     #endregion
 
     private void Awake()
@@ -58,6 +61,7 @@ public class HUD_Canvas_Yoo : MonoBehaviour
         Init_Stats();
         Init_TextInfoNColor();
         // } 10/23 유준호 추가
+        SetShopGold();
     }
 
     // Update is called once per frame
@@ -74,6 +78,7 @@ public class HUD_Canvas_Yoo : MonoBehaviour
         Set_BossHpColor();
         Set_PlayerHpGauge();
         Set_BossHpGauge();
+        UpdateShopGold(goldTMP.text);
     }
 
     #region Init
@@ -164,5 +169,18 @@ public class HUD_Canvas_Yoo : MonoBehaviour
         }
     }
     // } 10/23 유준호 추가
+    //{ 10/23 홍한범
+    public void UpdateShopGold(string gold)
+    {
+        shopGoldTxt.text = gold;
+    }
+
+    public void SetShopGold()
+    { 
+        GameObject coinObj = GameObject.Find("CurrentCoin");
+        shopGoldTxt = coinObj.gameObject.transform.Find("Coin").Find("CoinTxt").GetComponent<TextMeshProUGUI>();
+        shopGoldTxt.text = GameManager.Instance.gold.ToString();
+    }
+    //} 10/23 홍한범
     #endregion
 }

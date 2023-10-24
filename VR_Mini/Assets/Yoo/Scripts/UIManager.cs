@@ -84,7 +84,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     #region Init
@@ -155,12 +155,6 @@ public class UIManager : MonoBehaviour
     public void Close_Hud()                 // 플레이어 전방 UI 닫는 함수
     {
         hudObj.transform.localScale = Vector3.zero;
-    }
-
-    //{ 10/17 홍한범
-    public void PrintItemText()
-    {
-
     }
 
 

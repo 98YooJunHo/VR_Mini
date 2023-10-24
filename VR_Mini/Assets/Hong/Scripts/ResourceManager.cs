@@ -48,10 +48,10 @@ public enum ICE_WEAPON
 //! P1_HP, P2_HP, P3_HP  페이즈별 HP
 
 // ID 100
-//! WEAKPOINT_ACT_TIME 약점활성화시간, WEAKPOINT_COUNT 약점개수, WEAKPOINT_HP 약점HP, 
+//! WEAKPOINT_ACT_TIME 약점활성화시간, WEAKPOINT_COUNT 약점개수, WEAKPOINT_HP 약점HP, FAR 플레이어와 괴물사이의 거리 
 public enum MONSTER
 {
-    ID, DESCRIPTION, WEAKPOINT_ACT_TIME, WEAKPOINT_COUNT, WEAKPOINT_HP, WEAKPOINT_DMG, P1_HP, P2_HP, P3_HP
+    ID, DESCRIPTION, WEAKPOINT_ACT_TIME, WEAKPOINT_COUNT, WEAKPOINT_HP, WEAKPOINT_DMG, P1_HP, P2_HP, P3_HP, FAR
 }
 
 // ID 200
@@ -157,16 +157,26 @@ public class ResourceManager : MonoBehaviour
         InitTable();
     }
 
+    public int hp1;
 
     public void Start()
     {
 
         //test
-        List<object> test = GetDataFromID(Order.LIGHTING_WEAPON);
-        Debug.Log("attackSpeed : " + test[(int)LIGHTING_WEAPON.ATTACK_SPEED].GetType());
-        Debug.Log("attackSpeed f : " + ChangeType<float>("float", GetSingleDataFromID
-            (Order.LIGHTING_WEAPON, LIGHTING_WEAPON.ATTACK_SPEED)).GetType());
-        Debug.Log("attackSpeed type : " + test[(int)LIGHTING_WEAPON.ATTACK_SPEED]);
+        //List<object> test = GetDataFromID(Order.LIGHTING_WEAPON);
+        //Debug.Log("attackSpeed : " + test[(int)LIGHTING_WEAPON.ATTACK_SPEED].GetType());
+        //Debug.Log("attackSpeed f : " + ChangeType<float>("float", GetSingleDataFromID
+        //    (Order.LIGHTING_WEAPON, LIGHTING_WEAPON.ATTACK_SPEED)).GetType());
+        //Debug.Log("attackSpeed type : " + test[(int)LIGHTING_WEAPON.ATTACK_SPEED]);
+
+        //List<object> test2 = GetDataFromID(Order.MONSTER);
+        //Debug.Log("monster ph_1 : " + test2[(int)MONSTER.P1_HP].GetType());
+        //Debug.Log("monster ph_2 : " + test2[(int)MONSTER.P2_HP].GetType());
+        //Debug.Log("monster ph_3 : " + test2[(int)MONSTER.P3_HP].GetType());
+
+        //hp1 = (int)test2[(int)MONSTER.P1_HP];
+        //Debug.Log("hp1 : "+hp1);
+        //Debug.Log("hp1 type : "+hp1.GetType());
     }
 
     #region INIT
