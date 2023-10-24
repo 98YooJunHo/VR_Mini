@@ -1,4 +1,4 @@
-﻿//
+//
 // Lightning Bolt for Unity
 // (c) 2016 Digital Ruby, LLC
 // Source code may be used for personal or commercial projects.
@@ -7,6 +7,7 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 namespace DigitalRuby.LightningBolt
 {
@@ -88,6 +89,7 @@ namespace DigitalRuby.LightningBolt
         [System.NonSerialized]
         public System.Random RandomGenerator = new System.Random();
 
+        Vector3 start, end;
         private LineRenderer lineRenderer;
         private List<KeyValuePair<Vector3, Vector3>> segments = new List<KeyValuePair<Vector3, Vector3>>();
         private int startIndex;
@@ -292,8 +294,32 @@ namespace DigitalRuby.LightningBolt
             UpdateFromMaterialChange();
         }
 
+        private void OnEnable()
+        {
+            if (StartObject == null)
+            {
+                StartPosition = Player.instance.weaponElectricMuzzle.transform.position;
+                start = StartPosition;
+            }
+            else
+            {
+                //start = Player.instance.weaponElectricMuzzle.transform.position;
+                start = StartObject.transform.position + StartPosition;
+            }
+            if (EndObject == null)
+            {
+                end = start + ARAVRInput.RHandDirection.normalized * 2f;
+                //end = EndPosition;
+            }
+            else
+            {
+                end = start + ARAVRInput.RHandDirection.normalized * 2f;
+                //end = EndObject.transform.position + EndPosition;
+            }
+        }
         private void Update()
         {
+            
             orthographic = (Camera.main != null && Camera.main.orthographic);
             if (timer <= 0.0f)
             {
@@ -304,10 +330,18 @@ namespace DigitalRuby.LightningBolt
                 }
                 else
                 {
-                    Trigger();
+                    timer = Duration + Mathf.Min(0.0f, timer);
+                    startIndex = 0;
+                    GenerateLightningBolt(start, end, Generations, Generations, 0.0f);
+                    UpdateLineRenderer();
+                    //Trigger();
                 }
             }
             timer -= Time.deltaTime;
+
+            float offsetY = 5f;
+            transform.position = new Vector3(transform.position.x, offsetY, transform.position.z);
+                
         }
 
         /// <summary>
@@ -315,27 +349,34 @@ namespace DigitalRuby.LightningBolt
         /// </summary>
         public void Trigger()
         {
-            Vector3 start, end;
-            timer = Duration + Mathf.Min(0.0f, timer);
+            //Vector3 start와 end를  클래스 안에 선언하고 enable에서 start와 end를 설정한다.
+            //generatelightningBolt(start,end)함수와 UpdateLindRenderrer함수는 update문으로넘긴다.
+            //Vector3 start, end;
+            //timer = Duration + Mathf.Min(0.0f, timer);
             if (StartObject == null)
             {
+                StartPosition = Player.instance.weaponElectricMuzzle.transform.position;
                 start = StartPosition;
             }
             else
             {
+                //start = Player.instance.weaponElectricMuzzle.transform.position;
                 start = StartObject.transform.position + StartPosition;
             }
             if (EndObject == null)
             {
-                end = EndPosition;
+                end = start + ARAVRInput.RHandDirection.normalized * 2f;
+                //end = EndPosition;
             }
             else
             {
-                end = EndObject.transform.position + EndPosition;
+                end = start + ARAVRInput.RHandDirection.normalized * 2f;
+                //end = EndObject.transform.position + EndPosition;
             }
+            /*
             startIndex = 0;
             GenerateLightningBolt(start, end, Generations, Generations, 0.0f);
-            UpdateLineRenderer();
+            UpdateLineRenderer();*/
         }
 
         /// <summary>
