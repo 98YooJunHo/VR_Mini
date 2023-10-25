@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3659656823089505331
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3659656823089505330}
+  - component: {fileID: 3659656823089505333}
+  m_Layer: 0
+  m_Name: RockPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3659656823089505330
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3659656823089505331}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3659656823089505333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3659656823089505331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be4384c415f5ff44ba394c2b521d835c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rocks:
+  - {fileID: 4717832381889702911, guid: 736f6eba8bb9f804ab85eafe0381b3f4, type: 3}
+  - {fileID: 3032295706513506000, guid: 4363a8f7847b0d146ac30204c39fc45b, type: 3}
+  - {fileID: 2733812835728152901, guid: fbeef5cfeaca9cf4db44b4a2bbee0ccf, type: 3}
+  - {fileID: 8556722463154586447, guid: 7f1172d6a891f0a49af93d55e096d899, type: 3}
+  - {fileID: 7241250013174719114, guid: 05fd880e636fa0947aec6f14c73ace27, type: 3}
+  - {fileID: 8353999362112415585, guid: cffd96e62f926e641bd21d055df3472f, type: 3}
+  - {fileID: 3939814168425815202, guid: 6d99774a915b11d40a337ec0866aad67, type: 3}
+  - {fileID: 2261536863617972959, guid: 1f1584876f07bf643a8d92b8629475d9, type: 3}
+  rockMeshes:
+  - {fileID: -8351333336715449528, guid: 59bf610bbf6f3a64fad584ee13804dbd, type: 3}
+  - {fileID: 808474172911093344, guid: ef280c69dddfa034d87f6504dccc42ba, type: 3}
+  - {fileID: 4199401309831131938, guid: e1deea230f2f3ee4d950a69f1a61155e, type: 3}
