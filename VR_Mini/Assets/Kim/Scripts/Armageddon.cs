@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Armageddon : MonoBehaviour
 {
-    private float speed = 30.0f;
+    private float speed;
     private bool doOnce = false;
     private Player player;
     private int damage;

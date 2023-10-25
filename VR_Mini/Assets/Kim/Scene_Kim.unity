@@ -123,6 +123,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &68932767
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4625239148131136551, guid: 504e5d6b43f4857439a3993f0fd6a5b7, type: 3}
+      propertyPath: m_Name
+      value: Dragon
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625239148131136557, guid: 504e5d6b43f4857439a3993f0fd6a5b7, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625239148131136557, guid: 504e5d6b43f4857439a3993f0fd6a5b7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625239148131136557, guid: 504e5d6b43f4857439a3993f0fd6a5b7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625239148131136557, guid: 504e5d6b43f4857439a3993f0fd6a5b7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625239148131136557, guid: 504e5d6b43f4857439a3993f0fd6a5b7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625239148131136557, guid: 504e5d6b43f4857439a3993f0fd6a5b7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625239148131136557, guid: 504e5d6b43f4857439a3993f0fd6a5b7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625239148131136557, guid: 504e5d6b43f4857439a3993f0fd6a5b7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625239148131136557, guid: 504e5d6b43f4857439a3993f0fd6a5b7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625239148131136557, guid: 504e5d6b43f4857439a3993f0fd6a5b7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625239148131136557, guid: 504e5d6b43f4857439a3993f0fd6a5b7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 504e5d6b43f4857439a3993f0fd6a5b7, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -528,6 +585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 0
+  dragon: {fileID: 0}
 --- !u!4 &1543050628
 Transform:
   m_ObjectHideFlags: 0
@@ -801,6 +859,10 @@ PrefabInstance:
     - target: {fileID: 6562938133993215273, guid: 590dbd1d017b3354986728998a753b24, type: 3}
       propertyPath: m_Name
       value: Dragon
+      objectReference: {fileID: 0}
+    - target: {fileID: 6562938133993215273, guid: 590dbd1d017b3354986728998a753b24, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 590dbd1d017b3354986728998a753b24, type: 3}
