@@ -42,6 +42,7 @@ public class Player: MonoBehaviour, IDamagable
     private bool isAttacking = default;          // 공격중임을 판단하는 변수
     float effectTime = default;
     float damageTime = default;
+    float laserDMGTime = default;
 
     //=================== 보스 피격 이펙트를 위한 변수 ============================================
     private Image hitImage;                      // 플레이어피격이미지
@@ -80,6 +81,8 @@ public class Player: MonoBehaviour, IDamagable
         
         lightningGold = (int)ResourceManager.Instance.GetSingleDataFromID(Order.LIGHTING_WEAPON,LIGHTING_WEAPON.HIT_GOLD);
         laserGold     = (int)ResourceManager.Instance.GetSingleDataFromID(Order.LASER_WEAPON,LASER_WEAPON.HIT_GOLD);
+
+        laserDMGTime = (float)ResourceManager.Instance.GetSingleDataFromID(Order.LASER_WEAPON, LASER_WEAPON.DAMAGE_RATE);
         /* Resource 파일에서 불러오는 예시
         List<object> test = ResourceManager.Instance.GetDataFromID(Order.PC);
         int id = (int)test[(int)PC.ID];
@@ -94,10 +97,14 @@ public class Player: MonoBehaviour, IDamagable
         //=================== 각종 상태동안 작동안하도록하는 처리 ============================================
         if (GameManager.Instance.gameOver == true)
         {
+            lineRenderer.startWidth = 0.001f;
+            lineRenderer.endWidth = 0.001f;
             return;
         }
         if (GameManager.Instance.shopOpen == true)
         {
+            lineRenderer.startWidth = 0.001f;
+            lineRenderer.endWidth = 0.001f;
             return;
         }
 
@@ -224,7 +231,7 @@ public class Player: MonoBehaviour, IDamagable
                     }
                     
                     // 보스 체력 깎기
-                    if (damageTime >1.0f && boss != null)
+                    if (damageTime > laserDMGTime && boss != null)
                     {
                         // TODO : 보스 체력깎는 코드
                         MonsterHP.Instance.OnDamage(laserDamage,laserGold, hitInfo.point);
@@ -295,46 +302,18 @@ public class Player: MonoBehaviour, IDamagable
 
             if (ARAVRInput.Get(ARAVRInput.Button.IndexTrigger, ARAVRInput.Controller.RTouch))
             {
+                
                 if (isAttacking == false)
                 {
                     isAttacking = true;
                     // 코루틴만들기
-                    GameObject lighting = ProjectilePool.instance.GetQueue(userWeaponState);
-                    weaponElectricMuzzle = GameObject.Find(electricMuzzle);
-                    lighting.transform.position = weaponElectricMuzzle.transform.position;
-                    //StartCoroutine(AttacKElectric());
+                    //GameObject lighting = ProjectilePool.instance.GetQueue(userWeaponState);
+                    //weaponElectricMuzzle = GameObject.Find(electricMuzzle);
+                    //lighting.transform.position = weaponElectricMuzzle.transform.position;
+                    StartCoroutine(AttacKElectric());
                 }
 
-                // hitInfo가 boss일때 맞는 판정으로 만들기s
-                if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Boss"))
-                {
-                    if (boss != null)
-                    {
-                        Debug.Log("보스맞음");
-
-                        MonsterHP.Instance.OnDamage(lightningDamage, lightningGold, hitInfo.point);
-
-                        // TODO : 보스 체력깎는 코드
-                    }
-                }
-                else if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("WeakPoint"))
-                {
-                    Debug.LogFormat("레이 부딪힌 오브젝트 이름:" + hitInfo.collider.gameObject.name);
-
-                    if (hitInfo.transform.gameObject.name == "Cylinder(Clone)")
-                    {
-                        Debug.Log("투사체 맞음");
-                        missile = hitInfo.transform.GetComponent<Missile_Kim>();
-                        missile.OnDamage(lightningDamage);
-                    }
-                    else if (hitInfo.transform.gameObject.name == "WeakPoint")
-                    {
-                        Debug.Log("약점 맞음");
-                        damagedPoint = hitInfo.transform.GetComponent<DamagedPoint>();
-                        damagedPoint.OnDamage(lightningDamage);
-                    }
-                }
-
+               
             }
             else
             {
@@ -422,9 +401,12 @@ public class Player: MonoBehaviour, IDamagable
     #endregion
     //======================================= 차지,크기 코루틴 함수 =========================================
 
+
+
+
     //=========================================== 전기 코루틴 함수 =========================================
     #region
-    /*
+    
     private IEnumerator AttacKElectric()
     {
        
@@ -437,12 +419,39 @@ public class Player: MonoBehaviour, IDamagable
             GameObject lighting = ProjectilePool.instance.GetQueue(userWeaponState);
             weaponElectricMuzzle = GameObject.Find(electricMuzzle);
             lighting.transform.position = weaponElectricMuzzle.transform.position;
+
+            // hitInfo가 boss일때 맞는 판정으로 만들기s
+            if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Boss"))
+            {
+
+                if (boss != null)
+                {
+                    MonsterHP.Instance.OnDamage(lightningDamage, lightningGold, hitInfo.point);
+                }
+            }
+            else if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("WeakPoint"))
+            {
+                if (hitInfo.transform.gameObject.name == "Cylinder(Clone)")
+                {
+                    missile = hitInfo.transform.GetComponent<Missile_Kim>();
+                    missile.OnDamage(lightningDamage);
+                }
+                else if (hitInfo.transform.gameObject.name == "WeakPoint")
+                {
+                    damagedPoint = hitInfo.transform.GetComponent<DamagedPoint>();
+                    damagedPoint.OnDamage(lightningDamage);
+                }
+            }
             yield return new WaitForSeconds(1.0f);
         }
     }
-    */
+ 
     #endregion
     //============================================ 전기 코루틴 함수 =========================================
+
+
+
+
 
     //============================================ 피격 함수 =========================================
     public void OnDamage(float damage)
