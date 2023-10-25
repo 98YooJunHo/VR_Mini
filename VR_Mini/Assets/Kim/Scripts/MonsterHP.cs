@@ -40,8 +40,6 @@ public class MonsterHP : MonoBehaviour, IDamagable
         maxHP = hp;
         // { 10/25 유준호 추가
         damageCanvas = GameObject.Find(DAMAGE_CANVAS_NAME);
-
-        Invoke("Check", 3f);
         // } 10/25 유준호 추가
     }
 
@@ -57,11 +55,6 @@ public class MonsterHP : MonoBehaviour, IDamagable
         //{
         //    GameManager.Instance.End_Game();
         //}
-    }
-
-    private void Check()
-    {
-        OnDamage(1, 1, new Vector3(100,100,100));
     }
 
     public void OnHit(int value)
@@ -84,7 +77,7 @@ public class MonsterHP : MonoBehaviour, IDamagable
         damageOriginScale = damageObj.transform.localScale;
         damageObj.transform.position = worldPos;
         damageObj.transform.parent = damageCanvas.transform;
-        damageObj.transform.localPosition = new Vector3(damageObj.transform.localPosition.x, damageObj.transform.localPosition.y, 0);
+        damageObj.transform.localPosition = new Vector3(damageObj.transform.localPosition.x, damageObj.transform.localPosition.y + 2, damageObj.transform.localPosition.z);
         damageObj.transform.localScale = damageOriginScale * transform.position.z / 600;
         damageTMP.text = "" + damage;
         // } 10/25 유준호 추가

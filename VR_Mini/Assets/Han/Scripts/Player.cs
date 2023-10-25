@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -73,7 +72,7 @@ public class Player: MonoBehaviour, IDamagable
         chargeEffect = GameObject.Find(chargeEffectName);             // 차지 이펙트
         chargeEffect.SetActive(false);                                // 차지 이펙트 꺼두기
         weaponMuzzle = GameObject.Find(weaponMuzzleName);             // 무기 머즐
-        userWeaponState = (int)WeaponState.ICE;
+        userWeaponState = (int)WeaponState.LASER;
         hp = GameManager.Instance.playerHp;                           // 플레이어 체력
 
         lightningDamage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.LIGHTING_WEAPON,LIGHTING_WEAPON.DMG);

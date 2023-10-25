@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RockPool : MonoBehaviour
 {
-    public static RockPool Instance;
+    //public static RockPool Instance;
 
     public GameObject[] rocks;
     public Mesh[] rockMeshes;
@@ -22,7 +22,7 @@ public class RockPool : MonoBehaviour
 
     private void Start()
     {
-        Instance = this;
+        //Instance = this;
         Init();
     }
 
@@ -73,18 +73,17 @@ public class RockPool : MonoBehaviour
 
     public void SetPosition(GameObject rocks)
     {
-        if (randomScale > 8f)
+        if (Random.Range(0, 2) == 0)
         {
-            if (Random.Range(0, 2) == 0)
-            {
-                rndX = Random.Range(-100f, -50f);
-            }
-            else
-            { 
-                rndX = Random.Range(50f, 100f);
-            }
-            rndZ = Random.Range(50f, 400f);
+            rndX = Random.Range(-100f, -50f);
         }
+        else
+        {
+            rndX = Random.Range(50f, 100f);
+        }
+        rndZ = Random.Range(50f, 400f);
+
+
 
         float rockScale = rocks.GetComponent<Transform>().localScale.x;
         y = rockScale * 0.001f;

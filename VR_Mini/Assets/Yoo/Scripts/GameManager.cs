@@ -206,7 +206,7 @@ public class GameManager : MonoBehaviour
 
     public void Restart_Game()
     {
-        SceneManager.LoadScene("Scene_Han", LoadSceneMode.Single);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 
     public void End_Game()
