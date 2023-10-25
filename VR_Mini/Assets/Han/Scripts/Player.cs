@@ -17,11 +17,14 @@ public class Player: MonoBehaviour, IDamagable
     public const string chargeEffectName = "WaterCharge";
     public const string weaponMuzzleName = "Aurous_Crystal";
 
-    float hp = 0;
-    float lightningDamage;
-    float laserDamage;
-    float iceDamage;
+    private float hp;
+    private float lightningDamage;
+    private float laserDamage;
+    private float iceDamage;
 
+    private int lightningGold;
+    private int laserGold;
+    private int iceGold;
 
     Ray ray = default;                           // 레이 변수   
     public RaycastHit hitInfo = default;                // 레이캐스트 힛인포 변수   
@@ -75,7 +78,9 @@ public class Player: MonoBehaviour, IDamagable
 
         lightningDamage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.LIGHTING_WEAPON,LIGHTING_WEAPON.DMG);
         laserDamage     = (int)ResourceManager.Instance.GetSingleDataFromID(Order.LASER_WEAPON,LASER_WEAPON.DMG);
-        iceDamage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.ICE_WEAPON, ICE_WEAPON.DMG);
+        
+        lightningGold = (int)ResourceManager.Instance.GetSingleDataFromID(Order.LIGHTING_WEAPON,LIGHTING_WEAPON.HIT_GOLD);
+        laserGold     = (int)ResourceManager.Instance.GetSingleDataFromID(Order.LASER_WEAPON,LASER_WEAPON.HIT_GOLD);
         /* Resource 파일에서 불러오는 예시
         List<object> test = ResourceManager.Instance.GetDataFromID(Order.PC);
         int id = (int)test[(int)PC.ID];
@@ -223,7 +228,7 @@ public class Player: MonoBehaviour, IDamagable
                     if (damageTime >1.0f && boss != null)
                     {
                         // TODO : 보스 체력깎는 코드
-                        MonsterHP.Instance.OnDamage(laserDamage);
+                        MonsterHP.Instance.OnDamage(laserDamage,laserGold, hitInfo.point);
                         damageTime = 0.0f;
                     }
                     // 이펙트를 만드는 코드
@@ -308,7 +313,7 @@ public class Player: MonoBehaviour, IDamagable
                     {
                         Debug.Log("보스맞음");
 
-                        MonsterHP.Instance.OnDamage(lightningDamage);
+                        MonsterHP.Instance.OnDamage(lightningDamage, lightningGold, hitInfo.point);
 
                         // TODO : 보스 체력깎는 코드
                     }

@@ -15,6 +15,8 @@ public class IceProjectile : MonoBehaviour
     public int speed = default;
     public Transform currentScale = default;
 
+    private int iceGold;
+
     private Rigidbody rb;
     // Start is called before the first frame update
     void Start()
@@ -22,6 +24,9 @@ public class IceProjectile : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         originDMG = (int)ResourceManager.Instance.GetSingleDataFromID(Order.ICE_WEAPON, ICE_WEAPON.DMG);
         chargeDMG = (int)ResourceManager.Instance.GetSingleDataFromID(Order.ICE_WEAPON, ICE_WEAPON.CHARGING_PER_DMG);
+
+        iceGold = (int)ResourceManager.Instance.GetSingleDataFromID(Order.ICE_WEAPON, ICE_WEAPON.HIT_GOLD);
+
         //speed = (int)ResourceManager.Instance.GetSingleDataFromID(Order.ICE_WEAPON, ICE_WEAPON.PROJECTILE_SPEED);
         speed = 100;
         projectileName = "iceProjectile";
@@ -50,7 +55,7 @@ public class IceProjectile : MonoBehaviour
         if(other.gameObject.layer == LayerMask.NameToLayer("Boss"))
         {
             //Todo: 피감소하는 함수
-            MonsterHP.Instance.OnDamage(currentDMG);
+            MonsterHP.Instance.OnDamage(currentDMG,iceGold, transform.position);
         }
         else if(other.gameObject.layer == LayerMask.NameToLayer("WeakPoint"))
         {

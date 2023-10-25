@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public static UIManager m_instance;
+    private static UIManager m_instance;
 
     #region !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse !HowToUse
     /* !게임의 HUD, ShopUI, GameStartUI, GameOverUI를 열고 닫는 것을 관리하는 UIManager입니다.
