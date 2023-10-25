@@ -52,18 +52,27 @@ public class IceProjectile : MonoBehaviour
         
         GameObject gameObject=EffectPoolManager.instance.GetQueue(Player.instance.userWeaponState);
         gameObject.transform.position = transform.position;
-        if(other.gameObject.layer == LayerMask.NameToLayer("Boss"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Boss"))
         {
             //Todo: 피감소하는 함수
             MonsterHP.Instance.OnDamage(currentDMG,iceGold, transform.position);
         }
-        else if(other.gameObject.layer == LayerMask.NameToLayer("WeakPoint"))
+        else if (other.gameObject.layer == LayerMask.NameToLayer("WeakPoint"))
         {
-            Missile_Kim missile = other.transform.GetComponent<Missile_Kim>();
-            missile.OnDamage(currentDMG);
-            //TOdo: 피감소하는 함수
+            if (other.gameObject.name == "Cylinder(Clone)")
+            {
+                Missile_Kim missile = other.transform.GetComponent<Missile_Kim>();
+                missile.OnDamage(currentDMG);
+            }
+
+            if (other.gameObject.name == "WeakPoint")
+            {
+                DamagedPoint dmgPoint = other.transform.GetComponent<DamagedPoint>();
+                dmgPoint.OnDamage(currentDMG);
+            }
+                //TOdo: 피감소하는 함수
         }
-        GoBackToQueue();
+            GoBackToQueue();
     }
 
     private void GoBackToQueue()
