@@ -26,14 +26,7 @@ public class ElecticProjectile : MonoBehaviour
     {
         GameObject electricEffect = EffectPoolManager.instance.GetQueue(Player.instance.userWeaponState);
         electricEffect.transform.position = transform.position;
-        if(other.gameObject.layer == LayerMask.NameToLayer("Boss"))
-        {
-            // 보스 HP 깎는 코드
-        }
-        else if (other.gameObject.layer == LayerMask.NameToLayer("Projectile"))
-        {
-            // 보스의 투사체일 경우 HP깎는 코드
-        }
+
         ProjectilePool.instance.InsertProjectileQueue(gameObject, iceName);
     }
 }

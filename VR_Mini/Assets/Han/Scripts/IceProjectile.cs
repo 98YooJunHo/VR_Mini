@@ -1,6 +1,8 @@
 using Oculus.Interaction.Samples;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using UnityEditor.PackageManager;
 using UnityEditor.Rendering;
 using UnityEngine;
 
@@ -15,7 +17,7 @@ public class IceProjectile : MonoBehaviour
 
     private Rigidbody rb;
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         rb = GetComponent<Rigidbody>();
         originDMG = (int)ResourceManager.Instance.GetSingleDataFromID(Order.ICE_WEAPON, ICE_WEAPON.DMG);
@@ -38,23 +40,25 @@ public class IceProjectile : MonoBehaviour
     public void shot()
     {
         rb.velocity = ARAVRInput.RHandDirection * speed;
-        originDMG = (int)ResourceManager.Instance.GetSingleDataFromID(Order.ICE_WEAPON, ICE_WEAPON.DMG);
     }
 
     public void OnTriggerEnter(Collider other)
     {
-        GoBackToQueue();
+        
         GameObject gameObject=EffectPoolManager.instance.GetQueue(Player.instance.userWeaponState);
         gameObject.transform.position = transform.position;
         if(other.gameObject.layer == LayerMask.NameToLayer("Boss"))
         {
             //Todo: 피감소하는 함수
-            
+            MonsterHP.Instance.OnDamage(currentDMG);
         }
-        else if(other.gameObject.layer == LayerMask.NameToLayer("Projectile"))
+        else if(other.gameObject.layer == LayerMask.NameToLayer("WeakPoint"))
         {
+            Missile_Kim missile = other.transform.GetComponent<Missile_Kim>();
+            missile.OnDamage(currentDMG);
             //TOdo: 피감소하는 함수
         }
+        GoBackToQueue();
     }
 
     private void GoBackToQueue()

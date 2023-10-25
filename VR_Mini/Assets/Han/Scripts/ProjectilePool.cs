@@ -20,7 +20,7 @@ public class ProjectilePool : MonoBehaviour
         instance = this;
         for (int i = 0; i < 50; i++)
         {
-            GameObject electricProjectile = Instantiate(electricProjectilePrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
+            GameObject electricProjectile = Instantiate(electricProjectilePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
             electricProjectile.transform.SetParent(gameObject.transform);
             electricProjectileQueue.Enqueue(electricProjectile);
             electricProjectile.SetActive(false);
@@ -28,7 +28,7 @@ public class ProjectilePool : MonoBehaviour
 
         for (int i = 0; i < 50; i++)
         {
-            GameObject iceProjectile = Instantiate(iceProjectilePrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
+            GameObject iceProjectile = Instantiate(iceProjectilePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
             iceProjectile.transform.SetParent(gameObject.transform);
             iceProjectileQueue.Enqueue(iceProjectile);
             iceProjectile.SetActive(false);
@@ -53,21 +53,21 @@ public class ProjectilePool : MonoBehaviour
 
     public GameObject GetQueue(int userWeaponState)
     {
-        GameObject  Projectile = default;
+        GameObject  projectile = default;
         if (userWeaponState == (int)WeaponState.LIGHTING)
         {
             if(electricProjectileQueue.Count <50)
             {
                 while(electricProjectileQueue.Count<=50)
                 {
-                    GameObject electricProjectile = Instantiate(electricProjectilePrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
+                    GameObject electricProjectile = Instantiate(electricProjectilePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
                     electricProjectile.transform.SetParent(gameObject.transform);
                     electricProjectileQueue.Enqueue(electricProjectile);
                     electricProjectile.SetActive(false);
                 }
             }
-            Projectile = electricProjectileQueue.Dequeue();
-            Projectile.SetActive(true);
+            projectile = electricProjectileQueue.Dequeue();
+            projectile.SetActive(true);
         }
         else if (userWeaponState == (int)WeaponState.ICE)
         {
@@ -75,15 +75,15 @@ public class ProjectilePool : MonoBehaviour
             {
                 while (iceProjectileQueue.Count <= 50)
                 {
-                    GameObject iceProjectile = Instantiate(iceProjectilePrefab, new Vector3(0f, -3f, 0f), Quaternion.identity);
+                    GameObject iceProjectile = Instantiate(iceProjectilePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
                     iceProjectile.transform.SetParent(gameObject.transform);
                     iceProjectileQueue.Enqueue(iceProjectile);
                     iceProjectile.SetActive(false);
                 }
             }
-            Projectile = iceProjectileQueue.Dequeue();
-            Projectile.SetActive(true);
+            projectile = iceProjectileQueue.Dequeue();
+            projectile.SetActive(true);
         }
-        return gameObject;
+        return projectile;
     }
 }

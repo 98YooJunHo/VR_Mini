@@ -70,7 +70,7 @@ public class Player: MonoBehaviour, IDamagable
         chargeEffect = GameObject.Find(chargeEffectName);             // 차지 이펙트
         chargeEffect.SetActive(false);                                // 차지 이펙트 꺼두기
         weaponMuzzle = GameObject.Find(weaponMuzzleName);             // 무기 머즐
-        userWeaponState = (int)WeaponState.LASER;
+        userWeaponState = (int)WeaponState.ICE;
         hp = GameManager.Instance.playerHp;                           // 플레이어 체력
 
         lightningDamage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.LIGHTING_WEAPON,LIGHTING_WEAPON.DMG);
@@ -295,7 +295,10 @@ public class Player: MonoBehaviour, IDamagable
                 {
                     isAttacking = true;
                     // 코루틴만들기
-                    StartCoroutine(AttacKElectric());
+                    GameObject lighting = ProjectilePool.instance.GetQueue(userWeaponState);
+                    weaponElectricMuzzle = GameObject.Find(electricMuzzle);
+                    lighting.transform.position = weaponElectricMuzzle.transform.position;
+                    //StartCoroutine(AttacKElectric());
                 }
 
                 // hitInfo가 boss일때 맞는 판정으로 만들기s
@@ -353,7 +356,7 @@ public class Player: MonoBehaviour, IDamagable
                 chargeEffect.SetActive(false);
                 if (iceProjectile != null)
                 {
-                    iceProjectile.transform.LookAt(Player.instance.hitInfo.point);
+                    iceProjectile.transform.LookAt(hitInfo.point);
                     iceProjectile.GetComponent<IceProjectile>().shot();
                 }
             }
@@ -373,8 +376,11 @@ public class Player: MonoBehaviour, IDamagable
     {
         int timer = 0;
         int chargeTime = (int)ResourceManager.Instance.GetSingleDataFromID(Order.ICE_WEAPON, ICE_WEAPON.CHARGING_MAX_TIME);
-        int originDMG = iceProjectile.GetComponent<IceProjectile>().originDMG;
-        int chargeDMG = iceProjectile.GetComponent<IceProjectile>().chargeDMG;
+        Debug.LogFormat("chargeTime{0}", (int)ResourceManager.Instance.GetSingleDataFromID(Order.ICE_WEAPON, ICE_WEAPON.CHARGING_MAX_TIME));
+        int originDamage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.ICE_WEAPON, ICE_WEAPON.DMG);
+        Debug.LogFormat("originDamage{0}", originDamage);
+        int chargeDMG = (int)ResourceManager.Instance.GetSingleDataFromID(Order.ICE_WEAPON, ICE_WEAPON.CHARGING_PER_DMG);
+        Debug.LogFormat("charge,{0}",chargeDMG);
         while (timer <= chargeTime)
         {
             if(chargingStop == true)
@@ -384,7 +390,8 @@ public class Player: MonoBehaviour, IDamagable
             timer++;
             iceProjectile.GetComponent<IceProjectile>().currentDMG += chargeDMG;
             yield return new WaitForSeconds(1.0f);
-        }    
+        }
+        
     }
 
     //크기를 키워주는 코루틴
@@ -413,6 +420,7 @@ public class Player: MonoBehaviour, IDamagable
 
     //=========================================== 전기 코루틴 함수 =========================================
     #region
+    /*
     private IEnumerator AttacKElectric()
     {
        
@@ -423,10 +431,12 @@ public class Player: MonoBehaviour, IDamagable
                 break;
             }
             GameObject lighting = ProjectilePool.instance.GetQueue(userWeaponState);
+            weaponElectricMuzzle = GameObject.Find(electricMuzzle);
             lighting.transform.position = weaponElectricMuzzle.transform.position;
             yield return new WaitForSeconds(1.0f);
         }
     }
+    */
     #endregion
     //============================================ 전기 코루틴 함수 =========================================
 
