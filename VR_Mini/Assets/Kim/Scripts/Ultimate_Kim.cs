@@ -12,6 +12,7 @@ public class Ultimate_Kim : MonoBehaviour
     private Player player;
     private Monster_Kim monster;
     private int damage;
+    public float wait;
    // private Vector3 startPos = new Vector3(0, 0, (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.FAR));
 
     // Start is called before the first frame update
@@ -23,6 +24,7 @@ public class Ultimate_Kim : MonoBehaviour
         monster = GetComponent<Monster_Kim>();
         player = GameObject.Find("Player").GetComponent<Player>();
         damage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_BREATHE_SKILL, MONSTER_BREATHE_SKILL.SKILL_DMG);
+        wait = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_BREATHE_SKILL, MONSTER_BREATHE_SKILL.CASTING_TIME);
     }
 
     // Update is called once per frame
@@ -39,7 +41,7 @@ public class Ultimate_Kim : MonoBehaviour
         yield return new WaitForSeconds(4.0f);
         monsterWeakPoint.MakeWeakPoint();
         animator.Play("Fly Idle");
-        yield return new WaitForSeconds(6.0f);
+        yield return new WaitForSeconds(wait);
         isBreak = monsterWeakPoint.BreakUp();
         // 약점 공격하면 끊기는 코드
         if (!isBreak)

@@ -85,7 +85,7 @@ public class Monster_Kim : MonoBehaviour
             after++;
             pase_1UseUlt = false;
         }
-        else if (pase_2UseUlt && monsterHP.hp <= monsterHP.maxHP - (monsterHP.hp1 + monsterHP.hp2))
+        else if (pase_2UseUlt && monsterHP.hp <= monsterHP.maxHP - monsterHP.hp1 - monsterHP.hp2)
         {
             after++;
             pase_2UseUlt = false;
@@ -279,7 +279,7 @@ public class Monster_Kim : MonoBehaviour
             StartCoroutine(skill_1.Skill_1());
             doOnce = true;
         }
-        yield return new WaitForSeconds(6.667f);      // 모션 시간 보면서 시간 조정해야됨
+        yield return new WaitForSeconds(skill_1.wait + 1.667f);      // 모션 시간 보면서 시간 조정해야됨
         checkTime = 0;
         if (after == before && !useUlt)
         {
@@ -318,7 +318,7 @@ public class Monster_Kim : MonoBehaviour
 
         StartCoroutine(ult.Ultimate_());
 
-        yield return new WaitForSeconds(13f);      // 모션 시간 보면서 시간 조정해야됨
+        yield return new WaitForSeconds(ult.wait + 7.5f);      // 모션 시간 보면서 시간 조정해야됨
         animator.Play("Land");
         yield return new WaitForSeconds(4f);
         if (after == before)

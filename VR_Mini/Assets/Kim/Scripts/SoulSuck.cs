@@ -48,8 +48,10 @@ public class SoulSuck : MonoBehaviour
         }
         else
         {
+            soul.SetActive(false);
             animator.Play("Get Hit");
             yield return new WaitForSeconds(1.333f);
+            animator.Play("Idle");
             yield break;
         }
 

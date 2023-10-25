@@ -8,21 +8,27 @@ public class DamagedPoint : EctGetDamage
     public GameObject dragon;
     //public int weakpoint;
     private MonsterWeakPoint monsterWeakPoint;
+    public bool isStart = true;
     private void Start()
     {
         hp = (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_HP);
         //dragon = GameObject.Find("Dragon");  //80
+        monsterWeakPoint = dragon.GetComponent<MonsterWeakPoint>();
     }
 
     private void Update()
     {
-        monsterWeakPoint = dragon.GetComponent<MonsterWeakPoint>();
+        //if (!isStart)
+        //{
+        //    hp = (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_HP);
+        //    isStart = true;
+        //}
         if (hp <= 0)
         {
-            monsterWeakPoint.weakpoint = transform.gameObject;
+            monsterWeakPoint.weakpoint = gameObject;
             monsterWeakPoint.PointBreak();
-            transform.gameObject.SetActive(false);
-            Debug.Log("실행됨");
+            hp = (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_HP);
+            gameObject.SetActive(false);
         }
     }
 }
