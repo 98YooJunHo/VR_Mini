@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class ElecticProjectile : MonoBehaviour
@@ -24,8 +25,21 @@ public class ElecticProjectile : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        GameObject electricEffect = EffectPoolManager.instance.GetQueue(Player.instance.userWeaponState);
-        electricEffect.transform.position = transform.position;
+        if (other.gameObject.layer == LayerMask.NameToLayer("Boss"))
+        {
+            GameObject electricEffect = EffectPoolManager.instance.GetQueue(Player.instance.userWeaponState);
+            electricEffect.transform.position = transform.position;
+        }
+        else if (other.gameObject.layer == LayerMask.NameToLayer("WeakPoint"))
+        {
+            GameObject electricEffect = EffectPoolManager.instance.GetQueue(Player.instance.userWeaponState);
+            electricEffect.transform.position = transform.position;
+        }
+        else if (other.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+        {
+            GameObject electricEffect = EffectPoolManager.instance.GetQueue(Player.instance.userWeaponState);
+            electricEffect.transform.position = transform.position;
+        }
 
         ProjectilePool.instance.InsertProjectileQueue(gameObject, iceName);
     }
