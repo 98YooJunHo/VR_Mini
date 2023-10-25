@@ -145,6 +145,7 @@ public class Monster_Kim : MonoBehaviour
             if (!pase_1UseUlt)
             {
                 type = MonsterDoingType.die;
+                GameManager.Instance.End_Game();
             }
         }
     }

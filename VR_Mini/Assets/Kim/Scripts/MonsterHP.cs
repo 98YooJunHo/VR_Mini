@@ -67,6 +67,9 @@ public class MonsterHP : MonoBehaviour, IDamagable
         GameManager.Instance.bossHp -= damage;
         hp -= damage;
         
+        ColorChange color = FindObjectOfType<ColorChange>();
+        color.ChangeColor();
+
         // { 10/25 유준호 추가
         GameManager.Instance.Add_Gold(hitGold);
 
@@ -81,5 +84,5 @@ public class MonsterHP : MonoBehaviour, IDamagable
         damageObj.transform.localScale = damageOriginScale * transform.position.z / 600;
         damageTMP.text = "" + damage;
         // } 10/25 유준호 추가
-    }
+    }    
 }
