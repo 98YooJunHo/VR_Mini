@@ -41,7 +41,7 @@ public class MonsterHP : MonoBehaviour, IDamagable
         // { 10/25 유준호 추가
         damageCanvas = GameObject.Find(DAMAGE_CANVAS_NAME);
 
-        Invoke("Check", 3f);
+        //Invoke("Check", 3f);
         // } 10/25 유준호 추가
     }
 
@@ -59,10 +59,10 @@ public class MonsterHP : MonoBehaviour, IDamagable
         //}
     }
 
-    private void Check()
-    {
-        OnDamage(10, 10, new Vector3(50, 79, 631));
-    }
+    //private void Check()
+    //{
+    //    OnDamage(10, 10, new Vector3(50, 79, 631));
+    //}
 
     public void OnHit(int value)
     {
