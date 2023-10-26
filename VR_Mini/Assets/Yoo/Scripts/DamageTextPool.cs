@@ -57,7 +57,7 @@ public class DamageTextPool : MonoBehaviour
 
     private void ChargePool()
     {
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < 25; i++)
         {
             tempObj = Instantiate(damageTextPrefab);
             tempObj.transform.parent = transform;

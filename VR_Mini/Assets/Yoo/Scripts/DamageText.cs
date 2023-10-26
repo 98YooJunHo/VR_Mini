@@ -11,6 +11,11 @@ public class DamageText : MonoBehaviour
 
     private void OnEnable()
     {
+        DoFadeOut();
+    }
+
+    void DoFadeOut()
+    {
         StartCoroutine(FadeOut());
     }
 
@@ -18,8 +23,9 @@ public class DamageText : MonoBehaviour
     {
         time = 0;
         TMP_Text damageText = GetComponentInChildren<TMP_Text>();
+        Color originColor = damageText.color;
         Color color = damageText.color;
-        float originYPos = transform.position.y;
+        float originYPos = transform.localPosition.y;
         float yPos;
         Vector3 pos;
         float alpha;
@@ -30,13 +36,12 @@ public class DamageText : MonoBehaviour
             color.a = alpha;
             damageText.color = color;
 
-            yPos = transform.position.z / 460 * UP_SPEED * time;
+            yPos = transform.position.z / 600 * UP_SPEED * time;
             pos = new Vector3(transform.localPosition.x, originYPos + yPos, transform.localPosition.z);
             transform.localPosition = pos;
             yield return null;
         }
-        color.a = 1f;
-        damageText.color = color;
+        damageText.color = originColor;
         DamageTextPool.Instance.Set(gameObject);
         yield break;
     }
