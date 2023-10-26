@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Monster_Kim;
 
 public class Ultimate_Kim : MonoBehaviour
 {
@@ -33,9 +34,7 @@ public class Ultimate_Kim : MonoBehaviour
         
     }
     public IEnumerator Ultimate_()
-    {
-        Debug.Log("3");
-
+    {       
         monster.useUlt = true;
         animator.Play("Fly Up");
         yield return new WaitForSeconds(4.0f);
@@ -58,8 +57,16 @@ public class Ultimate_Kim : MonoBehaviour
             monster.useUlt = false;
             // monsterWeakPoint.isWork = false;
         }
+        else if(!monster.pase_3UseUlt && isBreak)
+        {
+            yield return new WaitForSeconds(4f);
+            monster.type = MonsterDoingType.die;
+            animator.Play("Die");
+            GameManager.Instance.End_Game();
+        }
         else
         {
+            yield return new WaitForSeconds(4f);
             monster.useUlt = false;
             yield break;
         }

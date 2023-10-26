@@ -11,7 +11,7 @@ public class Monster_Kim : MonoBehaviour
     private Ultimate_Kim ult;
     private MonsterSkill_1 skill_1;
     private SoulSuck soulSuck;
-    private GameManager gameManager;
+    //private GameManager gameManager;
 
     private int paseTrigger = 30;
     private float attackTrigger = 5;
@@ -60,7 +60,7 @@ public class Monster_Kim : MonoBehaviour
         type = MonsterDoingType.idle;
         animator = GetComponent<Animator>();
         maxHP = monsterHP.hp;
-        gameManager = GetComponent<GameManager>();
+        
     }
 
     // Update is called once per frame
@@ -70,7 +70,7 @@ public class Monster_Kim : MonoBehaviour
         {
             return;
         }
-
+       
         if (!pattern)
         {
             checkTime += Time.deltaTime;
@@ -78,23 +78,12 @@ public class Monster_Kim : MonoBehaviour
         if (type != MonsterDoingType.die)
         {
             MonsterPase();
+            MonsterMove();
         }
-        MonsterMove();
-        if (pase_1UseUlt && monsterHP.hp <= monsterHP.maxHP - monsterHP.hp1)
-        {
-            after++;
-            pase_1UseUlt = false;
-        }
-        else if (pase_2UseUlt && monsterHP.hp <= monsterHP.maxHP - monsterHP.hp1 - monsterHP.hp2)
-        {
-            after++;
-            pase_2UseUlt = false;
-        }
-        else if (pase_3UseUlt && monsterHP.hp <= 0)
-        {
-            after++;
-            pase_3UseUlt = false;
-        }
+
+
+        UltCheck();
+        
     }
 
     private void MonsterPase()
@@ -142,9 +131,11 @@ public class Monster_Kim : MonoBehaviour
                 type = MonsterDoingType.ultimate;
                 pase_3UseUlt = false;
             }
-            if (!pase_1UseUlt)
+                Debug.Log(pase_3UseUlt);
+            if (!useUlt)
             {
                 type = MonsterDoingType.die;
+                animator.Play("Die");
                 GameManager.Instance.End_Game();
             }
         }
@@ -166,15 +157,11 @@ public class Monster_Kim : MonoBehaviour
         {
             pattern = true;
             StartCoroutine(Skill_1());
-
         }
         else if (type == MonsterDoingType.skill_2)
         {
             pattern = true;
-            //animator.Play("");
             StartCoroutine(Skill_2());
-
-
         }
         else if (type == MonsterDoingType.ultimate)
         {
@@ -189,7 +176,25 @@ public class Monster_Kim : MonoBehaviour
         {
             pattern = true;
             animator.Play("Die");
-            gameManager.End_Game();
+        }
+    }
+
+    private void UltCheck()
+    {
+        if (pase_1UseUlt && monsterHP.hp <= monsterHP.maxHP - monsterHP.hp1)
+        {
+            after++;
+            pase_1UseUlt = false;
+        }
+        else if (pase_2UseUlt && monsterHP.hp <= monsterHP.maxHP - monsterHP.hp1 - monsterHP.hp2)
+        {
+            after++;
+            pase_2UseUlt = false;
+        }
+        else if (pase_3UseUlt && monsterHP.hp <= 0)
+        {
+            after++;
+            pase_3UseUlt = false;
         }
     }
 
