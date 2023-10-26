@@ -26,7 +26,7 @@ public enum PC
 //  OVERHIT_DECREASE 과열 감소량, OVERHIT_PENALTY 과열오버시딜레이(초)
 public enum LASER_WEAPON
 {
-    ID, NAME, DESCRIPTION, DMG, HIT_GOLD, OVERHIT_MAX, OVERHIT_INCREASE, OVERHIT_DECREASE, OVERHIT_PENALTY
+    ID, NAME, DESCRIPTION, DMG, HIT_GOLD, OVERHIT_MAX, OVERHIT_INCREASE, OVERHIT_DECREASE, OVERHIT_PENALTY, DAMAGE_RATE
 }
 
 // ID 1001
@@ -177,6 +177,9 @@ public class ResourceManager : MonoBehaviour
         //hp1 = (int)test2[(int)MONSTER.P1_HP];
         //Debug.Log("hp1 : "+hp1);
         //Debug.Log("hp1 type : "+hp1.GetType());
+
+        //float a = (float)GetSingleDataFromID(Order.LASER_WEAPON, LASER_WEAPON.DAMAGE_RATE);
+        //Debug.Log(a);
     }
 
     #region INIT

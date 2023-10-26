@@ -6,7 +6,9 @@ public class MonsterMove_Kim : MonoBehaviour
 {
     private Monster_Kim monster;
 
-    public int speed;
+    public int speed; 
+    private Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,6 +16,8 @@ public class MonsterMove_Kim : MonoBehaviour
         speed = 5;
         monster = GetComponent<Monster_Kim>();
         //hp1 = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.P1_HP);
+        animator = GetComponent<Animator>();
+
     }
 
 
@@ -30,9 +34,12 @@ public class MonsterMove_Kim : MonoBehaviour
             // 몬스터 이동
             float move = speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, 0, 0), move);
-
         }
-
+        if(transform.position.z < 140) 
+        {
+            animator.Play("Bite");
+            GameManager.Instance.End_Game();
+        }
     }
 }
 

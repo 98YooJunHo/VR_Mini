@@ -136,7 +136,7 @@ public class GameManager : MonoBehaviour
         if(!gameOver)
         {
             time += Time.deltaTime;
-            if (playerHp <= 0 || (bossPhase == (int)BOSS_PHASE.THREE && bossHp <= 0))
+            if (playerHp <= 0 )
             {
                 End_Game();
             }
