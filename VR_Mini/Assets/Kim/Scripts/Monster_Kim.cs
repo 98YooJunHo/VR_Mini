@@ -70,7 +70,7 @@ public class Monster_Kim : MonoBehaviour
         {
             return;
         }
-       
+
         if (!pattern)
         {
             checkTime += Time.deltaTime;

@@ -7,7 +7,7 @@ public class SoulSuck : MonoBehaviour
     public GameObject soul;
     private MonsterWeakPoint monsterWeakPoint;
     private Soul soul_;
-    private Player player;
+    //private Player player;
     public float wayTime;
     private int damage;
 
@@ -20,7 +20,7 @@ public class SoulSuck : MonoBehaviour
         animator = GetComponent<Animator>();
         monsterWeakPoint = GetComponent<MonsterWeakPoint>();
         soul_ = soul.GetComponent<Soul>();
-        player = GameObject.Find("Player").GetComponent<Player>();
+        //player = GameObject.Find("Player").GetComponent<Player>();
     }
     public IEnumerator Skill_2()
     {
@@ -40,7 +40,7 @@ public class SoulSuck : MonoBehaviour
             animator.Play("Bite");
 
             yield return new WaitForSeconds(2f);
-            player.DamageTake(damage);
+            Player.instance.DamageTake(damage);
             soul.SetActive(false);
             yield return new WaitForSeconds(2.668f);
 

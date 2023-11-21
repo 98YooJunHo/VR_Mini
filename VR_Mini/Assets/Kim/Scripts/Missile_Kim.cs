@@ -8,7 +8,6 @@ public class Missile_Kim : EctGetDamage
     private float arcHeight = 50f; // 아치의 높이 조절
     private int damage;
     public GameObject target; // 목표 위치
-    private Player player;
 
     private Vector3 initialPosition;
     public float startTime;
@@ -19,7 +18,6 @@ public class Missile_Kim : EctGetDamage
     {
         initialPosition = transform.position;
         target = GameObject.Find("Player");
-        player = target.transform.GetComponent<Player>();
         speed = (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.SKILL_SPEED);
         hp = (float)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.PROJECTILE_HP);
         damage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_NORMAL_SKILL, MONSTER_NORMAL_SKILL.SKILL_DMG);
@@ -51,7 +49,7 @@ public class Missile_Kim : EctGetDamage
             }
             else
             {
-                player.DamageTake(damage);
+                Player.instance.DamageTake(damage);
                 Destroy(gameObject);
             }
         }

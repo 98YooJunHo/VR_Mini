@@ -14,7 +14,7 @@ public class MonsterWeakPoint : EctGetDamage
     public GameObject weakpoint;
     //private DamagedPoint point_;
     private Monster_Kim monster;
-    private Player player;
+   // private Player player;
     private int addWeakPoint;
 
     private MonsterHP monsterHP;
@@ -27,7 +27,7 @@ public class MonsterWeakPoint : EctGetDamage
     {
         monster = GetComponent<Monster_Kim>();
         addWeakPoint = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER, MONSTER.WEAKPOINT_COUNT);
-        player = GameObject.Find("Player").GetComponent<Player>();
+       // player = GameObject.Find("Player").GetComponent<Player>();
         monsterHP = GetComponent<MonsterHP>();
     }
 

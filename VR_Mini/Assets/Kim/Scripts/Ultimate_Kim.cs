@@ -10,7 +10,7 @@ public class Ultimate_Kim : MonoBehaviour
     private Animator animator;
     private MonsterWeakPoint monsterWeakPoint;
     public bool isBreak;
-    private Player player;
+    //private Player player;
     private Monster_Kim monster;
     private int damage;
     public float wait;
@@ -23,7 +23,7 @@ public class Ultimate_Kim : MonoBehaviour
         animator = GetComponent<Animator>();
         monsterWeakPoint = GetComponent<MonsterWeakPoint>();
         monster = GetComponent<Monster_Kim>();
-        player = GameObject.Find("Player").GetComponent<Player>();
+        //player = GameObject.Find("Player").GetComponent<Player>();
         damage = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_BREATHE_SKILL, MONSTER_BREATHE_SKILL.SKILL_DMG);
         wait = (int)ResourceManager.Instance.GetSingleDataFromID(Order.MONSTER_BREATHE_SKILL, MONSTER_BREATHE_SKILL.CASTING_TIME);
     }
@@ -51,7 +51,7 @@ public class Ultimate_Kim : MonoBehaviour
             breath.SetActive(true);
             yield return new WaitForSeconds(2.0f);
 
-            player.DamageTake(damage);
+            Player.instance.DamageTake(damage);
             breath.SetActive(false);
             yield return new WaitForSeconds(1);
             monster.useUlt = false;
