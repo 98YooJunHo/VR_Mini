@@ -18,6 +18,7 @@ public class MonsterHP : MonoBehaviour, IDamagable
     public float maxHP;
     private float moveSpeed;
 
+    public bool asd = false;
     // { 10/25 유준호 추가
     private const string DAMAGE_CANVAS_NAME = "DamageCanvas";
     private GameObject damageCanvas;
@@ -75,7 +76,11 @@ public class MonsterHP : MonoBehaviour, IDamagable
         hp -= damage;
         
         ColorChange color = FindObjectOfType<ColorChange>();
-        color.ChangeColor();
+        if (!asd)
+        {
+            asd = true;
+            color.ChangeColor();
+        }        
 
         // { 10/25 유준호 추가
         GameManager.Instance.Add_Gold(hitGold);
